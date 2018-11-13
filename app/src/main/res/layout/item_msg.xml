@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="8dp">
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:text="【弈尚游戏】        关于平台充值紧急通知"
+        android:textColor="@color/textcolor1"/>
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:scaleType="fitXY"
+        android:id="@+id/iv_"
+        android:src="@mipmap/ic_more_gray"/>
+</LinearLayout>
