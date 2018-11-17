@@ -8,4 +8,7 @@ public class BaseHttp {
         }
         return instance;
     }
+    public void test(){
+
+    }
 }
