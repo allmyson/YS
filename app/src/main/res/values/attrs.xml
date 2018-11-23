@@ -9,4 +9,12 @@
         <attr name="tvTextSize" format="dimension"/>
         <attr name="btnTextSize" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="circleProgressBar">
+        <attr name="circleWidth" format="dimension" />
+        <attr name="betaAngle" format="integer" />
+        <attr name="firstColor" format="color" />
+        <attr name="secondColor" format="color" />
+    </declare-styleable>
+
 </resources>
