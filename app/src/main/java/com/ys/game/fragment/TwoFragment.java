@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.ys.game.R;
 import com.ys.game.activity.CqsscActivity;
+import com.ys.game.activity.WinnerActivity;
 import com.ys.game.base.BaseFragment;
 
 /**
@@ -51,6 +52,7 @@ public class TwoFragment extends BaseFragment implements View.OnClickListener {
             case R.id.iv02:
                 break;
             case R.id.iv03:
+                startActivity(new Intent(mContext, WinnerActivity.class));
                 break;
         }
     }
