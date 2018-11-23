@@ -71,6 +71,8 @@
         </activity>
         <activity android:name=".activity.CqsscActivity">
         </activity>
+        <activity android:name=".activity.WinnerActivity">
+        </activity>
     </application>
 
 </manifest>
