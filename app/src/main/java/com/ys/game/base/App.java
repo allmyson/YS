@@ -2,6 +2,10 @@ package com.ys.game.base;
 
 import android.support.multidex.MultiDexApplication;
 
+import com.yanzhenjie.nohttp.InitializationConfig;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.cookie.DBCookieStore;
+import com.ys.game.http.CookieListener;
 import com.ys.game.util.Constant;
 
 /**
@@ -16,5 +20,6 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         Constant.buildFile();
+        NoHttp.initialize(InitializationConfig.newBuilder(this).cookieStore(new DBCookieStore(this).setCookieStoreListener(new CookieListener(this))).build());
     }
 }
