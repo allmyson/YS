@@ -168,6 +168,4 @@ public class Constant {
         public static final String ACTION_SESSION_INVALID = "com.upsoft.sdk.action.sessionReceiver";
     }
 
-
-
 }

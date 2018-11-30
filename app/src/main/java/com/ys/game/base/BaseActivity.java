@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
@@ -48,7 +49,7 @@ public abstract class BaseActivity extends FragmentActivity implements Permissio
     public static final int REQUEST_CODE_PERMISSION = 517;
     private static final int REQUEST_CODE_SETTING = 300;
     private String[] permissions;
-
+    protected RelativeLayout backRL;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -60,7 +61,7 @@ public abstract class BaseActivity extends FragmentActivity implements Permissio
         if (isShowPermission()) {
             checkPermission();
         }
-        registLogin();
+//        registLogin();
         initView();
         getData();
     }
@@ -204,7 +205,7 @@ public abstract class BaseActivity extends FragmentActivity implements Permissio
     protected void onDestroy() {
         super.onDestroy();
         mImmersionBar.destroy();
-        unRegistLogin();
+//        unRegistLogin();
     }
 
 
@@ -273,4 +274,12 @@ public abstract class BaseActivity extends FragmentActivity implements Permissio
         return true;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rl_back:
+                finish();
+                break;
+        }
+    }
 }

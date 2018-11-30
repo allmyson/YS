@@ -19,11 +19,11 @@ import java.util.List;
 /**
  * @author lh
  * @version 1.0.0
- * @filename WinnerJLFragment
+ * @filename TeamCzjlFragment
  * @description -------------------------------------------------------
- * @date 2018/11/23 15:08
+ * @date 2018/11/30 14:10
  */
-public class WinnerJLFragment extends BaseFragment implements View.OnClickListener{
+public class TeamCzjlFragment extends BaseFragment implements View.OnClickListener{
     private ListView lv;
     private List<Object> list;
     private TzjlAdapter mAdapter;
@@ -62,7 +62,7 @@ public class WinnerJLFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.fragment_winner_jl;
+        return R.layout.fragment_team_czjl;
     }
 
     @Override
@@ -91,4 +91,5 @@ public class WinnerJLFragment extends BaseFragment implements View.OnClickListen
                 (dayOfMonth > 9 ?
                         dayOfMonth : ("0" + dayOfMonth));
     }
+
 }

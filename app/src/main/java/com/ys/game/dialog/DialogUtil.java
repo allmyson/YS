@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class DialogUtil {
     /**
@@ -156,7 +157,28 @@ public class DialogUtil {
 //        ft.commitAllowingStateLoss();
         return newFragment;
     }
-
+    /**
+     *密保问题
+     *
+     * @param context
+     * @param clickListener
+     * @return
+     */
+    public static ListDialog showProblem(Context context, List<String> list,ListDialog.ClickListener clickListener) {
+        FragmentActivity activity = (FragmentActivity) context;
+        removeDialog(activity);
+        ListDialog newFragment = ListDialog.newInstance(DialogFragment.STYLE_NO_TITLE, android.R.style
+                .Theme_Holo_Light_Dialog);
+        newFragment.setClickListener(clickListener);
+        newFragment.setList(list);
+        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        // 指定一个过渡动画
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        newFragment.show(ft, mDialogTag);//Can not perform this action after onSaveInstanceState
+//        ft.add(newFragment, mDialogTag);
+//        ft.commitAllowingStateLoss();
+        return newFragment;
+    }
     /**
      * 弹出提示框
      *

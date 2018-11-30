@@ -1,8 +1,11 @@
 package com.ys.game.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.ys.game.R;
@@ -12,6 +15,7 @@ import com.ys.game.fragment.JLFragment;
 import com.ys.game.fragment.TZFragment;
 import com.ys.game.fragment.ZSFragment;
 import com.ys.game.ui.LhViewPager;
+import com.ys.game.util.YS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +24,13 @@ import java.util.List;
  * cqssc
  */
 public class CqsscActivity extends BaseActivity {
+    private int type;
     private RelativeLayout backRL;
     private TabLayout tabLayout;
     private LhViewPager vp;
     private CqsscFragmentAdapter mAdapter;
+    private ImageView logoIV;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_cqssc;
@@ -31,6 +38,13 @@ public class CqsscActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        type = getIntent().getIntExtra("type", YS.TYPE_CQSSC);
+        logoIV = getView(R.id.iv_logo);
+        if (type == YS.TYPE_CQSSC) {
+            logoIV.setImageResource(R.mipmap.ic_cqssc);
+        } else if (type == YS.TYPE_TXFFC) {
+            logoIV.setImageResource(R.mipmap.ic_txffc);
+        }
         backRL = getView(R.id.rl_back);
         backRL.setOnClickListener(this);
         tabLayout = getView(R.id.tl_cqssc);
@@ -49,7 +63,7 @@ public class CqsscActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.rl_back:
                 finish();
                 break;
@@ -63,5 +77,19 @@ public class CqsscActivity extends BaseActivity {
         list.add(new TZFragment());
         list.add(new JLFragment());
         return list;
+    }
+
+    public static void intentToSSC(Context context, int type) {
+        Intent intent = new Intent(context, CqsscActivity.class);
+        intent.putExtra("type", type);
+        context.startActivity(intent);
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

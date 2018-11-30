@@ -8,6 +8,9 @@ import com.ys.game.R;
 import com.ys.game.activity.CqsscActivity;
 import com.ys.game.activity.WinnerActivity;
 import com.ys.game.base.BaseFragment;
+import com.ys.game.bean.GameBean;
+import com.ys.game.sp.GameSP;
+import com.ys.game.util.YS;
 
 /**
  * @author lh
@@ -47,13 +50,38 @@ public class TwoFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv01:
-                startActivity(new Intent(mContext, CqsscActivity.class));
+                CqsscActivity.intentToSSC(mContext, YS.TYPE_CQSSC);
+                addBean(YS.TYPE_CQSSC);
                 break;
             case R.id.iv02:
+                CqsscActivity.intentToSSC(mContext, YS.TYPE_TXFFC);
+                addBean(YS.TYPE_TXFFC);
                 break;
             case R.id.iv03:
                 startActivity(new Intent(mContext, WinnerActivity.class));
+                addBean(YS.TYPE_ZHDSLZ);
                 break;
         }
+    }
+
+    private void addBean(int type) {
+        GameBean gameBean = new GameBean();
+        gameBean.type = type;
+        gameBean.time = System.currentTimeMillis();
+        GameSP.add(mContext, gameBean);
+    }
+
+
+    private static final int MIN_DELAY_TIME = 1000;  // 两次点击间隔不能少于1000ms
+    private static long lastClickTime;
+
+    public static boolean isFastClick() {
+        boolean flag = true;
+        long currentClickTime = System.currentTimeMillis();
+        if ((currentClickTime - lastClickTime) >= MIN_DELAY_TIME) {
+            flag = false;
+        }
+        lastClickTime = currentClickTime;
+        return flag;
     }
 }

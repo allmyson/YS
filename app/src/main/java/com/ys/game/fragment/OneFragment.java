@@ -5,12 +5,16 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import com.ys.game.R;
+import com.ys.game.activity.CqsscActivity;
 import com.ys.game.activity.MainActivity;
 import com.ys.game.activity.MsgDetailActivity;
 import com.ys.game.adapter.GameAdapter;
 import com.ys.game.adapter.MsgAdapter;
 import com.ys.game.base.BaseFragment;
+import com.ys.game.bean.GameBean;
+import com.ys.game.bean.GzGameBean;
 import com.ys.game.bean.MsgBean;
+import com.ys.game.sp.GameSP;
 import com.ys.game.ui.MyListView;
 
 import java.util.ArrayList;
@@ -28,7 +32,7 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
     private MyListView msgMLV, gameMLV;
     private MsgAdapter msgAdapter;
     private List<MsgBean> msgBeanList;
-    private List<Object> gameList;
+    private List<GzGameBean> gameList;
     private GameAdapter gameAdapter;
 
     public static OneFragment newInstance() {
@@ -42,8 +46,6 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
         msgBeanList.add(null);
         msgBeanList.add(null);
         gameList = new ArrayList<>();
-        gameList.add(null);
-        gameList.add(null);
         moreLL = getView(R.id.ll_more);
         msgMLV = getView(R.id.mlv_msg);
         gameMLV = getView(R.id.mlv_game);
@@ -58,11 +60,33 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
             }
         });
         moreLL.setOnClickListener(this);
+        gameMLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CqsscActivity.intentToSSC(mContext, gameAdapter.getItem(position).type);
+                addBean(gameAdapter.getItem(position).type);
+            }
+        });
+    }
+
+    private void addBean(int type) {
+        GameBean gameBean = new GameBean();
+        gameBean.type = type;
+        gameBean.time = System.currentTimeMillis();
+        GameSP.add(mContext, gameBean);
     }
 
     @Override
     protected void getData() {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        gameList.clear();
+        gameList.addAll(GameSP.getGzGameList(mContext));
+        gameAdapter.refresh(gameList);
     }
 
     @Override
