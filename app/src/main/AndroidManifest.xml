@@ -73,6 +73,32 @@
         </activity>
         <activity android:name=".activity.WinnerActivity">
         </activity>
+        <activity android:name=".activity.XFJLActivity">
+        </activity>
+        <activity android:name=".activity.SafeActivity">
+        </activity>
+        <activity android:name=".activity.UpdateJyzhActivity">
+        </activity>
+        <activity android:name=".activity.UpdatePsdActivity">
+        </activity>
+        <activity android:name=".activity.MmbhActivity">
+        </activity>
+        <activity android:name=".activity.SetZjmmActivity">
+        </activity>
+        <activity android:name=".activity.UpdateZjmmActivity">
+        </activity>
+        <activity android:name=".activity.KHActivity">
+        </activity>
+        <activity android:name=".activity.LxkfActivity">
+        </activity>
+        <activity android:name=".activity.TeamGLActivity">
+        </activity>
+        <activity android:name=".activity.TeamJLActivity">
+        </activity>
+        <activity android:name=".activity.CzActivity">
+        </activity>
+        <activity android:name=".activity.TxActivity">
+        </activity>
     </application>
 
 </manifest>
