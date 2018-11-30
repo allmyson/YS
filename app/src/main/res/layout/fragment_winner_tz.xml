@@ -61,6 +61,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/rect_cornor_white1"
                 android:orientation="horizontal"
                 android:padding="10dp">
@@ -110,27 +111,129 @@
                         android:text="当前SN价格"
                         android:textColor="@color/textcolor1"/>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_fh"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:text="110.95"
+                        android:textColor="#ff491a"/>
+                    <ProgressBar
+                        android:id="@+id/progesss_fh"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="100dp"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/myprogressbar"
+                        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+                        android:indeterminateOnly="false"
+                        android:max="100"
+                        android:maxHeight="50dp"
+                        android:minHeight="16dp" android:progress="20"
+                        android:progressDrawable="@drawable/myprogressbar"/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="个人返还分红"
+                        android:textColor="@color/textcolor1"/>
+                </LinearLayout>
             </LinearLayout>
-            <TextView
-                android:id="@+id/tv_type"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rect_cornor_main"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="10dp"
-                android:paddingTop="10dp"
-                android:text="五星直选_复式"
-                android:textColor="@android:color/white"/>
-
+                android:paddingTop="10dp">
+                <TextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="已购SN清单"
+                    android:textColor="@android:color/white"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/ic_more"/>
+            </LinearLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.ys.game.ui.MyGridView
+                    android:id="@+id/mgv_sn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rect_cornor_white6"
+                    android:numColumns="5"
+                    android:scrollbars="none"
+                />
+                <LinearLayout
+                    android:id="@+id/ll_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#ffc2ac"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#ffc2ac"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#ffc2ac"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#ffc2ac"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+            </FrameLayout>
             <ListView
-                android:id="@+id/lv_tz"
+                android:id="@+id/lv_msg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="120dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/rect_cornor_white4"
                 android:divider="#999999"
                 android:dividerHeight="0.5dp"
+                android:paddingBottom="20dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:scrollbars="none"/>
@@ -139,87 +242,38 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="#f6f6f6"
-                android:orientation="vertical"
+                android:background="@drawable/rect_cornor_white7"
+                android:gravity="center"
+                android:orientation="horizontal"
                 android:padding="10dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_yue"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/tv_money_zhu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:text="1元*32注"
-                        android:textColor="@color/textcolor3"/>
-                    <com.ys.game.ui.AmountView
-                        android:id="@+id/amount_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="right"
-                        android:layout_marginRight="10dp"
-                    />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="倍"
-                        android:textColor="@color/textcolor3"/>
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="投注限额:10000元"
-                        android:textColor="@color/textcolor2"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/tv_yue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="50dp"
-                        android:text="可用余额:0元"/>
-                    <TextView
-                        android:id="@+id/tv_buyMoney"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="购买需支付:32.0元"/>
-                </LinearLayout>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <Button
-                        android:id="@+id/btn_zh"
-                        android:layout_width="80dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/rect_cornor_login"
-                        android:text="追号"
-                        android:textColor="@android:color/white"/>
-                    <Button
-                        android:id="@+id/btn_tz"
-                        android:layout_width="80dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentRight="true"
-                        android:background="@drawable/rect_cornor_login"
-                        android:text="投注"
-                        android:textColor="@android:color/white"/>
-                </RelativeLayout>
+                    android:text="可用余额:0元"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="购买需支付:32.0元"/>
+                <Button
+                    android:id="@+id/btn_tz"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/rect_cornor_login"
+                    android:text="投注"
+                    android:textColor="@android:color/white"/>
             </LinearLayout>
+
         </RelativeLayout>
     </FrameLayout>
 </LinearLayout>
