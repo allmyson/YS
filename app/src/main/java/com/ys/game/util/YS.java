@@ -15,4 +15,15 @@ public class YS {
 
     public static final String KF_QQ = "8789234124";
     public static final String KF_WX = "123456";
+
+    public static final String SUCCESE ="SUCCESS";
+    public static final String FAIL ="FAIL";
+
+
+
+    public static final String IP = "http://148.163.169.41:8090";
+    //登录
+    public static final String LOGIN = IP + "/appService/loginForApp";
+    //系统公告
+    public static final String MSG = IP + "/appService/appNews";
 }

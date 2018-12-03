@@ -1,16 +1,7 @@
 package com.ys.game.http;
 
 import android.content.Context;
-import android.content.Intent;
 
-import com.google.gson.Gson;
-import com.upsoft.sdk.Constant;
-import com.upsoft.sdk.http.BaseBean;
-import com.upsoft.sdk.sp.CookieSP;
-import com.upsoft.sdk.util.GsonUtil;
-import com.upsoft.sdk.util.L;
-import com.upsoft.sdk.util.StringUtil;
-import com.upsoft.sdk.util.ToastUtil;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.error.NotFoundCacheError;
@@ -20,6 +11,11 @@ import com.yanzhenjie.nohttp.error.UnKnownHostError;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
+import com.ys.game.sp.CookieSP;
+import com.ys.game.util.GsonUtil;
+import com.ys.game.util.L;
+import com.ys.game.util.StringUtil;
+import com.ys.game.util.ToastUtil;
 
 import java.net.HttpCookie;
 import java.util.List;
@@ -84,18 +80,18 @@ public class SimpleResponseListener<T> implements OnResponseListener<T> {
                 }
             }
             if (obj != null && obj instanceof String && GsonUtil.isJSONValid3(StringUtil.valueOf(obj))) {
-                BaseBean baseBean = new Gson().fromJson(StringUtil.valueOf(response.get()), BaseBean.class);
-                if (baseBean != null && "0".equals(baseBean.status)) {
-                    if (Constant.SESSION_EXPIRED.equals(baseBean.errorCode) || Constant.SESSION_INVALID.equals(baseBean
-                            .errorCode)) {
-                        //session过期或者无效弹出跳转登录界面弹窗
-//                        FunctionApi.showLoginDialog(mContext);
-                        Intent intent = new Intent(Constant.Action.ACTION_SESSION_INVALID);
-                        intent.putExtra("msg", baseBean.errorCode);
-                        mContext.sendBroadcast(intent);
-                        return;
-                    }
-                }
+//                BaseBean baseBean = new Gson().fromJson(StringUtil.valueOf(response.get()), BaseBean.class);
+//                if (baseBean != null && "0".equals(baseBean.status)) {
+//                    if (Constant.SESSION_EXPIRED.equals(baseBean.errorCode) || Constant.SESSION_INVALID.equals(baseBean
+//                            .errorCode)) {
+//                        //session过期或者无效弹出跳转登录界面弹窗
+////                        FunctionApi.showLoginDialog(mContext);
+//                        Intent intent = new Intent(Constant.Action.ACTION_SESSION_INVALID);
+//                        intent.putExtra("msg", baseBean.errorCode);
+//                        mContext.sendBroadcast(intent);
+//                        return;
+//                    }
+//                }
                 if (callback != null) {
                     // 这里判断一下http响应码，这个响应码问下你们的服务端你们的状态有几种，一般是200成功。
                     // w3c标准http响应码：http://www.w3school.com.cn/tags/html_ref_httpmessages.asp

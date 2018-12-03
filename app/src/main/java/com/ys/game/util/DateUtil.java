@@ -148,4 +148,20 @@ public class DateUtil {
             return sb;
         }
     }
+
+
+    public static String changeTimeToYMD(String time) {
+        SimpleDateFormat formatter = new SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        Date date = null;
+        try {
+            date = formatter.parse(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+            date = new Date();
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String res = simpleDateFormat.format(date);
+        return res;
+    }
 }

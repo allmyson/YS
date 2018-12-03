@@ -4,6 +4,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.ys.game.R;
 import com.ys.game.activity.CqsscActivity;
 import com.ys.game.activity.MainActivity;
@@ -14,8 +16,11 @@ import com.ys.game.base.BaseFragment;
 import com.ys.game.bean.GameBean;
 import com.ys.game.bean.GzGameBean;
 import com.ys.game.bean.MsgBean;
+import com.ys.game.http.HttpListener;
 import com.ys.game.sp.GameSP;
 import com.ys.game.ui.MyListView;
+import com.ys.game.util.HttpUtil;
+import com.ys.game.util.YS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +36,7 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
     private LinearLayout moreLL;
     private MyListView msgMLV, gameMLV;
     private MsgAdapter msgAdapter;
-    private List<MsgBean> msgBeanList;
+    private List<MsgBean.DataBeanX.DataBean> msgBeanList;
     private List<GzGameBean> gameList;
     private GameAdapter gameAdapter;
 
@@ -42,9 +47,6 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void init() {
         msgBeanList = new ArrayList<>();
-        msgBeanList.add(null);
-        msgBeanList.add(null);
-        msgBeanList.add(null);
         gameList = new ArrayList<>();
         moreLL = getView(R.id.ll_more);
         msgMLV = getView(R.id.mlv_msg);
@@ -56,7 +58,7 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
         msgMLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MsgDetailActivity.intentToMsg(mContext);
+                MsgDetailActivity.intentToMsg(mContext,msgAdapter.getItem(position));
             }
         });
         moreLL.setOnClickListener(this);
@@ -78,7 +80,27 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void getData() {
+        getMsg();
+    }
 
+    private void getMsg() {
+        HttpUtil.selectMsg(mContext, 1, 3, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                msgBeanList.clear();
+                MsgBean msgBean = new Gson().fromJson(response.get(), MsgBean.class);
+                if (msgBean != null && YS.SUCCESE.equals(msgBean.code) && msgBean.data != null && msgBean.data.data
+                        != null && msgBean.data.data.size() > 0) {
+                    msgBeanList.addAll(msgBean.data.data);
+                }
+                msgAdapter.refresh(msgBeanList);
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        });
     }
 
     @Override

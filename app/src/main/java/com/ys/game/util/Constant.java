@@ -65,10 +65,6 @@ public class Constant {
 
 
     public static class Url {
-        //登录是否需要验证码
-        public static final String NEED_YZM = "/cgi/bp/sso/session/vc/show";
-        //获取验证码图片
-        public static final String YZM_IMAGE = "/cgi/bp/sso/session/verifyCode";
         //登录
         public static final String LOGIN = "/cgi/bp/sso/login";
         //登出

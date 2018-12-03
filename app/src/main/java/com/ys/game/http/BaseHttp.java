@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.FileBinary;
-import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.download.DownloadListener;
-import com.yanzhenjie.nohttp.download.DownloadRequest;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.StringRequest;
@@ -18,6 +16,8 @@ import com.ys.game.util.L;
 import com.ys.game.util.StringUtil;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,6 +69,23 @@ public class BaseHttp {
         request.setCancelSign(object);
 //        request.addHeader("Cookie", "PHPSESSID=" + UserSP.getCookie(mContext));
         mQueue.add(what, request, new HttpResponseListener<>(activity, request, callback, canCancel, isLoading));
+    }
+
+    public <T> void request(int what, Request<T> request, HttpListener<T> callback, boolean canCancel, boolean
+            isLoading, Context context) {
+        request.setCancelSign(object);
+//        request.addHeader("Cookie", "PHPSESSID=" + UserSP.getCookie(mContext));
+        mQueue.add(what, request, new HttpResponseListener<>((Activity) context, request, callback, canCancel,
+                isLoading));
+
+    }
+
+    public <T> void request(Request<T> request, HttpListener<T> callback, Context context) {
+        request(0, request, callback, false, true, context);
+    }
+
+    public <T> void request(int what, Request<T> request, HttpListener<T> callback, Context context) {
+        request(what, request, callback, false, true, context);
     }
 
     public <T> void request(Activity activity, Request<T> request, HttpListener<T> callback) {
@@ -131,7 +148,33 @@ public class BaseHttp {
         L.e("url=" + url);
         L.e("params=" + postJson);
         Request<String> request = NoHttp.createStringRequest(url, RequestMethod.POST);
-        request.setDefineRequestBodyForJson(postJson);
+        request.setContentType("application/json");
+        if (!StringUtil.isBlank(postJson)) {
+            request.setDefineRequestBodyForJson(postJson);
+        }
+        String token = CookieSP.getCookie(context);
+        if (token != null && !"".equals(token)) {
+            request.addHeader("Cookie", token);
+        }
+        request(context, request, callback);
+    }
+    public void postSimpleJson(Context context, String url, String postJson, List<String> files, HttpListener<String> callback) {
+        L.e("url=" + url);
+        L.e("params=" + postJson);
+        Request<String> request = NoHttp.createStringRequest(url, RequestMethod.POST);
+        request.setContentType("application/json");
+        List<Binary> binaries = new ArrayList<>();
+        if (files != null && files.size() > 0) {
+            Binary binary = null;
+            for (String path : files) {
+                binary = new FileBinary(new File(path));
+                binaries.add(binary);
+            }
+        }
+        request.add("file", binaries);
+        if (!StringUtil.isBlank(postJson)) {
+            request.setDefineRequestBodyForJson(postJson);
+        }
         String token = CookieSP.getCookie(context);
         if (token != null && !"".equals(token)) {
             request.addHeader("Cookie", token);
@@ -226,32 +269,8 @@ public class BaseHttp {
         request(context, imageRequest, callback);
     }
 
-    /**
-     * 下载文件
-     *
-     * @param context
-     * @param url
-     * @param savaPath
-     * @param fileName
-     * @param downloadListener
-     */
-    public void downloadFile(Context context, String url, String savaPath, String fileName, DownloadListener
-            downloadListener) {
-        downloadRequest = NoHttp.createDownloadRequest(
-                url, savaPath, fileName, true, true);
-        String token = CookieSP.getCookie(context);
-        downloadRequest.getHeaders().remove(Headers.HEAD_KEY_CONTENT_TYPE);
-        if (token != null && !"".equals(token)) {
-            downloadRequest.addHeader("Cookie", token);
-        }
-        NoHttp.getDownloadQueueInstance().add(0, downloadRequest, downloadListener);
-    }
-
-    private DownloadRequest downloadRequest;
-
-    public void cancleCurrentDownload() {
-        if (downloadRequest != null) {
-            downloadRequest.cancel();
-        }
+    public Request<String> getStringPostRequst(String url) {
+        Request<String> request = NoHttp.createStringRequest(url, RequestMethod.POST);
+        return request;
     }
 }

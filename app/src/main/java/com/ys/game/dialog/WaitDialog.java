@@ -19,7 +19,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.Window;
 
-import com.upsoft.sdk.R;
+import com.ys.game.R;
 
 
 /**

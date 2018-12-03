@@ -28,6 +28,7 @@ public class XFJLActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
     }
 
     @Override

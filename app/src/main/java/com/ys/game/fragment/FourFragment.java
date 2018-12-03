@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.ys.game.R;
 import com.ys.game.activity.CzActivity;
@@ -18,7 +19,10 @@ import com.ys.game.activity.TxActivity;
 import com.ys.game.activity.XFJLActivity;
 import com.ys.game.adapter.MyAdapter;
 import com.ys.game.base.BaseFragment;
+import com.ys.game.bean.LoginBean;
+import com.ys.game.sp.UserSP;
 import com.ys.game.ui.MyListView;
+import com.ys.game.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +40,8 @@ public class FourFragment extends BaseFragment implements View.OnClickListener {
     private MyAdapter myAdapter;
     private RelativeLayout setRL;
     private Button czBtn, tbBtn;
-
+    private TextView nicknameTV,usernameTV,fdTV;
+    private LoginBean loginBean;
     public static FourFragment newInstance() {
         return new FourFragment();
     }
@@ -83,11 +88,20 @@ public class FourFragment extends BaseFragment implements View.OnClickListener {
 
         setRL = getView(R.id.rl_set);
         setRL.setOnClickListener(this);
+
+        nicknameTV = getView(R.id.tv_nickName);
+        usernameTV = getView(R.id.tv_username);
+        fdTV = getView(R.id.tv_fd);
     }
 
     @Override
     protected void getData() {
-
+        loginBean = UserSP.getInfo(mContext);
+        if(loginBean!=null&&loginBean.data!=null){
+            nicknameTV.setText("昵称："+StringUtil.valueOf(loginBean.data.consumerName));
+            usernameTV.setText("用户名："+StringUtil.valueOf(loginBean.data.loginName));
+            fdTV.setText("返点："+StringUtil.valueOf(loginBean.data.backNum));
+        }
     }
 
     @Override
