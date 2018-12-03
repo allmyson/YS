@@ -48,6 +48,7 @@
             android:orientation="vertical"
             android:padding="10dp">
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -57,6 +58,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"/>
             <TextView
+                android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -70,6 +72,7 @@
                 android:text="尊敬的会员您好："
                 android:textColor="@color/textcolor2"/>
             <TextView
+                android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
