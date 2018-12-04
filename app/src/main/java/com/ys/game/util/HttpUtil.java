@@ -25,4 +25,22 @@ public class HttpUtil {
         String url = YS.MSG + "?start=" + start + "&length=" + length;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
+
+    //投注
+    public static void tz(Context context, String json, HttpListener<String> httpListener) {
+        String url = YS.TZ;
+        BaseHttp.getInstance().postSimpleJson(context, url, json, httpListener);
+    }
+
+    /**
+     * 查询开奖结果
+     *
+     * @param context
+     * @param typeCode 1000  时时彩    1001   分分彩
+     * @param num      查询数量
+     */
+    public static void getKJResult(Context context, int typeCode, int num, HttpListener<String> httpListener) {
+        String url = YS.RESULT + "?gameTypeCode=" + typeCode + "&gameNum=" + num;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
 }

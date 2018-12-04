@@ -6,6 +6,7 @@ import android.widget.ListView;
 
 import com.ys.game.R;
 import com.ys.game.adapter.ZsAdapter;
+import com.ys.game.bean.ResultBean;
 import com.ys.game.sf.Dhzs_5xBean;
 import com.ys.game.sf.Dhzs_5xUtil;
 
@@ -27,8 +28,12 @@ public class Dhzs_5xFragment extends BaseZSFragment {
     private List<List<Dhzs_5xBean>> bean50List;
     private List<List<Dhzs_5xBean>> bean30List;
     private LinearLayout lineLL;
-    public static Dhzs_5xFragment newInstance() {
-        return new Dhzs_5xFragment();
+    private List<ResultBean.DataBean> list;
+
+    public static Dhzs_5xFragment newInstance(List<ResultBean.DataBean> list) {
+        Dhzs_5xFragment fragment = new Dhzs_5xFragment();
+        fragment.setList(list);
+        return fragment;
     }
 
     @Override
@@ -53,19 +58,59 @@ public class Dhzs_5xFragment extends BaseZSFragment {
         return R.layout.fragment_dhzs_5x;
     }
 
+    //    private void getDefaultData() {
+//        List<List<Integer>> list100 = Dhzs_5xUtil.list(100);
+//        List<List<Integer>> list50 = new ArrayList<>();
+//        List<List<Integer>> list30 = new ArrayList<>();
+//        for (int i = 50; i < list100.size(); i++) {
+//            list50.add(list100.get(i));
+//            if (i >= 70) {
+//                list30.add(list100.get(i));
+//            }
+//        }
+//        List<List<Dhzs_5xBean>> allList100 = Dhzs_5xUtil.getShowData(list100);
+//        List<List<Dhzs_5xBean>> allList50 = Dhzs_5xUtil.getShowData(list50);
+//        List<List<Dhzs_5xBean>> allList30 = Dhzs_5xUtil.getShowData(list30);
+//        bean100List.addAll(allList100);
+//        bean50List.addAll(allList50);
+//        bean30List.addAll(allList30);
+//    }
     private void getDefaultData() {
-        List<List<Integer>> list100 = Dhzs_5xUtil.list(100);
+        List<List<Integer>> list100 = getBaseList(list);
         List<List<Integer>> list50 = new ArrayList<>();
         List<List<Integer>> list30 = new ArrayList<>();
-        for (int i = 50; i < list100.size(); i++) {
-            list50.add(list100.get(i));
-            if (i >= 70) {
+
+        List<String> nameList100 = new ArrayList<>();
+        List<String> nameList50 = new ArrayList<>();
+        List<String> nameList30 = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (i <= 30) {
+                nameList30.add(list.get(i).periodsNum);
+            }
+            if (i <= 50) {
+                nameList50.add(list.get(i).periodsNum);
+            }
+            nameList100.add(list.get(i).periodsNum);
+        }
+
+        if (list100.size() <= 50) {
+            list50.addAll(list100);
+        } else {
+            for (int i = 0; i < 50; i++) {
+                list50.add(list100.get(i));
+            }
+        }
+
+        if (list100.size() <= 30) {
+            list30.addAll(list100);
+        } else {
+            for (int i = 0; i < 30; i++) {
                 list30.add(list100.get(i));
             }
         }
-        List<List<Dhzs_5xBean>> allList100 = Dhzs_5xUtil.getShowData(list100);
-        List<List<Dhzs_5xBean>> allList50 = Dhzs_5xUtil.getShowData(list50);
-        List<List<Dhzs_5xBean>> allList30 = Dhzs_5xUtil.getShowData(list30);
+        List<List<Dhzs_5xBean>> allList100 = Dhzs_5xUtil.getShowData(list100, nameList100);
+        List<List<Dhzs_5xBean>> allList50 = Dhzs_5xUtil.getShowData(list50, nameList50);
+        List<List<Dhzs_5xBean>> allList30 = Dhzs_5xUtil.getShowData(list30, nameList30);
         bean100List.addAll(allList100);
         bean50List.addAll(allList50);
         bean30List.addAll(allList30);
@@ -74,7 +119,7 @@ public class Dhzs_5xFragment extends BaseZSFragment {
     @Override
     protected void show(int size) {
         mList.clear();
-        switch (size){
+        switch (size) {
             case 30:
                 mList.addAll(bean30List);
                 break;
@@ -88,4 +133,18 @@ public class Dhzs_5xFragment extends BaseZSFragment {
         zsAdapter.refresh(mList);
         lineLL.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    protected void refresh(List<ResultBean.DataBean> list) {
+
+    }
+
+    public List<ResultBean.DataBean> getList() {
+        return list;
+    }
+
+    public void setList(List<ResultBean.DataBean> list) {
+        this.list = list;
+    }
+
 }

@@ -13,13 +13,21 @@ import java.util.Random;
  * @date 2018/11/7 14:27
  */
 public class Danhzs_gwUtil {
-    public static List<List<Danhzs_gwBean>> getData(List<Integer> list) {
+    public static List<List<Danhzs_gwBean>> getData(List<Integer> list,List<String> nameList) {
         List<List<Danhzs_gwBean>> result = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             List<Danhzs_gwBean> beanList = new ArrayList<>();
             for (int j = 0; j < 10; j++) {
                 Danhzs_gwBean bean = new Danhzs_gwBean();
-                bean.name = "第" + (i + 1) + "期";
+                if (nameList == null) {
+                    bean.name = "第" + (i + 1) + "期";
+                } else {
+                    if (nameList.get(i).length() > 8) {
+                        bean.name = nameList.get(i).substring(8);
+                    } else {
+                        bean.name = nameList.get(i);
+                    }
+                }
                 if (j == list.get(i)) {
                     bean.value = j;
                     bean.isChoose = true;

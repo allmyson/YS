@@ -10,10 +10,19 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.ys.game.R;
+import com.ys.game.activity.CqsscActivity;
 import com.ys.game.base.BaseFragment;
+import com.ys.game.bean.ResultBean;
 import com.ys.game.dialog.DialogUtil;
 import com.ys.game.dialog.ZsChoose;
+import com.ys.game.http.HttpListener;
+import com.ys.game.util.HttpUtil;
+import com.ys.game.util.YS;
+
+import java.util.List;
 
 /**
  * @author lh
@@ -28,7 +37,7 @@ public class ZSFragment extends BaseFragment implements View.OnClickListener, Ra
     private RadioButton rb30, rb50, rb100;
     private RelativeLayout setRL;
     private BaseZSFragment currentFragment;
-    private BaseZSFragment dhzs_5xFragment,dhzs_heFragment, wxhz_dxdsFragment, dxds_sgFragment, danhzs_gwFragment;
+    private BaseZSFragment dhzs_5xFragment, dhzs_heFragment, wxhz_dxdsFragment, dxds_sgFragment, danhzs_gwFragment;
 
     public static ZSFragment newInstance() {
         return new ZSFragment();
@@ -46,14 +55,15 @@ public class ZSFragment extends BaseFragment implements View.OnClickListener, Ra
         setRL = getView(R.id.rl_set);
         setRL.setOnClickListener(this);
         radioGroup.setOnCheckedChangeListener(this);
-        initFragment();
-        showFragment(dhzs_5xFragment);
+        manager = getChildFragmentManager();
+//        initFragment();
+//        showFragment(dhzs_5xFragment);
     }
 
     @Override
     protected void getData() {
-//        rb30.performClick();
-        sendMsg();
+        getResult();
+//        sendMsg();
     }
 
     @Override
@@ -111,13 +121,12 @@ public class ZSFragment extends BaseFragment implements View.OnClickListener, Ra
     /**
      * 初始化Fragment
      */
-    private void initFragment() {
-        manager = getChildFragmentManager();
-        dhzs_5xFragment = Dhzs_5xFragment.newInstance();
-        wxhz_dxdsFragment = new Wxhz_dxdsFragment();
-        dxds_sgFragment = new Dxds_sgFragment();
-        danhzs_gwFragment = new Danhzs_gwFragment();
-        dhzs_heFragment = new Dhzs_heFragment();
+    private void initFragment(List<ResultBean.DataBean> list) {
+        dhzs_5xFragment = Dhzs_5xFragment.newInstance(list);
+        wxhz_dxdsFragment = Wxhz_dxdsFragment.newInstance(list);
+        dxds_sgFragment = Dxds_sgFragment.newInstance(list);
+        danhzs_gwFragment = Danhzs_gwFragment.newInstance(list);
+        dhzs_heFragment = Dhzs_heFragment.newInstance(list);
     }
 
     /**
@@ -160,5 +169,25 @@ public class ZSFragment extends BaseFragment implements View.OnClickListener, Ra
         Message msg = new Message();
         msg.what = 100;
         handler.sendMessageDelayed(msg, 500);
+    }
+
+    private void getResult() {
+        HttpUtil.getKJResult(mContext, ((CqsscActivity) getActivity()).getType(), 100, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                ResultBean resultBean = new Gson().fromJson(response.get(), ResultBean.class);
+                if (resultBean != null && YS.SUCCESE.equals(resultBean.code) && resultBean.data != null && resultBean
+                        .data.size() > 0) {
+                    initFragment(resultBean.data);
+                    showFragment(dhzs_5xFragment);
+                    sendMsg();
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        });
     }
 }

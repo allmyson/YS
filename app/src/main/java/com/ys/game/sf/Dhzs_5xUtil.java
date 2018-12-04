@@ -13,16 +13,20 @@ import java.util.Random;
  * @date 2018/11/1 18:42
  */
 public class Dhzs_5xUtil {
+    public static List<List<Dhzs_5xBean>> getShowData(List<List<Integer>> list) {
+        return getShowData(list, null);
+    }
+
     /**
      * 得到需要展示的最终数据
      *
      * @param list
      * @return
      */
-    public static List<List<Dhzs_5xBean>> getShowData(List<List<Integer>> list) {
+    public static List<List<Dhzs_5xBean>> getShowData(List<List<Integer>> list, List<String> nameList) {
         List<List<Dhzs_5xBean>> showData = new ArrayList<>();
         // 最终数据
-        List<List<Dhzs_5xBean>> result = getFinalData(list);
+        List<List<Dhzs_5xBean>> result = getFinalData(list, nameList);
         // 出现总次数
         List<Integer> countList = getTotalCountList(list);
         List<Dhzs_5xBean> countBean = new ArrayList<>();
@@ -254,20 +258,22 @@ public class Dhzs_5xUtil {
         return totalCountList;
     }
 
-    /**
-     * 获取最终彩票展示数据
-     *
-     * @param list
-     * @return
-     */
-    public static List<List<Dhzs_5xBean>> getFinalData(List<List<Integer>> list) {
+    public static List<List<Dhzs_5xBean>> getFinalData(List<List<Integer>> list, List<String> nameList) {
         List<List<Dhzs_5xBean>> result = new ArrayList<>();
         for (int k = 0; k < list.size(); k++) {
             List<Dhzs_5xBean> temp = new ArrayList<>();
             List<Integer> ll = list.get(k);
             for (int i = 0; i < 10; i++) {
                 Dhzs_5xBean bean = new Dhzs_5xBean();
-                bean.name = "第" + (k + 1) + "期";
+                if (nameList == null) {
+                    bean.name = "第" + (k + 1) + "期";
+                } else {
+                    if (nameList.get(k).length() > 8) {
+                        bean.name = nameList.get(k).substring(8);
+                    } else {
+                        bean.name = nameList.get(k);
+                    }
+                }
                 for (int m : ll) {
                     if (m == i) {
                         bean.value = m;
@@ -312,6 +318,17 @@ public class Dhzs_5xUtil {
             }
         }
         return finalResult;
+    }
+
+
+    /**
+     * 获取最终彩票展示数据
+     *
+     * @param list
+     * @return
+     */
+    public static List<List<Dhzs_5xBean>> getFinalData(List<List<Integer>> list) {
+        return getFinalData(list, null);
     }
 
     // 统计相同字符连续出现的最大子序列的长度
@@ -368,8 +385,8 @@ public class Dhzs_5xUtil {
             int a = random.nextInt(10);
             l.add(a);
             List<Integer> data = new ArrayList<>();
-            for(int j = 0;j<10;j++){
-                if(j!=a){
+            for (int j = 0; j < 10; j++) {
+                if (j != a) {
                     data.add(j);
                 }
             }

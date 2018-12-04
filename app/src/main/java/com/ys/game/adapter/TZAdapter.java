@@ -226,9 +226,13 @@ public class TZAdapter extends CommonAdapter<TZBean> {
                             for (int n = 0; n < aa.get(4).size(); n++) {
                                 StringBuilder sb = new StringBuilder();
                                 sb.append(aa.get(0).get(i));
+                                sb.append(",");
                                 sb.append(aa.get(1).get(j));
+                                sb.append(",");
                                 sb.append(aa.get(2).get(k));
+                                sb.append(",");
                                 sb.append(aa.get(3).get(m));
+                                sb.append(",");
                                 sb.append(aa.get(4).get(n));
                                 result.add(sb.toString());
                             }
@@ -249,11 +253,17 @@ public class TZAdapter extends CommonAdapter<TZBean> {
                     sb.append(aa.get(0).get(i));
                 }
                 List<String> cr = ZhUtil.getCombinationResult(2, ZhUtil.stringFilter(sb.toString()));
-                result.addAll(cr);
+                List<String> dr = new ArrayList<>();
+                for(int j = 0;j<cr.size();j++){
+                    StringBuilder sb1 = new StringBuilder(cr.get(j));
+                    sb1.insert(1,",");
+                    dr.add(sb1.toString());
+                }
+                result.addAll(dr);
             } else if ("五星和值_和值大小单双".equals(mDatas.get(0).typeName)) {
                 for (int i = 0; i < aa.get(0).size(); i++) {
                     StringBuilder sb = new StringBuilder();
-                    sb.append(aa.get(0).get(i));
+                    sb.append(getDXDS(aa.get(0).get(i)));
                     result.add(sb.toString());
                 }
             }
@@ -261,8 +271,9 @@ public class TZAdapter extends CommonAdapter<TZBean> {
             for (int i = 0; i < aa.get(0).size(); i++) {
                 for (int j = 0; j < aa.get(1).size(); j++) {
                     StringBuilder sb = new StringBuilder();
-                    sb.append(aa.get(0).get(i));
-                    sb.append(aa.get(1).get(j));
+                    sb.append(getDXDS(aa.get(0).get(i)));
+                    sb.append(",");
+                    sb.append(getDXDS(aa.get(1).get(j)));
                     result.add(sb.toString());
                 }
             }
@@ -288,5 +299,24 @@ public class TZAdapter extends CommonAdapter<TZBean> {
         if (changeListener != null && canTZ()) {
             changeListener.getData(getTZData());
         }
+    }
+
+    public static String getDXDS(int position){
+        String result = "大";
+        switch (position){
+            case 0:
+                result = "大";
+                break;
+            case 1:
+                result = "小";
+                break;
+            case 2:
+                result = "单";
+                break;
+            case 3:
+                result = "双";
+                break;
+        }
+        return result;
     }
 }

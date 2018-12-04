@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.ys.game.R;
 import com.ys.game.adapter.Dxds_sgAdapter;
-import com.ys.game.sf.Dhzs_5xUtil;
+import com.ys.game.bean.ResultBean;
 import com.ys.game.sf.Dxds_sgBean;
 import com.ys.game.sf.Dxds_sgUtil;
 import com.ys.game.ui.MyListView;
@@ -36,6 +36,11 @@ public class Dxds_sgFragment extends BaseZSFragment {
     private TextView zdyl1, zdyl2, zdyl3, zdyl4, zdyl5, zdyl6, zdyl7, zdyl8;
     private TextView pjyl1, pjyl2, pjyl3, pjyl4, pjyl5, pjyl6, pjyl7, pjyl8;
 
+    public static Dxds_sgFragment newInstance(List<ResultBean.DataBean> list) {
+        Dxds_sgFragment fragment = new Dxds_sgFragment();
+        fragment.list = list;
+        return fragment;
+    }
     @Override
     protected void show(int size) {
         mList.clear();
@@ -55,6 +60,11 @@ public class Dxds_sgFragment extends BaseZSFragment {
         }
         mAdapter.refresh(mList);
         lineLL.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void refresh(List<ResultBean.DataBean> list) {
+
     }
 
     @Override
@@ -119,19 +129,60 @@ public class Dxds_sgFragment extends BaseZSFragment {
     private List<Object> allList50;
     private List<Object> allList30;
 
+//    private void getDefaultData() {
+//        List<List<Integer>> list100 = Dhzs_5xUtil.list(100);
+//        List<List<Integer>> list50 = new ArrayList<>();
+//        List<List<Integer>> list30 = new ArrayList<>();
+//        for (int i = 50; i < list100.size(); i++) {
+//            list50.add(list100.get(i));
+//            if (i >= 70) {
+//                list30.add(list100.get(i));
+//            }
+//        }
+//        allList100 = Dxds_sgUtil.getData(list100);
+//        allList50 = Dxds_sgUtil.getData(list50);
+//        allList30 = Dxds_sgUtil.getData(list30);
+//        bean100List.addAll((Collection<? extends Dxds_sgBean>) allList100.get(0));
+//        bean50List.addAll((Collection<? extends Dxds_sgBean>) allList50.get(0));
+//        bean30List.addAll((Collection<? extends Dxds_sgBean>) allList30.get(0));
+//    }
+
     private void getDefaultData() {
-        List<List<Integer>> list100 = Dhzs_5xUtil.list(100);
+        List<List<Integer>> list100 = getBaseList(list);
         List<List<Integer>> list50 = new ArrayList<>();
         List<List<Integer>> list30 = new ArrayList<>();
-        for (int i = 50; i < list100.size(); i++) {
-            list50.add(list100.get(i));
-            if (i >= 70) {
+
+        List<String> nameList100 = new ArrayList<>();
+        List<String> nameList50 = new ArrayList<>();
+        List<String> nameList30 = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (i <= 30) {
+                nameList30.add(list.get(i).periodsNum);
+            }
+            if (i <= 50) {
+                nameList50.add(list.get(i).periodsNum);
+            }
+            nameList100.add(list.get(i).periodsNum);
+        }
+
+        if (list100.size() <= 50) {
+            list50.addAll(list100);
+        } else {
+            for (int i = 0; i < 50; i++) {
+                list50.add(list100.get(i));
+            }
+        }
+
+        if (list100.size() <= 30) {
+            list30.addAll(list100);
+        } else {
+            for (int i = 0; i < 30; i++) {
                 list30.add(list100.get(i));
             }
         }
-        allList100 = Dxds_sgUtil.getData(list100);
-        allList50 = Dxds_sgUtil.getData(list50);
-        allList30 = Dxds_sgUtil.getData(list30);
+        allList100 = Dxds_sgUtil.getData(list100,nameList100);
+        allList50 = Dxds_sgUtil.getData(list50,nameList50);
+        allList30 = Dxds_sgUtil.getData(list30,nameList30);
         bean100List.addAll((Collection<? extends Dxds_sgBean>) allList100.get(0));
         bean50List.addAll((Collection<? extends Dxds_sgBean>) allList50.get(0));
         bean30List.addAll((Collection<? extends Dxds_sgBean>) allList30.get(0));

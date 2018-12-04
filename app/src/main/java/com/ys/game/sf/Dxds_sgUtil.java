@@ -13,11 +13,19 @@ import java.util.List;
  */
 public class Dxds_sgUtil {
     //获取最终数据
-    public static List<Object> getData(List<List<Integer>> list) {
+    public static List<Object> getData(List<List<Integer>> list,List<String> nameList) {
         List<Dxds_sgBean> result = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             Dxds_sgBean bean = new Dxds_sgBean();
-            bean.name = "第" + (i + 1) + "期";
+            if (nameList == null) {
+                bean.name = "第" + (i + 1) + "期";
+            } else {
+                if (nameList.get(i).length() > 8) {
+                    bean.name = nameList.get(i).substring(8);
+                } else {
+                    bean.name = nameList.get(i);
+                }
+            }
             bean.ge = list.get(i).get(0);
             bean.shi = list.get(i).get(1);
             if (bean.shi >= 5) {

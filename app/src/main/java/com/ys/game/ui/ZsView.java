@@ -68,7 +68,7 @@ public class ZsView extends View {
         if (list != null && list.size() > 0) {
             for (Path path : pathList) {
 //                if (path != pathList.get(pathList.size() - 1)) {
-                    canvas.drawPath(path, paint);
+                canvas.drawPath(path, paint);
 //                }
             }
         }
@@ -156,7 +156,8 @@ public class ZsView extends View {
         Path tempPath;
         for (int i = 0; i < segmentSize; i++) {
             tempPath = new Path();
-            pm.getSegment((i - 1) * DEFAULT_SEGMENT_LENGTH - 0.4f, Math.min(i * DEFAULT_SEGMENT_LENGTH, length), tempPath,  true);
+            pm.getSegment((i - 1) * DEFAULT_SEGMENT_LENGTH - 0.4f, Math.min(i * DEFAULT_SEGMENT_LENGTH, length),
+                    tempPath, true);
             list.add(tempPath);
         }
         return list;

@@ -36,11 +36,19 @@ public class Wxhz_dxdsUtil {
     }
 
 
-    public static List<Object> getListData(List<List<Integer>> list) {
+    public static List<Object> getListData(List<List<Integer>> list,List<String> nameList) {
         List<Wxhz_dxdsBean> rrList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             Wxhz_dxdsBean bean = new Wxhz_dxdsBean();
-            bean.name = "第" + (i + 1) + "期";
+            if (nameList == null) {
+                bean.name = "第" + (i + 1) + "期";
+            } else {
+                if (nameList.get(i).length() > 8) {
+                    bean.name = nameList.get(i).substring(8);
+                } else {
+                    bean.name = nameList.get(i);
+                }
+            }
             bean.ge = list.get(i).get(0);
             bean.shi = list.get(i).get(1);
             bean.bai = list.get(i).get(2);
