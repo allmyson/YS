@@ -30,4 +30,6 @@ public class YS {
     public static final String TZ = IP + "/appService/bet";
     //开奖结果
     public static final String RESULT = IP + "/appService/getGameResultList";
+    //投注记录
+    public static final String TZJL = IP + "/appService/payRecords";
 }

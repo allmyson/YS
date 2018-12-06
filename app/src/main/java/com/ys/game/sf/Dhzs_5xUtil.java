@@ -136,7 +136,12 @@ public class Dhzs_5xUtil {
                 for (int j = 0; j < ylList.get(i).size(); j++) {
                     total += ylList.get(i).get(j).length();
                 }
-                int x = total / ylList.get(i).size();
+                int x;
+                if(ylList.get(i).size()==0){
+                    x=0;
+                }else {
+                    x = total / ylList.get(i).size();
+                }
                 resultList.add(x);
             }
         } else {

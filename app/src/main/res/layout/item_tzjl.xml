@@ -27,6 +27,7 @@
             android:textColor="@color/textcolor1"/>
     </LinearLayout>
     <TextView
+        android:id="@+id/tv_qs"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
@@ -34,6 +35,7 @@
         android:gravity="center"
         android:textColor="@color/textcolor1"/>
     <TextView
+        android:id="@+id/tv_money"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
@@ -41,6 +43,7 @@
         android:text="0.32"
         android:textColor="@color/textcolor1"/>
     <TextView
+        android:id="@+id/tv_isZJ"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"

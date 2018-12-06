@@ -43,4 +43,18 @@ public class HttpUtil {
         String url = YS.RESULT + "?gameTypeCode=" + typeCode + "&gameNum=" + num;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
+
+
+    /**
+     * @param context
+     * @param userId
+     * @param start
+     * @param length
+     * @param httpListener
+     */
+    public static void getTZJL(Context context, String userId, int start, int length, HttpListener<String>
+            httpListener) {
+        String url = YS.TZJL + "?userId=" + userId + "&start=" + start + "&length=" + length;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
 }

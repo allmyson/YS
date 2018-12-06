@@ -1,7 +1,10 @@
 package com.ys.game.fragment;
 
+import android.os.CountDownTimer;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,7 +40,7 @@ import java.util.Map;
  * @description -------------------------------------------------------
  * @date 2018/11/7 17:11
  */
-public class TZFragment extends BaseFragment implements View.OnClickListener {
+public class TZFragment extends BaseFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private ListView tzLV;
     private List<TZBean> list;
     private TZAdapter mAdapter;
@@ -55,6 +58,8 @@ public class TZFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView lastQ, w, q, b, s, g, nextQ;
     private long nextTime = 0;
+    private String nextQStr;
+    private SwipeRefreshLayout srl;
 
     @Override
     protected void init() {
@@ -107,6 +112,27 @@ public class TZFragment extends BaseFragment implements View.OnClickListener {
             }
         });
         getView(R.id.rl_tip).setOnClickListener(this);
+        srl = (SwipeRefreshLayout) mView.findViewById(R.id.srl);
+        srl.setOnRefreshListener(this);
+        srl.setColorSchemeColors(getResources().getColor(R.color.main_color));
+        tzLV.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                View firstView = view.getChildAt(firstVisibleItem);
+                if (firstVisibleItem == 0 && (firstView == null || firstView.getTop() == 0)) {
+                /*上滑到listView的顶部时，下拉刷新组件可见*/
+                    srl.setEnabled(true);
+                } else {
+                /*不是listView的顶部时，下拉刷新组件不可见*/
+                    srl.setEnabled(false);
+                }
+            }
+        });
     }
 
     @Override
@@ -227,9 +253,10 @@ public class TZFragment extends BaseFragment implements View.OnClickListener {
     private void tz() {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("periodsNum", "201812030278");//期数
+        map.put("periodsNum", nextQStr);//期数
         map.put("gameCode", ((CqsscActivity) getActivity()).getType());//游戏类型
         map.put("lotteryTypeCode", getType(typeStr));
+        map.put("complantTypeCode", 1000);//手动下注
         List<String> tzList = mAdapter.getTZData();
         List<Map<String, Object>> betList = new ArrayList<>();
         Map<String, Object> map1 = null;
@@ -285,19 +312,77 @@ public class TZFragment extends BaseFragment implements View.OnClickListener {
                         } else if (DateUtil.isFive()) {
                             nextTime = lastTime + 5 * 60 * 1000;
                         }
-                        nextQ.setText("第" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1) + "期还剩" +
+                        nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
+                        nextQ.setText("第" + nextQStr + "期还剩" +
                                 DateUtil.getRemainTime2(nextTime));
+                        start();
                     } else {
                         nextQ.setText("02:00-10:00之间不开奖");
                     }
+                    srl.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-
+                srl.setRefreshing(false);
             }
         });
     }
 
+    private CountDownTimer countDownTimer;
+
+    private void initTimer() {
+        countDownTimer = new CountDownTimer(600 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                nextQ.setText("第" + (nextQStr) + "期还剩" +
+                        DateUtil.getRemainTime2(nextTime));
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
+    }
+
+    /**
+     * 开启倒计时
+     */
+    public void start() {
+        long nowTime = System.currentTimeMillis();
+        if (nextTime <= nowTime) {
+            if (countDownTimer != null) {
+                countDownTimer.cancel();
+            }
+            return;
+        }
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        initTimer();
+        countDownTimer.start();
+    }
+
+
+    /**
+     * destroy
+     */
+    public void cancel() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        cancel();
+    }
+
+    @Override
+    public void onRefresh() {
+        getTZ();
+    }
 }

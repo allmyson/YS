@@ -48,8 +48,8 @@ public class JLFragment extends BaseFragment {
 
     private List<Fragment> getList() {
         List<Fragment> list = new ArrayList<>();
-        list.add(new TzjlFragment());
-        list.add(new TzjlFragment());
+        list.add(TzjlFragment.newInstance(TzjlFragment.TYPE_SDXZ));
+        list.add(TzjlFragment.newInstance(TzjlFragment.TYPE_ZH));
         return list;
     }
 }

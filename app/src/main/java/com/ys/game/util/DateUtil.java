@@ -2,6 +2,7 @@ package com.ys.game.util;
 
 import android.text.TextUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -279,7 +280,7 @@ public class DateUtil {
         return resultChar;
     }
 
-    public static String getRemainTime2(long saleTime){
+    public static String getRemainTime2(long saleTime) {
         char[] c = getRemainTime(saleTime);
         StringBuilder sb = new StringBuilder();
         sb.append(c[2]);
@@ -288,5 +289,61 @@ public class DateUtil {
         sb.append(c[4]);
         sb.append(c[5]);
         return sb.toString();
+    }
+
+
+    /*
+     * 将时间戳转换为时间
+	 */
+    public static String longToYMD(long s) {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(s);
+        res = simpleDateFormat.format(date);
+        return res;
+    }
+
+
+    /*
+     * 将时间转换为时间戳
+     */
+    public static long dateToStamp(String s) {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long ts = date.getTime();
+        return ts;
+    }
+
+    public static long getCurrentDayStart() {
+        long current = System.currentTimeMillis();
+        String str = longToYMD(current);
+        str = str + " 00:00:00";
+        return dateToStamp(str);
+    }
+
+    public static long getCurrentDayEnd() {
+        long current = System.currentTimeMillis();
+        String str = longToYMD(current);
+        str = str + " 23:59:59";
+        return dateToStamp(str);
+    }
+
+    /**
+     *
+     * @param str 2018-12-05
+     * @return
+     */
+    public static long getWhichDayStart(String str){
+        return dateToStamp(str+" 00:00:00");
+    }
+
+    public static long getWhichDayEnd(String str){
+        return dateToStamp(str+" 23:59:59");
     }
 }
