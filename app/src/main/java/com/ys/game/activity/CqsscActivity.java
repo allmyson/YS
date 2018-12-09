@@ -54,6 +54,7 @@ public class CqsscActivity extends BaseActivity {
         vp.setAdapter(mAdapter);
         vp.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(vp);
+        tabLayout.getTabAt(1).select();
     }
 
     @Override

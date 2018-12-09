@@ -16,6 +16,7 @@ import com.ys.game.activity.CqsscActivity;
 import com.ys.game.adapter.TZAdapter;
 import com.ys.game.base.BaseFragment;
 import com.ys.game.bean.BaseBean;
+import com.ys.game.bean.LoginBean;
 import com.ys.game.bean.ResultBean;
 import com.ys.game.bean.TZBean;
 import com.ys.game.dialog.DialogUtil;
@@ -25,6 +26,7 @@ import com.ys.game.sp.UserSP;
 import com.ys.game.ui.AmountView;
 import com.ys.game.util.DateUtil;
 import com.ys.game.util.HttpUtil;
+import com.ys.game.util.L;
 import com.ys.game.util.StringUtil;
 import com.ys.game.util.YS;
 
@@ -60,7 +62,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     private long nextTime = 0;
     private String nextQStr;
     private SwipeRefreshLayout srl;
-
+    private LoginBean loginBean;
     @Override
     protected void init() {
         lastQ = getView(R.id.tv_lastQ);
@@ -138,6 +140,11 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     @Override
     protected void getData() {
         userId = UserSP.getUserId(mContext);
+        loginBean = UserSP.getInfo(mContext);
+        if(loginBean!=null&&loginBean.data!=null){
+            setYue(StringUtil.StringToDouble(loginBean.data.balance));
+        }
+
         getTZ();
     }
 
@@ -306,18 +313,26 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
                         g.setText(ss[4]);
                     }
                     long lastTime = DateUtil.changeTimeToLong(resultBean.data.get(0).lotteryTime);
-                    if (DateUtil.isOpen()) {
-                        if (DateUtil.isTen()) {
-                            nextTime = lastTime + 10 * 60 * 1000;
-                        } else if (DateUtil.isFive()) {
-                            nextTime = lastTime + 5 * 60 * 1000;
+                    if(((CqsscActivity) getActivity()).getType()==YS.TYPE_CQSSC) {
+                        if (DateUtil.isOpen()) {
+                            if (DateUtil.isTen()) {
+                                nextTime = lastTime + 10 * 60 * 1000;
+                            } else if (DateUtil.isFive()) {
+                                nextTime = lastTime + 5 * 60 * 1000;
+                            }
+                            nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
+                            nextQ.setText("第" + nextQStr + "期还剩" +
+                                    DateUtil.getRemainTime2(nextTime));
+                            start();
+                        } else {
+                            nextQ.setText("02:00-10:00之间不开奖");
                         }
+                    }else if(((CqsscActivity) getActivity()).getType()==YS.TYPE_TXFFC){
+                        nextTime = lastTime+1*60*1000;
                         nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
                         nextQ.setText("第" + nextQStr + "期还剩" +
                                 DateUtil.getRemainTime2(nextTime));
                         start();
-                    } else {
-                        nextQ.setText("02:00-10:00之间不开奖");
                     }
                     srl.setRefreshing(false);
                 }
@@ -338,11 +353,15 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
             public void onTick(long millisUntilFinished) {
                 nextQ.setText("第" + (nextQStr) + "期还剩" +
                         DateUtil.getRemainTime2(nextTime));
+                if(nextTime<=System.currentTimeMillis()){
+                    L.e("倒计时完成，获取下一轮数据");
+                    getTZ();
+                }
             }
 
             @Override
             public void onFinish() {
-
+//                show("倒计时完成");
             }
         };
     }

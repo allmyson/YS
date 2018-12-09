@@ -1,7 +1,9 @@
 package com.ys.game.fragment;
 
 import android.app.DatePickerDialog;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.ys.game.R;
+import com.ys.game.activity.CqsscActivity;
 import com.ys.game.adapter.TzjlAdapter;
 import com.ys.game.base.BaseFragment;
 import com.ys.game.bean.TzjlBean;
@@ -33,7 +36,7 @@ import java.util.List;
  * @description -------------------------------------------------------
  * @date 2018/11/7 18:48
  */
-public class TzjlFragment extends BaseFragment implements View.OnClickListener {
+public class TzjlFragment extends BaseFragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener {
     private ListView lv;
     private List<TzjlBean.DataBeanX.DataBean> allList;
     private List<TzjlBean.DataBeanX.DataBean> list;
@@ -49,7 +52,7 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener {
     private long startTime;
     private long endTime;
     private String zjType = "全部";//中奖状态  1000已中奖 1001未中奖  null/"" 未开奖  all 全部
-
+    private SwipeRefreshLayout srl;
     public static TzjlFragment newInstance(int type) {
         TzjlFragment fragment = new TzjlFragment();
         fragment.currentType = type;
@@ -75,11 +78,39 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener {
         endTime = DateUtil.getCurrentDayEnd();
         startTV.setText(DateUtil.longToYMD(System.currentTimeMillis()));
         endTV.setText(DateUtil.longToYMD(System.currentTimeMillis()));
-        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 zjType = args[position];
                 selectData();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        srl = (SwipeRefreshLayout) mView.findViewById(R.id.srl);
+        srl.setOnRefreshListener(this);
+        srl.setColorSchemeColors(getResources().getColor(R.color.main_color));
+
+        lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                View firstView = view.getChildAt(firstVisibleItem);
+                if (firstVisibleItem == 0 && (firstView == null || firstView.getTop() == 0)) {
+                    /*上滑到listView的顶部时，下拉刷新组件可见*/
+                    srl.setEnabled(true);
+                } else {
+                    /*不是listView的顶部时，下拉刷新组件不可见*/
+                    srl.setEnabled(false);
+                }
             }
         });
     }
@@ -135,14 +166,19 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener {
                 TzjlBean bean = new Gson().fromJson(response.get(), TzjlBean.class);
                 if (bean != null && YS.SUCCESE.equals(bean.code) && bean.data != null && bean.data.data != null &&
                         bean.data.data.size() > 0) {
-                    allList.addAll(bean.data.data);
+                    for(int i =0;i<bean.data.data.size();i++){
+                        if(((CqsscActivity) getActivity()).getType() == StringUtil.StringToInt(bean.data.data.get(i).game_code)){
+                            allList.add(bean.data.data.get(i));
+                        }
+                    }
                 }
                 selectData();
+                srl.setRefreshing(false);
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-
+                srl.setRefreshing(false);
             }
         });
     }
@@ -174,5 +210,10 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener {
             }
         }
         mAdapter.refresh(list);
+    }
+
+    @Override
+    public void onRefresh() {
+        getTZJL();
     }
 }

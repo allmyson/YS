@@ -6,6 +6,7 @@ import android.view.View;
 import com.ys.game.R;
 import com.ys.game.base.BaseActivity;
 import com.ys.game.fragment.WinnerJLFragment;
+import com.ys.game.fragment.XfjlFragment;
 
 public class XFJLActivity extends BaseActivity {
 
@@ -18,7 +19,7 @@ public class XFJLActivity extends BaseActivity {
     public void initView() {
         backRL = getView(R.id.rl_back);
         backRL.setOnClickListener(this);
-        addFragment(new WinnerJLFragment(),R.id.ll_parent);
+        addFragment(new XfjlFragment(),R.id.ll_parent);
     }
 
     @Override

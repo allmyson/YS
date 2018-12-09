@@ -40,8 +40,9 @@ public class FourFragment extends BaseFragment implements View.OnClickListener {
     private MyAdapter myAdapter;
     private RelativeLayout setRL;
     private Button czBtn, tbBtn;
-    private TextView nicknameTV,usernameTV,fdTV;
+    private TextView nicknameTV, usernameTV, fdTV, yueTV;
     private LoginBean loginBean;
+
     public static FourFragment newInstance() {
         return new FourFragment();
     }
@@ -92,15 +93,17 @@ public class FourFragment extends BaseFragment implements View.OnClickListener {
         nicknameTV = getView(R.id.tv_nickName);
         usernameTV = getView(R.id.tv_username);
         fdTV = getView(R.id.tv_fd);
+        yueTV = getView(R.id.tv_yue);
     }
 
     @Override
     protected void getData() {
         loginBean = UserSP.getInfo(mContext);
-        if(loginBean!=null&&loginBean.data!=null){
-            nicknameTV.setText("昵称："+StringUtil.valueOf(loginBean.data.consumerName));
-            usernameTV.setText("用户名："+StringUtil.valueOf(loginBean.data.loginName));
-            fdTV.setText("返点："+StringUtil.valueOf(loginBean.data.backNum));
+        if (loginBean != null && loginBean.data != null) {
+            nicknameTV.setText("昵称：" + StringUtil.valueOf(loginBean.data.consumerName));
+            usernameTV.setText("用户名：" + StringUtil.valueOf(loginBean.data.loginName));
+            fdTV.setText("返点：" + StringUtil.valueOf(loginBean.data.backNum));
+            yueTV.setText("" + StringUtil.StringToDouble(loginBean.data.balance));
         }
     }
 
