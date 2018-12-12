@@ -51,4 +51,14 @@
     <string name="open_camera_fail">相册初始化失败!</string>
     <string name="empty_sdcard">没有SD卡</string>
 
+
+    <string name="ssc">全天开奖120期：10点至22点，每10分钟开奖一期；22点至凌晨2点，5分钟一期</string>
+    <string name="ffc">全天开奖，1分钟开一期</string>
+    <string name="ssc_wxzx_fs">每位至少选择一个号码，竞猜开奖号码的全部五位，号码和位置都对应即中奖，奖金182000.00YB</string>
+    <string name="ssc_dwd_gw">至少选择1个号码，选号与开奖号码一致即中奖，奖金18.20YB</string>
+    <string name="ssc_wxhz_dxds">0到22为小，23到45为大;奇数为单，偶数为双。从大小单双中至少选择1个，选号与开奖结果一致即中奖，奖金3.64YB</string>
+    <string name="ssc_hexzx_fs">从0-9中选择2个数字组成一注，所选号码与开奖号码的后二位相同，顺序不限（不含对子），奖金91.00YB</string>
+    <string name="ssc_hexzx_dxds">从十位个位“大小单双”中至少各选择一个组成一注，选号与开奖结果一致即中奖，奖金7.28YB</string>
+
+
 </resources>

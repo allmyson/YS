@@ -76,8 +76,8 @@
                             android:textColor="@color/textcolor1"/>
                         <TextView
                             android:id="@+id/tv_w"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_centerInParent="true"
                             android:layout_marginRight="5dp"
                             android:background="@drawable/circle_cornor_main"
@@ -86,8 +86,8 @@
                             android:textColor="@android:color/white"/>
                         <TextView
                             android:id="@+id/tv_q"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_centerInParent="true"
                             android:layout_marginRight="5dp"
                             android:background="@drawable/circle_cornor_main"
@@ -96,8 +96,8 @@
                             android:textColor="@android:color/white"/>
                         <TextView
                             android:id="@+id/tv_b"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_centerInParent="true"
                             android:layout_marginRight="5dp"
                             android:background="@drawable/circle_cornor_main"
@@ -106,8 +106,8 @@
                             android:textColor="@android:color/white"/>
                         <TextView
                             android:id="@+id/tv_s"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_centerInParent="true"
                             android:layout_marginRight="5dp"
                             android:background="@drawable/circle_cornor_main"
@@ -116,28 +116,46 @@
                             android:textColor="@android:color/white"/>
                         <TextView
                             android:id="@+id/tv_g"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_centerInParent="true"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginRight="20dp"
                             android:background="@drawable/circle_cornor_main"
                             android:gravity="center"
                             android:maxLines="1"
                             android:textColor="@android:color/white"/>
+                        <ImageView
+                            android:id="@+id/iv_jl"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/ic_down2"/>
                     </LinearLayout>
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/tv_type"
+                <LinearLayout
+                    android:id="@+id/ll_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rect_cornor_main"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:paddingBottom="10dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="10dp"
-                    android:text="五星直选_复式"
-                    android:textColor="@android:color/white"/>
-
+                    android:paddingTop="10dp">
+                    <TextView
+                        android:id="@+id/tv_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="五星直选_复式"
+                        android:textColor="@android:color/white"/>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_down"/>
+                </LinearLayout>
                 <ListView
                     android:id="@+id/lv_tz"
                     android:layout_width="match_parent"
@@ -167,13 +185,7 @@
                         android:layout_marginBottom="5dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/tv_money_zhu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:text="1元*32注"
-                            android:textColor="@color/textcolor3"/>
+
                         <com.ys.game.ui.AmountView
                             android:id="@+id/amount_view"
                             android:layout_width="wrap_content"
@@ -192,10 +204,12 @@
                             android:layout_height="1dp"
                             android:layout_weight="1"/>
                         <TextView
+                            android:id="@+id/tv_money_zhu"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="投注限额:10000元"
-                            android:textColor="@color/textcolor2"/>
+                            android:layout_marginRight="10dp"
+                            android:text="共n注   0.00元宝"
+                            android:textColor="@color/textcolor3"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"

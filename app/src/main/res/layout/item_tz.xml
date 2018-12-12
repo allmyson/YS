@@ -30,8 +30,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
                     android:layout_centerInParent="true"
                     android:background="@drawable/radiobutton_background_unchecked"
                     android:paddingBottom="2dp"
@@ -47,8 +48,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
                     android:layout_centerInParent="true"
                     android:background="@drawable/radiobutton_background_unchecked"
                     android:paddingBottom="2dp"
@@ -64,8 +66,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
                     android:layout_centerInParent="true"
                     android:background="@drawable/radiobutton_background_unchecked"
                     android:paddingBottom="2dp"
@@ -81,8 +84,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
                     android:layout_centerInParent="true"
                     android:background="@drawable/radiobutton_background_unchecked"
                     android:paddingBottom="2dp"
@@ -98,8 +102,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
                     android:layout_centerInParent="true"
                     android:background="@drawable/radiobutton_background_unchecked"
                     android:paddingBottom="2dp"
@@ -111,12 +116,14 @@
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_clear"
+                android:visibility="gone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
                     android:layout_centerInParent="true"
                     android:background="@drawable/radiobutton_background_unchecked"
                     android:paddingBottom="2dp"
@@ -132,7 +139,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:numColumns="6"
+            android:numColumns="5"
             android:verticalSpacing="8dp"/>
     </LinearLayout>
 </LinearLayout>
