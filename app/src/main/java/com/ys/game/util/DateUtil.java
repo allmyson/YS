@@ -166,7 +166,20 @@ public class DateUtil {
         String res = simpleDateFormat.format(date);
         return res;
     }
-
+    public static String changeTimeToHMS(String time) {
+        SimpleDateFormat formatter = new SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        Date date = null;
+        try {
+            date = formatter.parse(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+            date = new Date();
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        String res = simpleDateFormat.format(date);
+        return res;
+    }
 
     public static long changeTimeToLong(String time) {
         SimpleDateFormat formatter = new SimpleDateFormat(

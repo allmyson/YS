@@ -84,9 +84,19 @@ public class TZAdapter extends CommonAdapter<TZBean> {
         helper.getView(R.id.rl_all).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                numberAdapter.chooseAll();
-                for (int i = 0; i < 10; i++) {
-                    list.get(position).set(i, true);
+                if (isAllTrue(list.get(position))) {
+                    numberAdapter.clear();
+                    for (int i = 0; i < 10; i++) {
+                        list.get(position).set(i, false);
+                    }
+                    if (changeListener != null) {
+                        changeListener.clear();
+                    }
+                } else {
+                    numberAdapter.chooseAll();
+                    for (int i = 0; i < 10; i++) {
+                        list.get(position).set(i, true);
+                    }
                 }
                 callback();
             }
@@ -254,9 +264,9 @@ public class TZAdapter extends CommonAdapter<TZBean> {
                 }
                 List<String> cr = ZhUtil.getCombinationResult(2, ZhUtil.stringFilter(sb.toString()));
                 List<String> dr = new ArrayList<>();
-                for(int j = 0;j<cr.size();j++){
+                for (int j = 0; j < cr.size(); j++) {
                     StringBuilder sb1 = new StringBuilder(cr.get(j));
-                    sb1.insert(1,",");
+                    sb1.insert(1, ",");
                     dr.add(sb1.toString());
                 }
                 result.addAll(dr);
@@ -301,9 +311,9 @@ public class TZAdapter extends CommonAdapter<TZBean> {
         }
     }
 
-    public static String getDXDS(int position){
+    public static String getDXDS(int position) {
         String result = "大";
-        switch (position){
+        switch (position) {
             case 0:
                 result = "大";
                 break;
@@ -318,5 +328,16 @@ public class TZAdapter extends CommonAdapter<TZBean> {
                 break;
         }
         return result;
+    }
+
+    private boolean isAllTrue(List<Boolean> list) {
+        boolean isAlltrue = true;
+        for (int i = 0; i < list.size(); i++) {
+            if (!list.get(i)) {
+                isAlltrue = false;
+                break;
+            }
+        }
+        return isAlltrue;
     }
 }

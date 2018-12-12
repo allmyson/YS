@@ -1,11 +1,14 @@
 package com.ys.game.fragment;
 
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -63,8 +66,13 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     private String nextQStr;
     private SwipeRefreshLayout srl;
     private LoginBean loginBean;
+    private ImageView jlIV;
+
     @Override
     protected void init() {
+        getView(R.id.ll_type).setOnClickListener(this);
+        jlIV = getView(R.id.iv_jl);
+        jlIV.setOnClickListener(this);
         lastQ = getView(R.id.tv_lastQ);
         nextQ = getView(R.id.tv_nextQ);
         w = getView(R.id.tv_w);
@@ -135,13 +143,18 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
                 }
             }
         });
+        if (YS.TYPE_CQSSC == ((CqsscActivity) getActivity()).getType()) {
+            text = getString(R.string.ssc) + "\n" + getString(R.string.ssc_wxzx_fs);
+        } else if (YS.TYPE_TXFFC == ((CqsscActivity) getActivity()).getType()) {
+            text = getString(R.string.ffc) + "\n" + getString(R.string.ssc_wxzx_fs);
+        }
     }
 
     @Override
     protected void getData() {
         userId = UserSP.getUserId(mContext);
         loginBean = UserSP.getInfo(mContext);
-        if(loginBean!=null&&loginBean.data!=null){
+        if (loginBean != null && loginBean.data != null) {
             setYue(StringUtil.StringToDouble(loginBean.data.balance));
         }
 
@@ -212,7 +225,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
             case R.id.rl_tip:
                 DialogUtil.showTip(mContext, text);
                 break;
-            case R.id.tv_type:
+            case R.id.ll_type:
                 DialogUtil.showPlay(mContext, typeTV.getText().toString(), new PlayDialog.ClickListener() {
                     @Override
                     public void click(String type) {
@@ -221,16 +234,52 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
                         list.clear();
                         list.addAll(getWXFSList(typeStr));
                         mAdapter.refresh(list);
+                        if ("五星直选_复式".equals(type)) {
+                            if (YS.TYPE_CQSSC == ((CqsscActivity) getActivity()).getType()) {
+                                text = getString(R.string.ssc) + "\n" + getString(R.string.ssc_wxzx_fs);
+                            } else if (YS.TYPE_TXFFC == ((CqsscActivity) getActivity()).getType()) {
+                                text = getString(R.string.ffc) + "\n" + getString(R.string.ssc_wxzx_fs);
+                            }
+                        } else if ("后二星组选_复式".equals(type)) {
+                            if (YS.TYPE_CQSSC == ((CqsscActivity) getActivity()).getType()) {
+                                text = getString(R.string.ssc) + "\n" + getString(R.string.ssc_hexzx_fs);
+                            } else if (YS.TYPE_TXFFC == ((CqsscActivity) getActivity()).getType()) {
+                                text = getString(R.string.ffc) + "\n" + getString(R.string.ssc_hexzx_fs);
+                            }
+                        } else if ("定位胆_个位".equals(type)) {
+                            if (YS.TYPE_CQSSC == ((CqsscActivity) getActivity()).getType()) {
+                                text = getString(R.string.ssc) + "\n" + getString(R.string.ssc_dwd_gw);
+                            } else if (YS.TYPE_TXFFC == ((CqsscActivity) getActivity()).getType()) {
+                                text = getString(R.string.ffc) + "\n" + getString(R.string.ssc_dwd_gw);
+                            }
+                        } else if ("后二星直选_大小单双".equals(type)) {
+                            if (YS.TYPE_CQSSC == ((CqsscActivity) getActivity()).getType()) {
+                                text = getString(R.string.ssc) + "\n" + getString(R.string.ssc_hexzx_dxds);
+                            } else if (YS.TYPE_TXFFC == ((CqsscActivity) getActivity()).getType()) {
+                                text = getString(R.string.ffc) + "\n" + getString(R.string.ssc_hexzx_dxds);
+                            }
+                        } else if ("五星和值_和值大小单双".equals(type)) {
+                            if (YS.TYPE_CQSSC == ((CqsscActivity) getActivity()).getType()) {
+                                text = getString(R.string.ssc) + "\n" + getString(R.string.ssc_wxhz_dxds);
+                            } else if (YS.TYPE_TXFFC == ((CqsscActivity) getActivity()).getType()) {
+                                text = getString(R.string.ffc) + "\n" + getString(R.string.ssc_wxhz_dxds);
+                            }
+                        }
                     }
                 });
+                break;
+            case R.id.iv_jl:
+//                show("点击了记录");
+                DialogUtil.showResultList(mContext, ((CqsscActivity) getActivity()).getType());
                 break;
         }
     }
 
     private void setMoneyZhu(int money, int zhu) {
-        String moneyZhu = String.format("<font color=\"#fc6a44\">%s</font>元*<font color=\"#fc6a44\">%s</font>注",
-                money, zhu);
-
+//        String moneyZhu = String.format("<font color=\"#fc6a44\">%s</font>元*<font color=\"#fc6a44\">%s</font>注",
+//                money, zhu);
+        String moneyZhu = String.format("共<font color=\"#fc6a44\">%s</font>注\t\t<font color=\"#fc6a44\">%s</font>元宝",
+                zhu, money * zhu);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             moneyZhuTV.setText(Html.fromHtml(moneyZhu, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -293,53 +342,66 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     }
 
     private void getTZ() {
+        startRandomText();
         HttpUtil.getKJResult(mContext, ((CqsscActivity) getActivity()).getType(), 1, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
+                closeRandomText();
                 ResultBean resultBean = new Gson().fromJson(response.get(), ResultBean.class);
                 if (resultBean != null && YS.SUCCESE.equals(resultBean.code) && resultBean.data != null && resultBean
                         .data.size() > 0) {
+//                    nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
                     if (resultBean.data.get(0).periodsNum.length() > 8) {
                         lastQ.setText(resultBean.data.get(0).periodsNum.substring(8) + "期");
                     } else {
                         lastQ.setText(resultBean.data.get(0).periodsNum + "期");
                     }
                     String[] ss = resultBean.data.get(0).lotteryNum.split(",");
-                    if (ss != null && ss.length == 5) {
-                        w.setText(ss[0]);
-                        q.setText(ss[1]);
-                        b.setText(ss[2]);
-                        s.setText(ss[3]);
-                        g.setText(ss[4]);
-                    }
+
                     long lastTime = DateUtil.changeTimeToLong(resultBean.data.get(0).lotteryTime);
-                    if(((CqsscActivity) getActivity()).getType()==YS.TYPE_CQSSC) {
-                        if (DateUtil.isOpen()) {
-                            if (DateUtil.isTen()) {
-                                nextTime = lastTime + 10 * 60 * 1000;
-                            } else if (DateUtil.isFive()) {
-                                nextTime = lastTime + 5 * 60 * 1000;
+                    if (((CqsscActivity) getActivity()).getType() == YS.TYPE_CQSSC) {
+                        if (nextTime == 0) {
+                            if (DateUtil.isOpen()) {
+                                if (DateUtil.isTen()) {
+                                    nextTime = lastTime + 10 * 60 * 1000;
+                                } else if (DateUtil.isFive()) {
+                                    nextTime = lastTime + 5 * 60 * 1000;
+                                }
+                                nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
+                                nextQ.setText("第" + nextQStr.substring(4) + "期还剩" +
+                                        DateUtil.getRemainTime2(nextTime));
+                                start();
+                            } else {
+                                nextQ.setText("02:00-10:00之间不开奖");
                             }
+                        }
+                    } else if (((CqsscActivity) getActivity()).getType() == YS.TYPE_TXFFC) {
+                        if (nextTime == 0) {
+                            nextTime = lastTime + 1 * 60 * 1000;
                             nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
-                            nextQ.setText("第" + nextQStr + "期还剩" +
+                            nextQ.setText("第" + nextQStr.substring(4) + "期还剩" +
                                     DateUtil.getRemainTime2(nextTime));
                             start();
-                        } else {
-                            nextQ.setText("02:00-10:00之间不开奖");
                         }
-                    }else if(((CqsscActivity) getActivity()).getType()==YS.TYPE_TXFFC){
-                        nextTime = lastTime+1*60*1000;
-                        nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
-                        nextQ.setText("第" + nextQStr + "期还剩" +
-                                DateUtil.getRemainTime2(nextTime));
-                        start();
                     }
+                    Message message = new Message();
+                    message.obj = ss;
+                    message.what = 1;
+                    handler.sendMessageDelayed(message, 100);
+//                    if (ss != null && ss.length == 5) {
+//                        w.setText(ss[0]);
+//                        q.setText(ss[1]);
+//                        b.setText(ss[2]);
+//                        s.setText(ss[3]);
+//                        g.setText(ss[4]);
+//                    }
                     srl.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
+                closeRandomText();
                 srl.setRefreshing(false);
             }
         });
@@ -351,12 +413,27 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
         countDownTimer = new CountDownTimer(600 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                nextQ.setText("第" + (nextQStr) + "期还剩" +
-                        DateUtil.getRemainTime2(nextTime));
-                if(nextTime<=System.currentTimeMillis()){
+                if (nextTime <= System.currentTimeMillis()) {
+                    nextQStr = "" + (StringUtil.StringToLong(nextQStr) + 1);
+                    if (((CqsscActivity) getActivity()).getType() == YS.TYPE_CQSSC) {
+                        if (DateUtil.isOpen()) {
+                            if (DateUtil.isTen()) {
+                                nextTime = nextTime + 10 * 60 * 1000;
+                            } else if (DateUtil.isFive()) {
+                                nextTime = nextTime + 5 * 60 * 1000;
+                            }
+                        } else {
+                            nextQ.setText("02:00-10:00之间不开奖");
+                        }
+                    } else if (((CqsscActivity) getActivity()).getType() == YS.TYPE_TXFFC) {
+                        nextTime = nextTime + 1 * 60 * 1000;
+                    }
                     L.e("倒计时完成，获取下一轮数据");
                     getTZ();
                 }
+                nextQ.setText("第" + (nextQStr.substring(4)) + "期还剩" +
+                        DateUtil.getRemainTime2(nextTime));
+                lastQ.setText(String.valueOf((StringUtil.StringToLong(nextQStr) - 1)).substring(8) + "期");
             }
 
             @Override
@@ -370,13 +447,13 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
      * 开启倒计时
      */
     public void start() {
-        long nowTime = System.currentTimeMillis();
-        if (nextTime <= nowTime) {
-            if (countDownTimer != null) {
-                countDownTimer.cancel();
-            }
-            return;
-        }
+//        long nowTime = System.currentTimeMillis();
+//        if (nextTime <= nowTime) {
+//            if (countDownTimer != null) {
+//                countDownTimer.cancel();
+//            }
+//            return;
+//        }
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
@@ -402,6 +479,78 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
 
     @Override
     public void onRefresh() {
+//        nextTime = 0;
         getTZ();
+    }
+
+    private int i = 0;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0) {
+                w.setText("" + i);
+                q.setText("" + i);
+                b.setText("" + i);
+                s.setText("" + i);
+                g.setText("" + i);
+                i++;
+                if (i > 9) {
+                    i = 0;
+                }
+            } else if (msg.what == 1) {
+                String[] ss = (String[]) msg.obj;
+                if (ss != null && ss.length == 5) {
+                    w.setText(ss[0]);
+                    q.setText(ss[1]);
+                    b.setText(ss[2]);
+                    s.setText(ss[3]);
+                    g.setText(ss[4]);
+                }
+            }
+        }
+    };
+
+    private RandomThraed randomThraed;
+
+    private void startRandomText() {
+        if (randomThraed != null) {
+            randomThraed.interrupt();
+            randomThraed = null;
+        }
+        randomThraed = new RandomThraed();
+        randomThraed.start();
+    }
+
+    private void closeRandomText() {
+        if (randomThraed != null) {
+            randomThraed.setOver(true);
+            randomThraed.interrupt();
+            randomThraed = null;
+        }
+    }
+
+    class RandomThraed extends Thread {
+        private boolean isOver = false;
+
+        public boolean isOver() {
+            return isOver;
+        }
+
+        public void setOver(boolean over) {
+            isOver = over;
+        }
+
+        @Override
+        public void run() {
+            while (!isOver) {
+                try {
+                    Thread.sleep(100);
+                    handler.sendEmptyMessage(0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

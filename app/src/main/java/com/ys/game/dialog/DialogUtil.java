@@ -221,4 +221,48 @@ public class DialogUtil {
 //        newFragment.show(ft, mDialogTag);
 //        return newFragment;
 //    }
+
+
+    /**
+     * 查看近50期彩票数据
+     * @param context
+     * @param type
+     * @return
+     */
+    public static List2Dialog showResultList(Context context, int type) {
+        FragmentActivity activity = (FragmentActivity) context;
+        removeDialog(activity);
+        List2Dialog newFragment = List2Dialog.newInstance(DialogFragment.STYLE_NO_TITLE, android.R.style
+                .Theme_Holo_Light_Dialog);
+        newFragment.setType(type);
+        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        // 指定一个过渡动画
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        newFragment.show(ft, mDialogTag);//Can not perform this action after onSaveInstanceState
+//        ft.add(newFragment, mDialogTag);
+//        ft.commitAllowingStateLoss();
+        return newFragment;
+    }
+
+    /**
+     * 查看游戏列表
+     * @param context
+     * @param type
+     * @return
+     */
+    public static List3Dialog showGameList(Context context, int type, List3Dialog.ClickListener clickListener) {
+        FragmentActivity activity = (FragmentActivity) context;
+        removeDialog(activity);
+        List3Dialog newFragment = List3Dialog.newInstance(DialogFragment.STYLE_NO_TITLE, android.R.style
+                .Theme_Holo_Light_Dialog);
+        newFragment.setType(type);
+        newFragment.setClickListener(clickListener);
+        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        // 指定一个过渡动画
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        newFragment.show(ft, mDialogTag);//Can not perform this action after onSaveInstanceState
+//        ft.add(newFragment, mDialogTag);
+//        ft.commitAllowingStateLoss();
+        return newFragment;
+    }
 }

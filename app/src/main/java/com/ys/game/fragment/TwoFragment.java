@@ -1,6 +1,5 @@
 package com.ys.game.fragment;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -58,7 +57,7 @@ public class TwoFragment extends BaseFragment implements View.OnClickListener {
                 addBean(YS.TYPE_TXFFC);
                 break;
             case R.id.iv03:
-                startActivity(new Intent(mContext, WinnerActivity.class));
+               WinnerActivity.toWinner(mContext);
                 addBean(YS.TYPE_ZHDSLZ);
                 break;
         }

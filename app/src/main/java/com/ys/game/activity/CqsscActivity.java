@@ -11,9 +11,13 @@ import android.widget.RelativeLayout;
 import com.ys.game.R;
 import com.ys.game.adapter.CqsscFragmentAdapter;
 import com.ys.game.base.BaseActivity;
+import com.ys.game.bean.GameBean;
+import com.ys.game.dialog.DialogUtil;
+import com.ys.game.dialog.List3Dialog;
 import com.ys.game.fragment.JLFragment;
 import com.ys.game.fragment.TZFragment;
 import com.ys.game.fragment.ZSFragment;
+import com.ys.game.sp.GameSP;
 import com.ys.game.ui.LhViewPager;
 import com.ys.game.util.YS;
 
@@ -40,6 +44,7 @@ public class CqsscActivity extends BaseActivity {
     public void initView() {
         type = getIntent().getIntExtra("type", YS.TYPE_CQSSC);
         logoIV = getView(R.id.iv_logo);
+        logoIV.setOnClickListener(this);
         if (type == YS.TYPE_CQSSC) {
             logoIV.setImageResource(R.mipmap.ic_cqssc);
         } else if (type == YS.TYPE_TXFFC) {
@@ -68,6 +73,20 @@ public class CqsscActivity extends BaseActivity {
             case R.id.rl_back:
                 finish();
                 break;
+            case R.id.iv_logo:
+                DialogUtil.showGameList(mContext, type, new List3Dialog.ClickListener() {
+                    @Override
+                    public void click(int type) {
+                        if (type == YS.TYPE_ZHDSLZ) {
+                            WinnerActivity.toWinner(mContext);
+                        } else {
+                            CqsscActivity.intentToSSC(mContext, type);
+                        }
+                        addBean(type);
+                        finish();
+                    }
+                });
+                break;
         }
     }
 
@@ -92,5 +111,13 @@ public class CqsscActivity extends BaseActivity {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+
+    private void addBean(int type) {
+        GameBean gameBean = new GameBean();
+        gameBean.type = type;
+        gameBean.time = System.currentTimeMillis();
+        GameSP.add(mContext, gameBean);
     }
 }

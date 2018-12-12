@@ -1,5 +1,7 @@
 package com.ys.game.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -59,5 +61,10 @@ public class WinnerActivity extends BaseActivity {
         list.add(new WinnerTZFragment());
         list.add(new WinnerJLFragment());
         return list;
+    }
+
+    public static void toWinner(Context context){
+        Intent intent = new Intent(context,WinnerActivity.class);
+        context.startActivity(intent);
     }
 }

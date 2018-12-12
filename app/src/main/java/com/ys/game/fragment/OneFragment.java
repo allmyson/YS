@@ -10,6 +10,7 @@ import com.ys.game.R;
 import com.ys.game.activity.CqsscActivity;
 import com.ys.game.activity.MainActivity;
 import com.ys.game.activity.MsgDetailActivity;
+import com.ys.game.activity.WinnerActivity;
 import com.ys.game.adapter.GameAdapter;
 import com.ys.game.adapter.MsgAdapter;
 import com.ys.game.base.BaseFragment;
@@ -58,14 +59,18 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
         msgMLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MsgDetailActivity.intentToMsg(mContext,msgAdapter.getItem(position));
+                MsgDetailActivity.intentToMsg(mContext, msgAdapter.getItem(position));
             }
         });
         moreLL.setOnClickListener(this);
         gameMLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CqsscActivity.intentToSSC(mContext, gameAdapter.getItem(position).type);
+                if (gameAdapter.getItem(position).type == YS.TYPE_ZHDSLZ) {
+                    WinnerActivity.toWinner(mContext);
+                } else {
+                    CqsscActivity.intentToSSC(mContext, gameAdapter.getItem(position).type);
+                }
                 addBean(gameAdapter.getItem(position).type);
             }
         });
