@@ -58,6 +58,7 @@
             android:paddingRight="10dp"
             android:paddingTop="10dp">
             <ImageView
+                android:id="@+id/iv_head"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginRight="15dp"
@@ -70,16 +71,16 @@
                 android:orientation="vertical"
             >
                 <TextView
+                    android:id="@+id/tv_nickName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="昵称\t张三丰"
                     android:textColor="@color/textcolor1"/>
                 <TextView
+                    android:id="@+id/tv_loginName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="用户名\tysyx0001"
                     android:textColor="@color/textcolor1"/>
             </LinearLayout>
             <LinearLayout
@@ -95,33 +96,34 @@
                     android:text="最近上线时间"
                     android:textColor="@color/textcolor2"/>
                 <TextView
+                    android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="用户名\tysyx0001"
                     android:textColor="@color/textcolor2"/>
             </LinearLayout>
 
         </LinearLayout>
         <TextView
+            android:id="@+id/tv_num"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/rect_cornor_main5"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
-            android:text="团队成员（20人）"
+            android:text="团队成员（0人）"
             android:textColor="@android:color/white"/>
         <ListView
+            android:id="@+id/lv_team"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:id="@+id/lv_team"
             android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rect_cornor_white4"
+            android:divider="#f6f6f6"
             android:dividerHeight="1dp"
             android:paddingLeft="10dp"
-            android:scrollbars="none"
             android:paddingRight="10dp"
-            android:divider="#f6f6f6"
-            android:layout_weight="1"
-            android:background="@drawable/rect_cornor_white4"/>
+            android:scrollbars="none"/>
     </LinearLayout>
 </FrameLayout>
