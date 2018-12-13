@@ -52,7 +52,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     private Button zhBtn, tzBtn;
     private AmountView mAmountView;
     private TextView moneyZhuTV, yueTV, buyMoneyTV, typeTV;
-    private int singlePrice = 1;//单价一元
+    private int singlePrice = 2;//单价2YB
     private int bei = 1;
     private int zhuNum = 0;
     private String text = "开奖时间:10点至22点,10分钟一期;22点至凌晨2点,5分钟一期;每日期数:120期。\n\n" +
@@ -278,8 +278,8 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     private void setMoneyZhu(int money, int zhu) {
 //        String moneyZhu = String.format("<font color=\"#fc6a44\">%s</font>元*<font color=\"#fc6a44\">%s</font>注",
 //                money, zhu);
-        String moneyZhu = String.format("共<font color=\"#fc6a44\">%s</font>注\t\t<font color=\"#fc6a44\">%s</font>元宝",
-                zhu, money * zhu);
+        String moneyZhu = String.format("共<font color=\"#fc6a44\">%s</font>注\t\t<font color=\"#fc6a44\">%s</font>YB",
+                zhu, Double.valueOf(money * zhu));
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             moneyZhuTV.setText(Html.fromHtml(moneyZhu, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -288,7 +288,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     }
 
     private void setYue(double money) {
-        String yue = String.format("可用余额:<font color=\"#fc6a44\">%s</font>元", money);
+        String yue = String.format("可用余额:<font color=\"#fc6a44\">%s</font>YS", money);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             yueTV.setText(Html.fromHtml(yue, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -297,7 +297,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     }
 
     private void setBuyMoney(double money) {
-        String buyMoney = String.format("购买需支付:<font color=\"#fc6a44\">%s</font>元", money);
+        String buyMoney = String.format("购买需支付:<font color=\"#fc6a44\">%s</font>YS", money);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             buyMoneyTV.setText(Html.fromHtml(buyMoney, Html.FROM_HTML_MODE_LEGACY));
         } else {

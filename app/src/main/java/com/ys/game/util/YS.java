@@ -16,9 +16,8 @@ public class YS {
     public static final String KF_QQ = "8789234124";
     public static final String KF_WX = "123456";
 
-    public static final String SUCCESE ="SUCCESS";
-    public static final String FAIL ="FAIL";
-
+    public static final String SUCCESE = "SUCCESS";
+    public static final String FAIL = "FAIL";
 
 
     public static final String IP = "http://148.163.169.41:8090";
@@ -32,4 +31,10 @@ public class YS {
     public static final String RESULT = IP + "/appService/getGameResultList";
     //投注记录
     public static final String TZJL = IP + "/appService/payRecords";
+    //修改用户信息
+    public static final String UPDATE_USERINFO = IP + "/appService/editUserForApp";
+    //开户
+    public static final String KH = IP + "/appService/addConsumer";
+    //团队管理
+    public static final String TEAM_GL = IP + "/appService/appTeam";
 }

@@ -158,7 +158,9 @@ public class BaseHttp {
         }
         request(context, request, callback);
     }
-    public void postSimpleJson(Context context, String url, String postJson, List<String> files, HttpListener<String> callback) {
+
+    public void postSimpleJson(Context context, String url, String postJson, List<String> files, HttpListener<String>
+            callback) {
         L.e("url=" + url);
         L.e("params=" + postJson);
         Request<String> request = NoHttp.createStringRequest(url, RequestMethod.POST);
@@ -193,8 +195,10 @@ public class BaseHttp {
      */
     public void postFile(Context context, String url, Map<String, File> fileMap, HttpListener<String> callback) {
         Request<String> request = new StringRequest(url, RequestMethod.POST);
-        for (String key : fileMap.keySet()) {
-            request.add(StringUtil.valueOf(key), new FileBinary(fileMap.get(key)));
+        if (fileMap != null) {
+            for (String key : fileMap.keySet()) {
+                request.add(StringUtil.valueOf(key), new FileBinary(fileMap.get(key)));
+            }
         }
         String token = CookieSP.getCookie(context);
         if (token != null && !"".equals(token)) {

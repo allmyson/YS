@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.ys.game.R;
 import com.ys.game.base.BaseActivity;
+import com.ys.game.util.ActivityUtil;
+import com.ys.game.util.SPUtil;
 import com.ys.game.util.SystemUtil;
 
 public class SetActivity extends BaseActivity {
@@ -57,6 +59,9 @@ public class SetActivity extends BaseActivity {
             case R.id.ll_update:
                 break;
             case R.id.btn_exit:
+                SPUtil.clear(mContext);
+                ActivityUtil.finish();
+                startActivity(new Intent(mContext,LoginActivity.class));
                 break;
         }
     }

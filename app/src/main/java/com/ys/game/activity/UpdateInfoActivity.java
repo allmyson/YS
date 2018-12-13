@@ -8,10 +8,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.yongchun.library.view.ImageSelectorActivity;
 import com.ys.game.R;
 import com.ys.game.api.FunctionApi;
 import com.ys.game.base.BaseActivity;
+import com.ys.game.bean.LoginBean;
+import com.ys.game.http.HttpListener;
+import com.ys.game.sp.UserSP;
+import com.ys.game.util.HttpUtil;
+import com.ys.game.util.StringUtil;
 
 import java.util.ArrayList;
 
@@ -20,6 +26,9 @@ public class UpdateInfoActivity extends BaseActivity {
     private ImageView headIV;
     private EditText nickNameET;
     private Button sureBtn;
+    private String photoUrl;
+    private LoginBean loginBean;
+    private String userId;
 
     @Override
     public int getLayoutId() {
@@ -39,7 +48,14 @@ public class UpdateInfoActivity extends BaseActivity {
 
     @Override
     public void getData() {
-
+        loginBean = UserSP.getInfo(mContext);
+        if (loginBean != null && loginBean.data != null) {
+            userId = loginBean.data.consumerId;
+            Glide.with(mContext).load(loginBean.data.consumerImg).placeholder(R.mipmap.bg_head_default).error(R.mipmap
+                    .bg_head_default).into(headIV);
+            nickNameET.setText(StringUtil.valueOf(loginBean.data.consumerName));
+            nickNameET.setSelection(nickNameET.getText().length());
+        }
     }
 
     @Override
@@ -52,6 +68,21 @@ public class UpdateInfoActivity extends BaseActivity {
                 FunctionApi.takePicture(mContext, 1, 2, true, true, true);
                 break;
             case R.id.btn_sure:
+                if (!StringUtil.isBlank(nickNameET.getText().toString())) {
+                    HttpUtil.updateUserInfo(mContext, userId, nickNameET.getText().toString(), photoUrl, new HttpListener<String>() {
+                        @Override
+                        public void onSucceed(int what, Response<String> response) {
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailed(int what, Response<String> response) {
+
+                        }
+                    });
+                } else {
+                    show("昵称不能为空");
+                }
                 break;
         }
     }
@@ -64,10 +95,12 @@ public class UpdateInfoActivity extends BaseActivity {
                 case ImageSelectorActivity.REQUEST_IMAGE://相册图片选取返回
                     ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity
                             .REQUEST_OUTPUT);
-                    Glide.with(mContext).load(images.get(0)).placeholder(R.mipmap.bg_head_default).error(R.mipmap
+                    photoUrl = images.get(0);
+                    Glide.with(mContext).load(photoUrl).placeholder(R.mipmap.bg_head_default).error(R.mipmap
                             .bg_head_default).into(headIV);
                     break;
             }
         }
     }
+
 }

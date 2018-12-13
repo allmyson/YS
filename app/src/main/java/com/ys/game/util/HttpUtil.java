@@ -5,6 +5,12 @@ import android.content.Context;
 import com.ys.game.http.BaseHttp;
 import com.ys.game.http.HttpListener;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author lh
  * @version 1.0.0
@@ -56,5 +62,66 @@ public class HttpUtil {
             httpListener) {
         String url = YS.TZJL + "?userId=" + userId + "&start=" + start + "&length=" + length;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param context
+     * @param userId
+     * @param nickName
+     * @param photoUrl
+     * @param httpListener
+     */
+    public static void updateUserInfo(Context context, String userId, String nickName, String photoUrl,
+                                      HttpListener<String> httpListener) {
+        String url = YS.UPDATE_USERINFO + "?userId=" + userId;
+        if (!StringUtil.isBlank(nickName)) {
+            try {
+                url += URLEncoder.encode(nickName, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        Map<String, File> map = null;
+        if (!StringUtil.isBlank(photoUrl)) {
+            map = new HashMap<>();
+            map.put("file", new File(photoUrl));
+        }
+        BaseHttp.getInstance().postFile(context, url, map, httpListener);
+    }
+
+    /**
+     * 开户
+     *
+     * @param context
+     * @param nickName
+     * @param loginName
+     * @param psd
+     * @param fd
+     * @param httpListener
+     */
+    public static void kh(Context context, String userId, String nickName, String loginName, String psd, String fd,
+                          HttpListener<String> httpListener) {
+        String consumerName = "";
+        try {
+            consumerName = URLEncoder.encode(nickName, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String url = YS.KH + "?consumerName=" + consumerName + "&loginName=" + loginName + "&pwd=" + Md5Util
+                .getMD5String(psd) + "&backNum=" + fd + "&userId=" + userId;
+        BaseHttp.getInstance().postSimpleJson(context,url,"",httpListener);
+    }
+
+    /**
+     * 获取团队管理
+     * @param context
+     * @param userId
+     * @param httpListener
+     */
+    public static void getTeamData(Context context,String userId,HttpListener<String> httpListener){
+        String url = YS.TEAM_GL+"?userId="+userId;
+        BaseHttp.getInstance().postSimpleJson(context,url,"",httpListener);
     }
 }

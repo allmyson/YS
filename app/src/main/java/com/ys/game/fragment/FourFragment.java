@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ys.game.R;
 import com.ys.game.activity.CzActivity;
 import com.ys.game.activity.KHActivity;
@@ -16,6 +18,7 @@ import com.ys.game.activity.SetActivity;
 import com.ys.game.activity.TeamGLActivity;
 import com.ys.game.activity.TeamJLActivity;
 import com.ys.game.activity.TxActivity;
+import com.ys.game.activity.UpdateInfoActivity;
 import com.ys.game.activity.XFJLActivity;
 import com.ys.game.adapter.MyAdapter;
 import com.ys.game.base.BaseFragment;
@@ -42,47 +45,37 @@ public class FourFragment extends BaseFragment implements View.OnClickListener {
     private Button czBtn, tbBtn;
     private TextView nicknameTV, usernameTV, fdTV, yueTV;
     private LoginBean loginBean;
-
+    private ImageView headIV;
     public static FourFragment newInstance() {
         return new FourFragment();
     }
 
     @Override
     protected void init() {
+        headIV = getView(R.id.iv_head);
         mlv = getView(R.id.mlv_my);
+        getView(R.id.ll_updateInfo).setOnClickListener(this);
         getView(R.id.btn_cz).setOnClickListener(this);
         getView(R.id.btn_tb).setOnClickListener(this);
         myList = new ArrayList<>();
-        myList.add("消费记录");
-        myList.add("安全中心");
-        myList.add("开户");
-        myList.add("团队管理");
-        myList.add("团队记录");
-        myList.add("联系客服");
         myAdapter = new MyAdapter(mContext, myList, R.layout.item_msg);
         mlv.setAdapter(myAdapter);
         mlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        startActivity(new Intent(mContext, XFJLActivity.class));
-                        break;
-                    case 1:
-                        startActivity(new Intent(mContext, SafeActivity.class));
-                        break;
-                    case 2:
-                        startActivity(new Intent(mContext, KHActivity.class));
-                        break;
-                    case 3:
-                        startActivity(new Intent(mContext, TeamGLActivity.class));
-                        break;
-                    case 4:
-                        startActivity(new Intent(mContext, TeamJLActivity.class));
-                        break;
-                    case 5:
-                        startActivity(new Intent(mContext, LxkfActivity.class));
-                        break;
+                String name = myAdapter.getItem(position);
+                if("消费记录".equals(name)){
+                    startActivity(new Intent(mContext, XFJLActivity.class));
+                }else if("安全中心".equals(name)){
+                    startActivity(new Intent(mContext, SafeActivity.class));
+                }else if("开户".equals(name)){
+                    startActivity(new Intent(mContext, KHActivity.class));
+                }else if("团队管理".equals(name)){
+                    startActivity(new Intent(mContext, TeamGLActivity.class));
+                }else if("团队记录".equals(name)){
+                    startActivity(new Intent(mContext, TeamJLActivity.class));
+                }else if("联系客服".equals(name)){
+                    startActivity(new Intent(mContext, LxkfActivity.class));
                 }
             }
         });
@@ -103,7 +96,27 @@ public class FourFragment extends BaseFragment implements View.OnClickListener {
             nicknameTV.setText("昵称：" + StringUtil.valueOf(loginBean.data.consumerName));
             usernameTV.setText("用户名：" + StringUtil.valueOf(loginBean.data.loginName));
             fdTV.setText("返点：" + StringUtil.valueOf(loginBean.data.backNum));
-            yueTV.setText("" + StringUtil.StringToDouble(loginBean.data.balance));
+            yueTV.setText("" + StringUtil.StringToDouble(loginBean.data.balance)+"YB");
+            Glide.with(mContext).load(loginBean.data.consumerImg).error(R.mipmap.bg_head_default).into(headIV);
+            if("1000".equals(loginBean.data.levelCode)){
+                //普通会员
+                myList.add("消费记录");
+                myList.add("安全中心");
+                myList.add("联系客服");
+            }else if("1001".equals(loginBean.data.levelCode)){
+                //代理会员
+                myList.add("消费记录");
+                myList.add("安全中心");
+                myList.add("开户");
+                myList.add("团队管理");
+                myList.add("团队记录");
+                myList.add("联系客服");
+            }else {
+                myList.add("消费记录");
+                myList.add("安全中心");
+                myList.add("联系客服");
+            }
+            myAdapter.refresh(myList);
         }
     }
 
@@ -123,6 +136,9 @@ public class FourFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.btn_tb:
                 startActivity(new Intent(mContext, TxActivity.class));
+                break;
+            case R.id.ll_updateInfo:
+                startActivity(new Intent(mContext, UpdateInfoActivity.class));
                 break;
         }
     }
