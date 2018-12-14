@@ -69,7 +69,9 @@
         </activity>
         <activity android:name=".activity.EwmActivity">
         </activity>
-        <activity android:name=".activity.CqsscActivity">
+        <activity
+            android:name=".activity.CqsscActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
         <activity android:name=".activity.WinnerActivity">
         </activity>
@@ -98,6 +100,8 @@
         <activity android:name=".activity.CzActivity">
         </activity>
         <activity android:name=".activity.TxActivity">
+        </activity>
+        <activity android:name=".activity.ZhActivity">
         </activity>
     </application>
 
