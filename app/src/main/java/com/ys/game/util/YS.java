@@ -37,4 +37,10 @@ public class YS {
     public static final String KH = IP + "/appService/addConsumer";
     //团队管理
     public static final String TEAM_GL = IP + "/appService/appTeam";
+    //查询用户信息
+    public static final String USERINFO = IP + "/appService/getSelfInfo";
+    //充值
+    public static final String CZ = IP + "/appService/rechargeApply";
+    //提现
+    public static final String TX = IP + "/appService/applyCash";
 }

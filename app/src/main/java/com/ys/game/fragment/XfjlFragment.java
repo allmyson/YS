@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.ys.game.R;
-import com.ys.game.activity.CqsscActivity;
 import com.ys.game.adapter.TzjlAdapter;
 import com.ys.game.base.BaseFragment;
 import com.ys.game.bean.TzjlBean;
@@ -23,7 +22,6 @@ import com.ys.game.http.HttpListener;
 import com.ys.game.sp.UserSP;
 import com.ys.game.util.DateUtil;
 import com.ys.game.util.HttpUtil;
-import com.ys.game.util.StringUtil;
 import com.ys.game.util.YS;
 
 import java.util.ArrayList;
@@ -181,7 +179,7 @@ public class XfjlFragment extends BaseFragment implements View.OnClickListener, 
                         if ("全部".equals(zjType)) {
                             list.add(allList.get(i));
                         } else if ("未开奖".equals(zjType)) {
-                            if (StringUtil.isBlank(String.valueOf(allList.get(i).is_win_code))) {
+                            if ("1002".equals(String.valueOf(allList.get(i).is_win_code))) {
                                 list.add(allList.get(i));
                             }
                         } else if ("未中奖".equals(zjType)) {

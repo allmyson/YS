@@ -193,7 +193,7 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener,S
                         if ("全部".equals(zjType)) {
                             list.add(allList.get(i));
                         } else if ("未开奖".equals(zjType)) {
-                            if (StringUtil.isBlank(String.valueOf(allList.get(i).is_win_code))) {
+                            if ("1002".equals(String.valueOf(allList.get(i).is_win_code))) {
                                 list.add(allList.get(i));
                             }
                         } else if ("未中奖".equals(zjType)) {

@@ -75,7 +75,7 @@ public class HttpUtil {
      */
     public static void updateUserInfo(Context context, String userId, String nickName, String photoUrl,
                                       HttpListener<String> httpListener) {
-        String url = YS.UPDATE_USERINFO + "?userId=" + userId;
+        String url = YS.UPDATE_USERINFO + "?userId=" + userId + "&userName=";
         if (!StringUtil.isBlank(nickName)) {
             try {
                 url += URLEncoder.encode(nickName, "utf-8");
@@ -111,17 +111,56 @@ public class HttpUtil {
         }
         String url = YS.KH + "?consumerName=" + consumerName + "&loginName=" + loginName + "&pwd=" + Md5Util
                 .getMD5String(psd) + "&backNum=" + fd + "&userId=" + userId;
-        BaseHttp.getInstance().postSimpleJson(context,url,"",httpListener);
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
 
     /**
      * 获取团队管理
+     *
      * @param context
      * @param userId
      * @param httpListener
      */
-    public static void getTeamData(Context context,String userId,HttpListener<String> httpListener){
-        String url = YS.TEAM_GL+"?userId="+userId;
-        BaseHttp.getInstance().postSimpleJson(context,url,"",httpListener);
+    public static void getTeamData(Context context, String userId, HttpListener<String> httpListener) {
+        String url = YS.TEAM_GL + "?userId=" + userId;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @param context
+     * @param userId
+     * @param httpListener
+     */
+    public static void getUserInfo(Context context, String userId, HttpListener<String> httpListener) {
+        String url = YS.USERINFO + "?userId=" + userId;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
+
+    /**
+     * 充值
+     *
+     * @param context
+     * @param userId
+     * @param money
+     * @param httpListener
+     */
+    public static void cz(Context context, String userId, String money, HttpListener<String> httpListener) {
+        String url = YS.CZ + "?userId=" + userId + "&applyMoney=" + money;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
+
+    /**
+     * 提现
+     * @param context
+     * @param userId
+     * @param money
+     * @param pwd
+     * @param httpListener
+     */
+    public static void tx(Context context, String userId, String money, String pwd, HttpListener<String> httpListener) {
+        String url = YS.TX + "?userId=" + userId + "&applyTypeCode=1000&applyMoney=" + money + "&pwd=" + pwd;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
 }

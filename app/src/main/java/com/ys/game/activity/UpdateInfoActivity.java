@@ -1,5 +1,6 @@
 package com.ys.game.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -8,16 +9,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yongchun.library.view.ImageSelectorActivity;
 import com.ys.game.R;
 import com.ys.game.api.FunctionApi;
 import com.ys.game.base.BaseActivity;
-import com.ys.game.bean.LoginBean;
+import com.ys.game.bean.BaseBean;
 import com.ys.game.http.HttpListener;
 import com.ys.game.sp.UserSP;
 import com.ys.game.util.HttpUtil;
 import com.ys.game.util.StringUtil;
+import com.ys.game.util.YS;
 
 import java.util.ArrayList;
 
@@ -27,7 +30,6 @@ public class UpdateInfoActivity extends BaseActivity {
     private EditText nickNameET;
     private Button sureBtn;
     private String photoUrl;
-    private LoginBean loginBean;
     private String userId;
 
     @Override
@@ -48,14 +50,12 @@ public class UpdateInfoActivity extends BaseActivity {
 
     @Override
     public void getData() {
-        loginBean = UserSP.getInfo(mContext);
-        if (loginBean != null && loginBean.data != null) {
-            userId = loginBean.data.consumerId;
-            Glide.with(mContext).load(loginBean.data.consumerImg).placeholder(R.mipmap.bg_head_default).error(R.mipmap
-                    .bg_head_default).into(headIV);
-            nickNameET.setText(StringUtil.valueOf(loginBean.data.consumerName));
-            nickNameET.setSelection(nickNameET.getText().length());
-        }
+        userId = UserSP.getUserId(mContext);
+        nickNameET.setText(getIntent().getStringExtra("nickName"));
+        nickNameET.setSelection(nickNameET.getText().length());
+        Glide.with(mContext).load(getIntent().getStringExtra("photoUrl")).placeholder(R.mipmap.bg_head_default).error
+                (R.mipmap
+                .bg_head_default).into(headIV);
     }
 
     @Override
@@ -69,10 +69,17 @@ public class UpdateInfoActivity extends BaseActivity {
                 break;
             case R.id.btn_sure:
                 if (!StringUtil.isBlank(nickNameET.getText().toString())) {
-                    HttpUtil.updateUserInfo(mContext, userId, nickNameET.getText().toString(), photoUrl, new HttpListener<String>() {
+                    HttpUtil.updateUserInfo(mContext, userId, nickNameET.getText().toString(), photoUrl, new
+                            HttpListener<String>() {
                         @Override
                         public void onSucceed(int what, Response<String> response) {
-                            finish();
+                            BaseBean baseBean = new Gson().fromJson(response.get(), BaseBean.class);
+                            if (baseBean != null && YS.SUCCESE.equals(baseBean.code)) {
+                                show(baseBean.msg);
+                                finish();
+                            } else {
+                                show("修改失败！");
+                            }
                         }
 
                         @Override
@@ -103,4 +110,11 @@ public class UpdateInfoActivity extends BaseActivity {
         }
     }
 
+
+    public static void intentUpdateInfo(Context context, String nickName, String photoUrl) {
+        Intent intent = new Intent(context, UpdateInfoActivity.class);
+        intent.putExtra("nickName", nickName);
+        intent.putExtra("photoUrl", photoUrl);
+        context.startActivity(intent);
+    }
 }

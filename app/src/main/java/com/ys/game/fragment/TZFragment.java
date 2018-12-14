@@ -16,12 +16,14 @@ import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.ys.game.R;
 import com.ys.game.activity.CqsscActivity;
+import com.ys.game.activity.ZhActivity;
 import com.ys.game.adapter.TZAdapter;
 import com.ys.game.base.BaseFragment;
 import com.ys.game.bean.BaseBean;
 import com.ys.game.bean.LoginBean;
 import com.ys.game.bean.ResultBean;
 import com.ys.game.bean.TZBean;
+import com.ys.game.bean.UserInfo;
 import com.ys.game.dialog.DialogUtil;
 import com.ys.game.dialog.PlayDialog;
 import com.ys.game.http.HttpListener;
@@ -67,9 +69,11 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     private SwipeRefreshLayout srl;
     private LoginBean loginBean;
     private ImageView jlIV;
+    private String lastQishu;//上一期的期数
 
     @Override
     protected void init() {
+//        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getView(R.id.ll_type).setOnClickListener(this);
         jlIV = getView(R.id.iv_jl);
         jlIV.setOnClickListener(this);
@@ -157,8 +161,8 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
         if (loginBean != null && loginBean.data != null) {
             setYue(StringUtil.StringToDouble(loginBean.data.balance));
         }
-
         getTZ();
+        getUserInfo();
     }
 
     @Override
@@ -210,6 +214,9 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
         switch (v.getId()) {
             case R.id.btn_zh:
 //                show(mAmountView.getCurrentValue() + "");
+                if(mAdapter.canTZ()){
+                    ZhActivity.intentToZh(mContext,((CqsscActivity) getActivity()).getType());
+                }
                 break;
             case R.id.btn_tz:
                 if (mAdapter.canTZ()) {
@@ -342,20 +349,19 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     }
 
     private void getTZ() {
-        startRandomText();
         HttpUtil.getKJResult(mContext, ((CqsscActivity) getActivity()).getType(), 1, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
-                closeRandomText();
+//                closeRandomText();
                 ResultBean resultBean = new Gson().fromJson(response.get(), ResultBean.class);
                 if (resultBean != null && YS.SUCCESE.equals(resultBean.code) && resultBean.data != null && resultBean
                         .data.size() > 0) {
 //                    nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
-                    if (resultBean.data.get(0).periodsNum.length() > 8) {
-                        lastQ.setText(resultBean.data.get(0).periodsNum.substring(8) + "期");
-                    } else {
-                        lastQ.setText(resultBean.data.get(0).periodsNum + "期");
-                    }
+//                    if (resultBean.data.get(0).periodsNum.length() > 8) {
+//                        lastQ.setText(resultBean.data.get(0).periodsNum.substring(8) + "期");
+//                    } else {
+//                        lastQ.setText(resultBean.data.get(0).periodsNum + "期");
+//                    }
                     String[] ss = resultBean.data.get(0).lotteryNum.split(",");
 
                     long lastTime = DateUtil.changeTimeToLong(resultBean.data.get(0).lotteryTime);
@@ -384,24 +390,27 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
                             start();
                         }
                     }
-                    Message message = new Message();
-                    message.obj = ss;
-                    message.what = 1;
-                    handler.sendMessageDelayed(message, 100);
-//                    if (ss != null && ss.length == 5) {
-//                        w.setText(ss[0]);
-//                        q.setText(ss[1]);
-//                        b.setText(ss[2]);
-//                        s.setText(ss[3]);
-//                        g.setText(ss[4]);
-//                    }
+
+                    long currentQByServer = StringUtil.StringToLong(resultBean.data.get(0).periodsNum);//服务器最新的一期
+                    //如果理论的期数和服务器的期数一致则显示结果否则则继续请求
+                    L.e("currentQbyServer="+currentQByServer);
+                    L.e("lastQishu="+lastQishu);
+                    if (StringUtil.StringToLong(lastQishu) == currentQByServer) {
+                        closeRandomText();
+                        Message message = new Message();
+                        message.obj = ss;
+                        message.what = 1;
+                        handler.sendMessageDelayed(message, 100);
+                    }else {
+                        getTZ();
+                    }
                     srl.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                closeRandomText();
+//                closeRandomText();
                 srl.setRefreshing(false);
             }
         });
@@ -429,10 +438,12 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
                         nextTime = nextTime + 1 * 60 * 1000;
                     }
                     L.e("倒计时完成，获取下一轮数据");
+                    startRandomText();
                     getTZ();
                 }
                 nextQ.setText("第" + (nextQStr.substring(4)) + "期还剩" +
                         DateUtil.getRemainTime2(nextTime));
+                lastQishu = String.valueOf((StringUtil.StringToLong(nextQStr) - 1));
                 lastQ.setText(String.valueOf((StringUtil.StringToLong(nextQStr) - 1)).substring(8) + "期");
             }
 
@@ -481,6 +492,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     public void onRefresh() {
 //        nextTime = 0;
         getTZ();
+        getUserInfo();
     }
 
     private int i = 0;
@@ -552,5 +564,24 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
                 }
             }
         }
+    }
+
+
+    private void getUserInfo() {
+        HttpUtil.getUserInfo(mContext, userId, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                UserInfo userInfo = new Gson().fromJson(response.get(), UserInfo.class);
+                if (userInfo != null && YS.SUCCESE.equals(userInfo.code) && userInfo.data != null) {
+                    setYue(StringUtil.StringToDouble(userInfo.data.balance));
+                }
+                srl.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                srl.setRefreshing(false);
+            }
+        });
     }
 }
