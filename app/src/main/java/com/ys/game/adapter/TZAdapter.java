@@ -216,7 +216,7 @@ public class TZAdapter extends CommonAdapter<TZBean> {
     }
 
     //得到投注值的组合
-    public List<String> getTZData() {
+    public ArrayList<String> getTZData() {
         List<List<Integer>> aa = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             List<Integer> zz = new ArrayList<>();
@@ -227,7 +227,7 @@ public class TZAdapter extends CommonAdapter<TZBean> {
             }
             aa.add(zz);
         }
-        List<String> result = new ArrayList<>();
+        ArrayList<String> result = new ArrayList<>();
         if (mDatas.size() == 5) {
             for (int i = 0; i < aa.get(0).size(); i++) {
                 for (int j = 0; j < aa.get(1).size(); j++) {

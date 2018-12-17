@@ -43,4 +43,6 @@ public class YS {
     public static final String CZ = IP + "/appService/rechargeApply";
     //提现
     public static final String TX = IP + "/appService/applyCash";
+    //追号
+    public static final String ZH = IP + "/appService/trackNum";
 }

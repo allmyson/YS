@@ -163,4 +163,12 @@ public class HttpUtil {
         String url = YS.TX + "?userId=" + userId + "&applyTypeCode=1000&applyMoney=" + money + "&pwd=" + pwd;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
+
+
+
+    //追号
+    public static void zh(Context context, String json, HttpListener<String> httpListener) {
+        String url = YS.ZH;
+        BaseHttp.getInstance().postSimpleJson(context, url, json, httpListener);
+    }
 }

@@ -214,8 +214,9 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
         switch (v.getId()) {
             case R.id.btn_zh:
 //                show(mAmountView.getCurrentValue() + "");
-                if(mAdapter.canTZ()){
-                    ZhActivity.intentToZh(mContext,((CqsscActivity) getActivity()).getType());
+                if (mAdapter.canTZ()) {
+                    ZhActivity.intentToZh(mContext, ((CqsscActivity) getActivity()).getType(), getType(typeStr),
+                            mAdapter.getTZData());
                 }
                 break;
             case R.id.btn_tz:
@@ -352,59 +353,65 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
         HttpUtil.getKJResult(mContext, ((CqsscActivity) getActivity()).getType(), 1, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
+                try {
 //                closeRandomText();
-                ResultBean resultBean = new Gson().fromJson(response.get(), ResultBean.class);
-                if (resultBean != null && YS.SUCCESE.equals(resultBean.code) && resultBean.data != null && resultBean
-                        .data.size() > 0) {
-//                    nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
-//                    if (resultBean.data.get(0).periodsNum.length() > 8) {
-//                        lastQ.setText(resultBean.data.get(0).periodsNum.substring(8) + "期");
-//                    } else {
-//                        lastQ.setText(resultBean.data.get(0).periodsNum + "期");
-//                    }
-                    String[] ss = resultBean.data.get(0).lotteryNum.split(",");
+                    ResultBean resultBean = new Gson().fromJson(response.get(), ResultBean.class);
+                    if (resultBean != null && YS.SUCCESE.equals(resultBean.code) && resultBean.data != null &&
+                            resultBean
+                                    .data.size() > 0) {
+                        //                    nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0)
+                        // .periodsNum) + 1);
+                        //                    if (resultBean.data.get(0).periodsNum.length() > 8) {
+                        //                        lastQ.setText(resultBean.data.get(0).periodsNum.substring(8) + "期");
+                        //                    } else {
+                        //                        lastQ.setText(resultBean.data.get(0).periodsNum + "期");
+                        //                    }
+                        String[] ss = resultBean.data.get(0).lotteryNum.split(",");
 
-                    long lastTime = DateUtil.changeTimeToLong(resultBean.data.get(0).lotteryTime);
-                    if (((CqsscActivity) getActivity()).getType() == YS.TYPE_CQSSC) {
-                        if (nextTime == 0) {
-                            if (DateUtil.isOpen()) {
-                                if (DateUtil.isTen()) {
-                                    nextTime = lastTime + 10 * 60 * 1000;
-                                } else if (DateUtil.isFive()) {
-                                    nextTime = lastTime + 5 * 60 * 1000;
+                        long lastTime = DateUtil.changeTimeToLong(resultBean.data.get(0).lotteryTime);
+                        if (((CqsscActivity) getActivity()).getType() == YS.TYPE_CQSSC) {
+                            if (nextTime == 0) {
+                                if (DateUtil.isOpen()) {
+                                    if (DateUtil.isTen()) {
+                                        nextTime = lastTime + 10 * 60 * 1000;
+                                    } else if (DateUtil.isFive()) {
+                                        nextTime = lastTime + 5 * 60 * 1000;
+                                    }
+                                    nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
+                                    nextQ.setText("第" + nextQStr.substring(4) + "期还剩" +
+                                            DateUtil.getRemainTime2(nextTime));
+                                    start();
+                                } else {
+                                    nextQ.setText("02:00-10:00之间不开奖");
                                 }
+                            }
+                        } else if (((CqsscActivity) getActivity()).getType() == YS.TYPE_TXFFC) {
+                            if (nextTime == 0) {
+                                nextTime = lastTime + 1 * 60 * 1000;
                                 nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
                                 nextQ.setText("第" + nextQStr.substring(4) + "期还剩" +
                                         DateUtil.getRemainTime2(nextTime));
                                 start();
-                            } else {
-                                nextQ.setText("02:00-10:00之间不开奖");
                             }
                         }
-                    } else if (((CqsscActivity) getActivity()).getType() == YS.TYPE_TXFFC) {
-                        if (nextTime == 0) {
-                            nextTime = lastTime + 1 * 60 * 1000;
-                            nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
-                            nextQ.setText("第" + nextQStr.substring(4) + "期还剩" +
-                                    DateUtil.getRemainTime2(nextTime));
-                            start();
-                        }
-                    }
 
-                    long currentQByServer = StringUtil.StringToLong(resultBean.data.get(0).periodsNum);//服务器最新的一期
-                    //如果理论的期数和服务器的期数一致则显示结果否则则继续请求
-                    L.e("currentQbyServer="+currentQByServer);
-                    L.e("lastQishu="+lastQishu);
-                    if (StringUtil.StringToLong(lastQishu) == currentQByServer) {
-                        closeRandomText();
-                        Message message = new Message();
-                        message.obj = ss;
-                        message.what = 1;
-                        handler.sendMessageDelayed(message, 100);
-                    }else {
-                        getTZ();
+                        long currentQByServer = StringUtil.StringToLong(resultBean.data.get(0).periodsNum);//服务器最新的一期
+                        //如果理论的期数和服务器的期数一致则显示结果否则则继续请求
+                        L.e("currentQbyServer=" + currentQByServer);
+                        L.e("lastQishu=" + lastQishu);
+                        if (StringUtil.StringToLong(lastQishu) == currentQByServer) {
+                            closeRandomText();
+                            Message message = new Message();
+                            message.obj = ss;
+                            message.what = 1;
+                            handler.sendMessageDelayed(message, 100);
+                        } else {
+                            getTZ();
+                        }
+                        srl.setRefreshing(false);
                     }
-                    srl.setRefreshing(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
