@@ -12,11 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+    >
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
         >
             <RelativeLayout
                 android:id="@+id/rl_back"
@@ -44,6 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:background="@drawable/rect_cornor_white1"
             android:orientation="vertical"
             android:padding="20dp">
@@ -201,6 +204,48 @@
                     android:text="生成追单"
                     android:textColor="@android:color/white"/>
             </LinearLayout>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_zh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/rect_cornor_white1"
+            android:divider="#999999"
+            android:dividerHeight="0dp"
+            android:scrollbars="none"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dp"
+                android:textColor="@color/textcolor1"
+             />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="10dp"
+                android:background="#f6f6f6"/>
+            <Button
+                android:id="@+id/btn_zh"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rect_cornor_login"
+                android:text="确定追号"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
