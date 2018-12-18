@@ -50,7 +50,7 @@ public class FourFragment extends BaseFragment implements View.OnClickListener, 
     private MyAdapter myAdapter;
     private RelativeLayout setRL;
     private Button czBtn, tbBtn;
-    private TextView nicknameTV, usernameTV, fdTV, yueTV;
+    private TextView nicknameTV, usernameTV, fdTV, yueTV, levelTV;
     private LoginBean loginBean;
     private ImageView headIV;
     private TextView jrczTV, jrxfTV, jrylTV, canTmoneyTV;
@@ -67,6 +67,7 @@ public class FourFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     protected void init() {
+        levelTV = getView(R.id.tv_level);
         jrczTV = getView(R.id.tv_jrcz);
         jrxfTV = getView(R.id.tv_jrxf);
         jrylTV = getView(R.id.tv_jryl);
@@ -131,6 +132,7 @@ public class FourFragment extends BaseFragment implements View.OnClickListener, 
                 myList.add("消费记录");
                 myList.add("安全中心");
                 myList.add("联系客服");
+                levelTV.setText("会员等级:普通会员");
             } else if ("1001".equals(loginBean.data.levelCode)) {
                 //代理会员
                 myList.add("消费记录");
@@ -139,10 +141,12 @@ public class FourFragment extends BaseFragment implements View.OnClickListener, 
                 myList.add("团队管理");
                 myList.add("团队记录");
                 myList.add("联系客服");
+                levelTV.setText("会员等级:代理会员");
             } else {
                 myList.add("消费记录");
                 myList.add("安全中心");
                 myList.add("联系客服");
+                levelTV.setText("会员等级:普通会员");
             }
             myAdapter.refresh(myList);
         }
@@ -194,12 +198,29 @@ public class FourFragment extends BaseFragment implements View.OnClickListener, 
                     nicknameTV.setText("昵称：" + StringUtil.valueOf(userInfo.data.consumerName));
                     usernameTV.setText("用户名：" + StringUtil.valueOf(userInfo.data.loginName));
                     fdTV.setText("返点：" + StringUtil.valueOf(userInfo.data.backNum));
-                    yueTV.setText("" + StringUtil.StringToDouble(userInfo.data.balance) + "YB");
-                    canTmoneyTV.setText("" + StringUtil.StringToDouble(userInfo.data.balance) + "YB");
-                    Glide.with(mContext).load(userInfo.data.consumerImg).error(R.mipmap.bg_head_default).into(headIV);
-                    jrczTV.setText(StringUtil.valueOf(userInfo.data.todayCz) + "YB");
-                    jrxfTV.setText(StringUtil.valueOf(userInfo.data.todayXf) + "YB");
-                    jrylTV.setText(StringUtil.valueOf(userInfo.data.todayYl) + "YB");
+                    yueTV.setText("" + StringUtil.StringToDouble(userInfo.data.balance) + YS.UNIT);
+                    canTmoneyTV.setText("" + StringUtil.StringToDouble(userInfo.data.balance) + YS.UNIT);
+                    Glide.with(mContext).load(YS.getGlideUrl(mContext,userInfo.data.consumerImg)).error(R.mipmap.bg_head_default).into(headIV);
+//                    BaseHttp.getInstance().loadImag(mContext, userInfo.data.consumerImg, new HttpListener<Bitmap>() {
+//                        @Override
+//                        public void onSucceed(int what, Response<Bitmap> response) {
+//                            Bitmap bitmap = response.get();
+//                            if(bitmap!=null){
+//                                headIV.setImageBitmap(bitmap);
+//                            }else {
+//                                headIV.setImageResource(R.mipmap.bg_head_default);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailed(int what, Response<Bitmap> response) {
+//                            headIV.setImageResource(R.mipmap.bg_head_default);
+//                        }
+//                    });
+                    jrczTV.setText(StringUtil.valueOf(userInfo.data.todayCz) + YS.UNIT);
+                    jrxfTV.setText(StringUtil.valueOf(userInfo.data.todayXf) + YS.UNIT);
+                    jrylTV.setText(StringUtil.valueOf(userInfo.data.todayYl) + YS.UNIT);
+                    levelTV.setText("会员等级:" + StringUtil.valueOf(userInfo.data.levelName));
                 }
                 srl.setRefreshing(false);
             }

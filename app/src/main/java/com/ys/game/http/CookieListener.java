@@ -30,8 +30,9 @@ public class CookieListener implements DBCookieStore.CookieStoreListener {
         // 2. 这里的JSessionId是Session的name，
         //    比如java的是JSessionId，PHP的是PSessionId，
         //    当然这里只是举例，实际java中和php不一定是这个，具体要咨询你们服务器开发人员。
+        L.e("onSaveCookie执行");
         L.e(cookie.getName());
-        if ("jsessionid".equals(cookie.getName())) {
+        if ("jsessionid".equalsIgnoreCase(cookie.getName())) {
             // 设置有效期为最大。
 //            cookie.setMaxAge(HeaderUtil.getMaxExpiryMillis());
 //            String cookieStore = cookie.getName().concat("=").concat(cookie.getValue()).concat(";");

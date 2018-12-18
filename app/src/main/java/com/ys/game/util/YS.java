@@ -1,5 +1,11 @@
 package com.ys.game.util;
 
+import android.content.Context;
+
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.ys.game.sp.CookieSP;
+
 /**
  * @author lh
  * @version 1.0.0
@@ -8,6 +14,8 @@ package com.ys.game.util;
  * @date 2018/11/26 17:53
  */
 public class YS {
+
+    public static final String UNIT = "YB";
     public static final int TYPE_CQSSC = 1000;//重庆时时彩
     public static final int TYPE_TXFFC = 1001;//腾讯分分彩
     public static final int TYPE_ZHDSLZ = 1002;//最后的胜利者
@@ -45,4 +53,10 @@ public class YS {
     public static final String TX = IP + "/appService/applyCash";
     //追号
     public static final String ZH = IP + "/appService/trackNum";
+
+
+
+    public static GlideUrl getGlideUrl(Context context,String url){
+        return new GlideUrl(url, new LazyHeaders.Builder().addHeader("Cookie", CookieSP.getCookie(context)).build());
+    }
 }

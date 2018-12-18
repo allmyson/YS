@@ -19,6 +19,7 @@ import com.ys.game.bean.BaseBean;
 import com.ys.game.http.HttpListener;
 import com.ys.game.sp.UserSP;
 import com.ys.game.util.HttpUtil;
+import com.ys.game.util.KeyBoardUtils;
 import com.ys.game.util.StringUtil;
 import com.ys.game.util.YS;
 
@@ -73,6 +74,7 @@ public class UpdateInfoActivity extends BaseActivity {
                             HttpListener<String>() {
                         @Override
                         public void onSucceed(int what, Response<String> response) {
+                            KeyBoardUtils.closeKeybord(nickNameET,mContext);
                             BaseBean baseBean = new Gson().fromJson(response.get(), BaseBean.class);
                             if (baseBean != null && YS.SUCCESE.equals(baseBean.code)) {
                                 show(baseBean.msg);

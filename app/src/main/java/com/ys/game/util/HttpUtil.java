@@ -171,4 +171,7 @@ public class HttpUtil {
         String url = YS.ZH;
         BaseHttp.getInstance().postSimpleJson(context, url, json, httpListener);
     }
+
+    //查询团队记录
+    public static void getTeamJL(){}
 }

@@ -3,7 +3,9 @@ package com.ys.game.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,6 +83,25 @@ public class ZhActivity extends BaseActivity {
             public void check(int position) {
                 List<ZhBean> list = zhAdapter.getResult();
                 setTip(list, yue + "");
+            }
+        });
+        lxqsET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (StringUtil.StringToInt(lxqsET.getText().toString().trim()) > 10) {
+                    lxqsET.setText("" + 10);
+                    lxqsET.setSelection(lxqsET.getText().toString().length());
+                }
             }
         });
     }
@@ -274,7 +295,9 @@ public class ZhActivity extends BaseActivity {
             }
         }
         String text = String.format("已选<font color=\"#fc6a44\">%s</font>期,共<font " +
-                "color=\"#fc6a44\">%s</font>YB\t\t\t可用余额：<font color=\"#fc6a44\">%s</font>YB", list.size(), sum, money);
+                        "color=\"#fc6a44\">%s</font>" + YS.UNIT + "\t\t\t可用余额：<font color=\"#fc6a44\">%s</font>" + YS
+                        .UNIT,
+                list.size(), sum, money);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             tipTV.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -310,20 +333,15 @@ public class ZhActivity extends BaseActivity {
         map.put("complantTypeCode", 1001);//追号下注
         List<ZhBean> zhList = zhAdapter.getResult();
         List<Map<String, Object>> betList = new ArrayList<>();
-        Map<String, Object> map1 = null;
         for (ZhBean zhBean : zhList) {
-            map1 = new HashMap<>();
-            List<Map<String, Object>> list = new ArrayList<>();
             for (String str : data) {
                 Map<String, Object> map2 = new HashMap<>();
                 map2.put("betsNum", str);
                 map2.put("payMoney", zhBean.price);
                 map2.put("times", zhBean.bs);
-                list.add(map2);
+                map2.put("periodsNum",zhBean.qs);
+                betList.add(map2);
             }
-            map1.put("betDetail", list);
-            map1.put("periodsNum", zhBean.qs);
-            betList.add(map1);
         }
         map.put("trackDetail", betList);
         String json = new Gson().toJson(map);
@@ -333,7 +351,7 @@ public class ZhActivity extends BaseActivity {
                 BaseBean baseBean = new Gson().fromJson(response.get(), BaseBean.class);
                 if (baseBean != null && YS.SUCCESE.equals(baseBean.code)) {
                     show("追号成功！");
-                }else {
+                } else {
                     show("追号失败！");
                 }
             }

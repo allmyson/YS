@@ -286,7 +286,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     private void setMoneyZhu(int money, int zhu) {
 //        String moneyZhu = String.format("<font color=\"#fc6a44\">%s</font>元*<font color=\"#fc6a44\">%s</font>注",
 //                money, zhu);
-        String moneyZhu = String.format("共<font color=\"#fc6a44\">%s</font>注\t\t<font color=\"#fc6a44\">%s</font>YB",
+        String moneyZhu = String.format("共<font color=\"#fc6a44\">%s</font>注\t\t<font color=\"#fc6a44\">%s</font>"+YS.UNIT,
                 zhu, Double.valueOf(money * zhu));
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             moneyZhuTV.setText(Html.fromHtml(moneyZhu, Html.FROM_HTML_MODE_LEGACY));
@@ -296,7 +296,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     }
 
     private void setYue(double money) {
-        String yue = String.format("可用余额:<font color=\"#fc6a44\">%s</font>YS", money);
+        String yue = String.format("可用余额:<font color=\"#fc6a44\">%s</font>"+YS.UNIT, money);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             yueTV.setText(Html.fromHtml(yue, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -305,7 +305,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     }
 
     private void setBuyMoney(double money) {
-        String buyMoney = String.format("购买需支付:<font color=\"#fc6a44\">%s</font>YS", money);
+        String buyMoney = String.format("购买需支付:<font color=\"#fc6a44\">%s</font>"+YS.UNIT, money);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             buyMoneyTV.setText(Html.fromHtml(buyMoney, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -382,7 +382,11 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
                                             DateUtil.getRemainTime2(nextTime));
                                     start();
                                 } else {
+                                    nextQStr = "" + (StringUtil.StringToLong(resultBean.data.get(0).periodsNum) + 1);
                                     nextQ.setText("02:00-10:00之间不开奖");
+                                    lastQishu = String.valueOf((StringUtil.StringToLong(nextQStr)));
+                                    lastQ.setText(String.valueOf((StringUtil.StringToLong(nextQStr))).substring(8) + "期");
+                                    startRandomText();
                                 }
                             }
                         } else if (((CqsscActivity) getActivity()).getType() == YS.TYPE_TXFFC) {
@@ -451,7 +455,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
                 nextQ.setText("第" + (nextQStr.substring(4)) + "期还剩" +
                         DateUtil.getRemainTime2(nextTime));
                 lastQishu = String.valueOf((StringUtil.StringToLong(nextQStr) - 1));
-                lastQ.setText(String.valueOf((StringUtil.StringToLong(nextQStr) - 1)).substring(8) + "期");
+                lastQ.setText(lastQishu.substring(8) + "期");
             }
 
             @Override

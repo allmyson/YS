@@ -140,9 +140,9 @@ public class ZSFragment extends BaseFragment implements View.OnClickListener, Ra
             }
             currentFragment = fragment;
             if (!fragment.isAdded()) {
-                transaction.add(R.id.fl_parent, fragment).show(fragment).commit();
+                transaction.add(R.id.fl_parent, fragment).show(fragment).commitAllowingStateLoss();
             } else {
-                transaction.show(fragment).commit();
+                transaction.show(fragment).commitAllowingStateLoss();
             }
         }
     }
