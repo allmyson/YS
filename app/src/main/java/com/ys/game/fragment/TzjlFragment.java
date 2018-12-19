@@ -162,18 +162,22 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener,S
         HttpUtil.getTZJL(mContext, userId, 1, YS.LENGTH, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
-                allList.clear();
-                TzjlBean bean = new Gson().fromJson(response.get(), TzjlBean.class);
-                if (bean != null && YS.SUCCESE.equals(bean.code) && bean.data != null && bean.data.data != null &&
-                        bean.data.data.size() > 0) {
-                    for(int i =0;i<bean.data.data.size();i++){
-                        if(((CqsscActivity) getActivity()).getType() == StringUtil.StringToInt(bean.data.data.get(i).game_code)){
-                            allList.add(bean.data.data.get(i));
+                try {
+                    allList.clear();
+                    TzjlBean bean = new Gson().fromJson(response.get(), TzjlBean.class);
+                    if (bean != null && YS.SUCCESE.equals(bean.code) && bean.data != null && bean.data.data != null &&
+                            bean.data.data.size() > 0) {
+                        for(int i =0;i<bean.data.data.size();i++){
+                            if(((CqsscActivity) getActivity()).getType() == StringUtil.StringToInt(bean.data.data.get(i).game_code)){
+                                allList.add(bean.data.data.get(i));
+                            }
                         }
                     }
+                    selectData();
+                    srl.setRefreshing(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                selectData();
-                srl.setRefreshing(false);
             }
 
             @Override
