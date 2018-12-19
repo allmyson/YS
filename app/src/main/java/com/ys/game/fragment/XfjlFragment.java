@@ -149,7 +149,7 @@ public class XfjlFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void getTZJL() {
-        HttpUtil.getTZJL(mContext, userId, 1, 20, new HttpListener<String>() {
+        HttpUtil.getTZJL(mContext, userId, 1, YS.LENGTH, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 allList.clear();

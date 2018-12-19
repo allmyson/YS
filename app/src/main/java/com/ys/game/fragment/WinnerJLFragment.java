@@ -9,7 +9,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ys.game.R;
-import com.ys.game.adapter.TeamJLAdapter;
+import com.ys.game.adapter.WinnerCzjlAdapter;
 import com.ys.game.base.BaseFragment;
 import com.ys.game.dialog.DialogUtil;
 import com.ys.game.util.DateUtil;
@@ -27,7 +27,7 @@ import java.util.List;
 public class WinnerJLFragment extends BaseFragment implements View.OnClickListener {
     private ListView lv;
     private List<Object> list;
-    private TeamJLAdapter mAdapter;
+    private WinnerCzjlAdapter mAdapter;
     private Spinner spinner;
     private ArrayAdapter<String> arrayAdapter;
     private String[] args = new String[]{"全部", "未开奖", "未中奖", "已中奖"};
@@ -46,7 +46,7 @@ public class WinnerJLFragment extends BaseFragment implements View.OnClickListen
         list.add(null);
         list.add(null);
         list.add(null);
-        mAdapter = new TeamJLAdapter(mContext, list, R.layout.item_tzjl);
+        mAdapter = new WinnerCzjlAdapter(mContext, list, R.layout.item_tzjl);
         lv.setAdapter(mAdapter);
         spinner = getView(R.id.spinner);
         arrayAdapter = new ArrayAdapter<String>(mContext, R.layout.item_text, args);

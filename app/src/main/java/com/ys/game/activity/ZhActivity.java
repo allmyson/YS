@@ -9,10 +9,12 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.ys.game.R;
 import com.ys.game.adapter.ZhAdapter;
@@ -27,6 +29,7 @@ import com.ys.game.sp.UserSP;
 import com.ys.game.util.DateUtil;
 import com.ys.game.util.HttpUtil;
 import com.ys.game.util.L;
+import com.ys.game.util.SPUtil;
 import com.ys.game.util.StringUtil;
 import com.ys.game.util.YS;
 
@@ -52,6 +55,10 @@ public class ZhActivity extends BaseActivity {
     private LoginBean loginBean;
     private double yue = 0;
     private Button zhBtn;
+    public static final int TYPE_ADD = 200;
+    public static final int TYPE_CHENG = 201;
+    private int beiType = TYPE_CHENG;
+    private ImageView beiTypeIV;
 
     @Override
     public int getLayoutId() {
@@ -60,6 +67,8 @@ public class ZhActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        beiTypeIV = getView(R.id.iv_beiType);
+        beiTypeIV.setOnClickListener(this);
         zhBtn = getView(R.id.btn_zh);
         zhBtn.setOnClickListener(this);
         tipTV = getView(R.id.tv_tip);
@@ -116,7 +125,14 @@ public class ZhActivity extends BaseActivity {
         }
         type = getIntent().getIntExtra("type", YS.TYPE_CQSSC);
         smallType = getIntent().getIntExtra("smallType", 1000);
-        data = getIntent().getStringArrayListExtra("data");
+//        data = getIntent().getStringArrayListExtra("data");
+        String json = (String) SPUtil.get(mContext, "zh_data", "");
+        if (!StringUtil.isBlank(json)) {
+            data = new Gson().fromJson(json, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } else {
+            data = new ArrayList<>();
+        }
         getResult();
         getUserInfo();
     }
@@ -125,7 +141,10 @@ public class ZhActivity extends BaseActivity {
         Intent intent = new Intent(context, ZhActivity.class);
         intent.putExtra("type", type);
         intent.putExtra("smallType", smallType);
-        intent.putStringArrayListExtra("data", data);
+        //android.os.TransactionTooLargeException: data parcel size 2800408 bytes
+//        intent.putStringArrayListExtra("data", data);
+        String json = new Gson().toJson(data);
+        SPUtil.put(context, "zh_data", json);
         context.startActivity(intent);
     }
 
@@ -244,7 +263,13 @@ public class ZhActivity extends BaseActivity {
         for (int i = 1; i <= qs; i++) {
             ZhBean zhBean = new ZhBean();
             zhBean.qs = "" + (StringUtil.StringToLong(nextQStr) + (i - 1));
-            zhBean.bs = (int) (qsbs * Math.pow(jgbs, (int) Math.ceil((double) i / jgqs) - 1));
+            if (beiType == TYPE_CHENG) {
+                zhBean.bs = (int) (qsbs * Math.pow(jgbs, (int) Math.ceil((double) i / jgqs) - 1));
+            } else if (beiType == TYPE_ADD) {
+                zhBean.bs = qsbs + jgbs * ((int) Math.ceil((double) i / jgqs) - 1);
+            } else {
+                zhBean.bs = (int) (qsbs * Math.pow(jgbs, (int) Math.ceil((double) i / jgqs) - 1));
+            }
             zhBean.zhushu = data.size();
             if (type == YS.TYPE_CQSSC) {
                 if (DateUtil.isOpen()) {
@@ -282,6 +307,15 @@ public class ZhActivity extends BaseActivity {
                     zh();
                 } else {
                     show("请至少选择一期进行追号！");
+                }
+                break;
+            case R.id.iv_beiType:
+                if (beiType == TYPE_CHENG) {
+                    beiType = TYPE_ADD;
+                    beiTypeIV.setImageResource(R.mipmap.ic_jia);
+                } else {
+                    beiType = TYPE_CHENG;
+                    beiTypeIV.setImageResource(R.mipmap.ic_cf2);
                 }
                 break;
         }
@@ -339,7 +373,7 @@ public class ZhActivity extends BaseActivity {
                 map2.put("betsNum", str);
                 map2.put("payMoney", zhBean.price);
                 map2.put("times", zhBean.bs);
-                map2.put("periodsNum",zhBean.qs);
+                map2.put("periodsNum", zhBean.qs);
                 betList.add(map2);
             }
         }

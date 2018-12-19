@@ -153,6 +153,7 @@ public class HttpUtil {
 
     /**
      * 提现
+     *
      * @param context
      * @param userId
      * @param money
@@ -165,7 +166,6 @@ public class HttpUtil {
     }
 
 
-
     //追号
     public static void zh(Context context, String json, HttpListener<String> httpListener) {
         String url = YS.ZH;
@@ -173,5 +173,14 @@ public class HttpUtil {
     }
 
     //查询团队记录
-    public static void getTeamJL(){}
+
+    /**
+     * @param context
+     * @param userId
+     * @param type    1000充值记录，1001消费记录
+     */
+    public static void getTeamJL(Context context, String userId, String type, HttpListener<String> httpListener) {
+        String url = YS.TEAM_JL + "?userId=" + userId + "&recordTypeCode=" + type + "&start=1&length=" + YS.LENGTH;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
 }

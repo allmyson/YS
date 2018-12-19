@@ -208,6 +208,20 @@ public class DateUtil {
         return date.getTime();
     }
 
+
+    public static long changeTimeToLong2(String time) {
+        SimpleDateFormat formatter = new SimpleDateFormat(
+                "yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = formatter.parse(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+            date = new Date();
+        }
+        return date.getTime();
+    }
+
     public static void isBelong() {
 
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");//设置日期格式

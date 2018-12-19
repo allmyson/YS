@@ -7,12 +7,12 @@ import java.util.List;
 /**
  * @author lh
  * @version 1.0.0
- * @filename TeamJLAdapter
+ * @filename TeamCZJLAdapter
  * @description -------------------------------------------------------
  * @date 2018/12/5 15:11
  */
-public class TeamJLAdapter extends CommonAdapter<Object> {
-    public TeamJLAdapter(Context context, List<Object> mDatas, int itemLayoutId) {
+public class WinnerCzjlAdapter extends CommonAdapter<Object> {
+    public WinnerCzjlAdapter(Context context, List<Object> mDatas, int itemLayoutId) {
         super(context, mDatas, itemLayoutId);
     }
 

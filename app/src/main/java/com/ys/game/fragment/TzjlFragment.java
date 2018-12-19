@@ -144,7 +144,7 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener,S
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         endTV.setText(getTimeStr(year, month, dayOfMonth));
-                        endTime = DateUtil.getWhichDayStart(endTV.getText().toString());
+                        endTime = DateUtil.getWhichDayEnd(endTV.getText().toString());
                         selectData();
                     }
                 });
@@ -159,7 +159,7 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener,S
     }
 
     private void getTZJL() {
-        HttpUtil.getTZJL(mContext, userId, 1, 20, new HttpListener<String>() {
+        HttpUtil.getTZJL(mContext, userId, 1, YS.LENGTH, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 allList.clear();
