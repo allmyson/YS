@@ -1,5 +1,9 @@
 package com.ys.game.bean;
 
+import android.support.annotation.NonNull;
+
+import com.ys.game.util.StringUtil;
+
 import java.util.List;
 
 /**
@@ -63,7 +67,7 @@ public class TzjlBean {
         public int systemTime;
         public List<DataBean> data;
 
-        public static class DataBean {
+        public static class DataBean implements Comparable<DataBean> {
             /**
              * bets_time : 2018-12-05T03:36:51.000+0000
              * bets_money : 10
@@ -90,8 +94,8 @@ public class TzjlBean {
             public String bets_money;
             public String create_time;
             public String SN_money;
-            public Object is_win_code;
-            public Object is_win_name;
+            public String is_win_code;
+            public String is_win_name;
             public String periods_num;
             public String complant_type_name;
             public String consumer_id;
@@ -100,11 +104,16 @@ public class TzjlBean {
             public String times;
             public String lottery_type_code;
             public String bets_num;
-            public Object win_money;
+            public String win_money;
             public String lottery_type_name;
             public String complant_type_code;
-            public Object reamrk;
+            public String reamrk;
             public String game_code;
+
+            @Override
+            public int compareTo(@NonNull DataBean o) {
+                return (int) (StringUtil.StringToLong(o.periods_num) - StringUtil.StringToLong(this.periods_num));//降序
+            }
         }
     }
 }
