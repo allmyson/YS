@@ -206,21 +206,20 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener, 
                             for (TzjlBean.DataBeanX.DataBean data : list) {
                                 betMoney += StringUtil.StringToDouble(data.bets_money);
                                 winMoney += StringUtil.StringToDouble(data.win_money);
-                                if ("1002".equals(data.is_win_code)) {
-                                    //待开奖
-                                    dataBean.is_win_code = data.is_win_code;
-                                    dataBean.is_win_name = data.is_win_name;
-                                    break;
-                                }
                             }
                             dataBean.bets_money = StringUtil.valueOf(betMoney);
                             dataBean.win_money = StringUtil.valueOf(winMoney);
-                            if (winMoney == 0) {
-                                dataBean.is_win_code = "1001";
-                                dataBean.is_win_name = "未中奖";
+                            if ("1002".equals(list.get(0).is_win_code)) {
+                                dataBean.is_win_code = list.get(0).is_win_code;
+                                dataBean.is_win_name = list.get(0).is_win_name;
                             } else {
-                                dataBean.is_win_code = "1000";
-                                dataBean.is_win_name = "中奖";
+                                if (winMoney == 0) {
+                                    dataBean.is_win_code = "1001";
+                                    dataBean.is_win_name = "未中奖";
+                                } else {
+                                    dataBean.is_win_code = "1000";
+                                    dataBean.is_win_name = "中奖";
+                                }
                             }
                         }
                         allList.add(dataBean);
