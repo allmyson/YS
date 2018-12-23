@@ -29,7 +29,8 @@ public class YS {
     public static final String FAIL = "FAIL";
 
 
-    public static final String IP = "http://148.163.169.41:8090";
+//    public static final String IP = "http://148.163.169.41:8090";
+    public static final String IP = "http://103.65.180.104:8090";
     //登录
     public static final String LOGIN = IP + "/appService/loginForApp";
     //系统公告
