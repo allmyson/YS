@@ -10,12 +10,18 @@ import android.widget.RelativeLayout;
 import com.ys.game.R;
 import com.ys.game.adapter.WinnerFragmentAdapter;
 import com.ys.game.base.BaseActivity;
+import com.ys.game.bean.GameBean;
+import com.ys.game.dialog.DialogUtil;
+import com.ys.game.dialog.List3Dialog;
 import com.ys.game.fragment.WinnerJLFragment;
 import com.ys.game.fragment.WinnerTZFragment;
+import com.ys.game.sp.GameSP;
 import com.ys.game.ui.LhViewPager;
+import com.ys.game.util.YS;
 
 import java.util.ArrayList;
 import java.util.List;
+
 //最后的胜利者
 public class WinnerActivity extends BaseActivity {
     private RelativeLayout backRL;
@@ -39,11 +45,11 @@ public class WinnerActivity extends BaseActivity {
         vp.setAdapter(mAdapter);
         vp.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(vp);
+        getView(R.id.iv_right).setOnClickListener(this);
     }
 
     @Override
     public void getData() {
-
     }
 
     @Override
@@ -52,9 +58,29 @@ public class WinnerActivity extends BaseActivity {
             case R.id.rl_back:
                 finish();
                 break;
+            case R.id.iv_right:
+                DialogUtil.showGameList(mContext, YS.TYPE_ZHDSLZ, new List3Dialog.ClickListener() {
+                    @Override
+                    public void click(int type) {
+                        if (type == YS.TYPE_ZHDSLZ) {
+                            WinnerActivity.toWinner(mContext);
+                        } else {
+                            CqsscActivity.intentToSSC(mContext, type);
+                        }
+                        addBean(type);
+                        finish();
+                    }
+                });
+                break;
         }
     }
 
+    private void addBean(int type) {
+        GameBean gameBean = new GameBean();
+        gameBean.type = type;
+        gameBean.time = System.currentTimeMillis();
+        GameSP.add(mContext, gameBean);
+    }
 
     private List<Fragment> getList() {
         List<Fragment> list = new ArrayList<>();
@@ -63,8 +89,9 @@ public class WinnerActivity extends BaseActivity {
         return list;
     }
 
-    public static void toWinner(Context context){
-        Intent intent = new Intent(context,WinnerActivity.class);
+    public static void toWinner(Context context) {
+        Intent intent = new Intent(context, WinnerActivity.class);
         context.startActivity(intent);
     }
+
 }

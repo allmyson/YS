@@ -308,6 +308,7 @@ public class CircleProgressBar extends View {
 
     public void setPercent(String percent) {
         this.percent = percent;
+        invalidate();
     }
 
     public void setColor(int firstColor, int secondColor) {

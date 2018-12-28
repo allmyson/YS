@@ -112,6 +112,7 @@ public class List3Dialog extends LhDialogFragment {
             WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
             attributes.gravity = Gravity.TOP | Gravity.RIGHT;//对齐方式
 //            attributes.width = DensityUtil.dp2px(getContext(),100);
+            attributes.x = DensityUtil.dp2px(getContext(), 10);
             attributes.y = DensityUtil.dp2px(getContext(), 50);//具体头部距离
             dialog.getWindow().setAttributes(attributes);
             dialog.getWindow().setLayout((int) (dm.widthPixels * 0.5), ViewGroup.LayoutParams

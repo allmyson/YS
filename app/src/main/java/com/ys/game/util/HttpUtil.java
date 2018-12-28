@@ -183,4 +183,17 @@ public class HttpUtil {
         String url = YS.TEAM_JL + "?userId=" + userId + "&recordTypeCode=" + type + "&start=1&length=" + YS.LENGTH;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
+
+    /**
+     * 获取最后的胜利者数据
+     *
+     * @param context
+     * @param userId
+     * @param httpListener
+     */
+    public static void getWinnerData(Context context, String userId, HttpListener<String> httpListener) {
+        String url = YS.WINNER_DATA + "?userId=" + userId;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
+
 }

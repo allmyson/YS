@@ -3,6 +3,9 @@ package com.ys.game.adapter;
 import android.content.Context;
 import android.graphics.Color;
 
+import com.ys.game.R;
+import com.ys.game.util.StringUtil;
+
 import java.util.List;
 
 /**
@@ -19,8 +22,8 @@ public class MySNAdapter extends CommonAdapter<String> {
 
     @Override
     public void convert(ViewHolder helper, String item, int position) {
-
-        int raw = (position + 1) / 5;
+        helper.setText(R.id.tv_, StringUtil.valueOf(item));
+        int raw = (position + 6) / 5;
         int yushu = (position + 1) % 5;
         if (yushu != 0) {
             raw += 1;
@@ -30,5 +33,6 @@ public class MySNAdapter extends CommonAdapter<String> {
         } else {
             helper.getConvertView().setBackgroundColor(Color.parseColor("#faf6f5"));
         }
+
     }
 }

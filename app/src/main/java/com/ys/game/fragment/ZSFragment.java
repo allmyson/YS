@@ -133,17 +133,21 @@ public class ZSFragment extends BaseFragment implements View.OnClickListener, Ra
      * @param fragment
      */
     private void showFragment(BaseZSFragment fragment) {
-        if (currentFragment != fragment) {
-            FragmentTransaction transaction = manager.beginTransaction();
-            if (currentFragment != null) {
-                transaction.hide(currentFragment);
+        try {
+            if (currentFragment != fragment) {
+                FragmentTransaction transaction = manager.beginTransaction();
+                if (currentFragment != null) {
+                    transaction.hide(currentFragment);
+                }
+                currentFragment = fragment;
+                if (!fragment.isAdded()) {
+                    transaction.add(R.id.fl_parent, fragment).show(fragment).commitAllowingStateLoss();
+                } else {
+                    transaction.show(fragment).commitAllowingStateLoss();
+                }
             }
-            currentFragment = fragment;
-            if (!fragment.isAdded()) {
-                transaction.add(R.id.fl_parent, fragment).show(fragment).commitAllowingStateLoss();
-            } else {
-                transaction.show(fragment).commitAllowingStateLoss();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

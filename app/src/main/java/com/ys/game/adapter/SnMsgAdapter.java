@@ -3,6 +3,7 @@ package com.ys.game.adapter;
 import android.content.Context;
 
 import com.ys.game.R;
+import com.ys.game.util.StringUtil;
 
 import java.util.List;
 
@@ -20,6 +21,6 @@ public class SnMsgAdapter extends CommonAdapter<String> {
 
     @Override
     public void convert(ViewHolder helper, String item, int position) {
-        helper.setText(R.id.tv_sn_msg,"【购买通知】  玩家ysapp9821于17:28:50成功购买了SN，购买编号为SN106。");
+        helper.setText(R.id.tv_sn_msg, "【购买通知】  " + StringUtil.valueOf(item));
     }
 }
