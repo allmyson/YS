@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -18,6 +19,7 @@ import com.ys.game.R;
 import com.ys.game.adapter.MySNAdapter;
 import com.ys.game.adapter.SnMsgAdapter;
 import com.ys.game.base.BaseFragment;
+import com.ys.game.bean.BaseBean;
 import com.ys.game.bean.WinnerBean;
 import com.ys.game.dialog.DialogUtil;
 import com.ys.game.http.HttpListener;
@@ -30,7 +32,9 @@ import com.ys.game.util.StringUtil;
 import com.ys.game.util.YS;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lh
@@ -63,8 +67,13 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
             "6，若 SN 卖到 500 个币时，游戏结束，即当玩家花 500 币买到最后一个 SN，游戏结束，该玩家将获得奖池金额的 30% \n" +
             "7，作为激励，将诞生一个随机大奖，金额为奖池的 15%，奖励规则是游戏结束后所有已购买的 SN 号中随机抽取一个做为中奖号 \n" +
             "8，所有奖金（个人返利、最后胜利者、激励奖）将会在该期游戏结束后，系统自动结算后统一发放 ";
+    private Button tzBtn;
+    private String currentQ;
+    private String currentSNPrice;
     @Override
     protected void init() {
+        tzBtn = getView(R.id.btn_tz);
+        tzBtn.setOnClickListener(this);
         tipRL = getView(R.id.rl_tip);
         tipRL.setOnClickListener(this);
         srl = (SwipeRefreshLayout) mView.findViewById(R.id.srl);
@@ -148,6 +157,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                 if (winnerBean != null && YS.SUCCESE.equals(winnerBean.code) && winnerBean.data != null) {
                     totalCPB.setPercent(StringUtil.valueOf(winnerBean.data.totleMoney));
                     totalCPB.setProgress(80, true);
+                    currentSNPrice = winnerBean.data.snprice;
                     priceCPB.setPercent(StringUtil.valueOf(winnerBean.data.snprice));
                     priceCPB.setProgress(50, true);
                     fhTV.setText(StringUtil.valueOf(winnerBean.data.earnMoney));
@@ -159,6 +169,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                     }
                     yueTV.setText("可用余额:" + winnerBean.data.freeMoney + YS.UNIT);
                     buyMoneyTV.setText("购买需支付:" + winnerBean.data.snprice + YS.UNIT);
+                    currentQ = winnerBean.data.periodNum;
                 }
                 mySNAdapter.refresh(mySNList);
                 snMsgAdapter.refresh(msgList);
@@ -183,6 +194,34 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
             case R.id.rl_tip:
                 DialogUtil.showTip(mContext, text);
                 break;
+            case R.id.btn_tz:
+                tz();
+                break;
         }
+    }
+    private void tz() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("periodsNum", currentQ);//期数
+        map.put("gameCode", 1002);//游戏类型
+        map.put("lotteryTypeCode", "");
+        map.put("complantTypeCode", 1000);//手动下注
+        map.put("snmoney", currentSNPrice);//当前SN价格
+        String json = new Gson().toJson(map);
+        HttpUtil.tz(mContext, json, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                BaseBean baseBean = new Gson().fromJson(response.get(), BaseBean.class);
+                if (baseBean != null && YS.SUCCESE.equals(baseBean.code)) {
+                    show("投注成功！");
+                    getMainData();
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        });
     }
 }

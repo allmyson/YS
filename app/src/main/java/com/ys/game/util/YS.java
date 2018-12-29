@@ -59,6 +59,8 @@ public class YS {
     public static final String TEAM_JL = IP + "/appService/listTeamRecords";
     //胜利者数据
     public static final String WINNER_DATA = IP + "/appService/lastWinnerDetail";
+    //查询投注记录
+    public static final String TZJL_WINNER = IP + "/appService/getSelfRecordList";
 
 
     public static GlideUrl getGlideUrl(Context context, String url) {

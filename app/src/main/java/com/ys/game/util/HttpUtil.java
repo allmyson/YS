@@ -196,4 +196,14 @@ public class HttpUtil {
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
 
+    /**
+     * 查询最后的胜利者投注记录
+     *
+     * @param context
+     * @param httpListener
+     */
+    public static void getWinnerTZJL(Context context, String userId, HttpListener<String> httpListener) {
+        String url = YS.TZJL_WINNER + "?userId=" + userId + "&gameTypeCode=1002&start=1&length=" + YS.LENGTH;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
 }

@@ -179,6 +179,17 @@ public class StringUtil {
         return f1;
     }
 
+    /**
+     * 四舍五入保留两位小数
+     * @param data
+     * @return
+     */
+    public static double StringToDoubleTwo(String data) {
+        double result = StringToDouble(data);
+        BigDecimal b = new BigDecimal(result);
+        double f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return f1;
+    }
     public static double StringToDouble(String data) {
         try {
             if (data == null || "".equals(data)) {
