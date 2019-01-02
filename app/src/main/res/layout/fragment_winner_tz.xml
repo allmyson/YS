@@ -36,11 +36,11 @@
                         android:layout_height="wrap_content"
                     >
                         <TextView
+                            android:id="@+id/tv_tip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:maxLines="1"
-                            android:text="第003期倒计时"
                             android:textColor="@color/textcolor1"/>
                         <RelativeLayout
                             android:id="@+id/rl_tip"
@@ -57,9 +57,9 @@
                         </RelativeLayout>
                     </RelativeLayout>
                     <TextView
+                        android:id="@+id/tv_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="00:50:46"
                         android:textColor="@color/main_color"
                         android:textSize="20sp"/>
                 </LinearLayout>
