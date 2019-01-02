@@ -32,8 +32,13 @@ public class WinnerTzjlAdapter extends CommonAdapter<WinnerTZJL.DataBeanX.DataBe
             helper.setImageResource(R.id.iv_, R.mipmap.ic_slz);
         }
         helper.setText(R.id.tv_name, StringUtil.valueOf(item.game_name));
-        helper.setText(R.id.tv_qs, StringUtil.valueOf(item.periods_num).substring(4));
-        helper.setText(R.id.tv_money, "" + StringUtil.StringToDoubleTwo(item.bets_money)+ YS.UNIT);
+        String num = StringUtil.valueOf(item.periods_num);
+        if (!StringUtil.isBlank(num) && num.length() > 4) {
+            helper.setText(R.id.tv_qs, StringUtil.valueOf(item.periods_num).substring(4));
+        } else {
+            helper.setText(R.id.tv_qs, StringUtil.valueOf(item.periods_num));
+        }
+        helper.setText(R.id.tv_money, "" + StringUtil.StringToDoubleTwo(item.bets_money) + YS.UNIT);
         if ("1000".equals(item.is_win_code)) {
 //            helper.setText(R.id.tv_isZJ, "已中奖");
             helper.setText(R.id.tv_isZJ, StringUtil.StringToDoubleTwo(item.win_money) + YS.UNIT);

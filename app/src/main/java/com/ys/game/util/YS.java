@@ -29,7 +29,7 @@ public class YS {
     public static final String FAIL = "FAIL";
 
 
-    //    public static final String IP = "http://148.163.169.41:8090";
+//        public static final String IP = "http://148.163.169.41:8090";
     public static final String IP = "http://103.65.180.104:8090";
     //登录
     public static final String LOGIN = IP + "/appService/loginForApp";
@@ -61,6 +61,8 @@ public class YS {
     public static final String WINNER_DATA = IP + "/appService/lastWinnerDetail";
     //查询投注记录
     public static final String TZJL_WINNER = IP + "/appService/getSelfRecordList";
+    //最后的胜利者信息
+    public static final String WINNER_INFO = IP + "/appService/getSlzGameInfo";
 
 
     public static GlideUrl getGlideUrl(Context context, String url) {

@@ -206,4 +206,16 @@ public class HttpUtil {
         String url = YS.TZJL_WINNER + "?userId=" + userId + "&gameTypeCode=1002&start=1&length=" + YS.LENGTH;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
+
+
+    /**
+     * 查询最后的胜利者时间信息
+     *
+     * @param context
+     * @param httpListener
+     */
+    public static void getWinnerInfo(Context context, String periodsNum, HttpListener<String> httpListener) {
+        String url = YS.WINNER_INFO + "?periodsNum=" + periodsNum;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
 }
