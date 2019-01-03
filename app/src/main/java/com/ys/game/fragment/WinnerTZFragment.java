@@ -28,11 +28,13 @@ import com.ys.game.http.HttpListener;
 import com.ys.game.sp.UserSP;
 import com.ys.game.ui.CircleProgressBar;
 import com.ys.game.ui.MyGridView;
+import com.ys.game.util.DateUtil;
 import com.ys.game.util.HttpUtil;
 import com.ys.game.util.L;
 import com.ys.game.util.StringUtil;
 import com.ys.game.util.YS;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,9 +77,11 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
     private String currentSNPrice;
     private TextView tipTV, timeTV;
     private long currentTimeByServer = 0;//服务器返回的游戏期数的结束时间或者下一期的开始时间
+    private SimpleDateFormat formatter;
 
     @Override
     protected void init() {
+        formatter = new SimpleDateFormat("HH:mm:ss");//初始化Formatter的转换格式。
         tipTV = getView(R.id.tv_tip);
         timeTV = getView(R.id.tv_time);
         tzBtn = getView(R.id.btn_tz);
@@ -252,9 +256,12 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                         }
                         if ("1000".equals(winnerInfo.data.lastGame.gameStatusCode)) {
                             //未开始
+                            tipTV.setText("第" + periodNum + "期开始倒计时");
+                            currentTimeByServer = DateUtil.changeTimeToLong(winnerInfo.data.lastGame.gameStartTime);
                         } else if ("1001".equals(winnerInfo.data.lastGame.gameStatusCode)) {
                             //进行中
                             tipTV.setText("第" + periodNum + "期开奖倒计时");
+                            currentTimeByServer = DateUtil.changeTimeToLong(winnerInfo.data.lastGame.expectEndTime);
                         } else {
                             //等待开奖或者已经结束
                             if (winnerInfo.data.nextGame != null) {
@@ -262,9 +269,11 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                                 if (StringUtil.isBlank(nextPeriodNum) && nextPeriodNum.length() > 4) {
                                     nextPeriodNum = nextPeriodNum.substring(4);
                                 }
-                                tipTV.setText("第" + nextPeriodNum + "期开奖倒计时");
+                                tipTV.setText("第" + nextPeriodNum + "期开始倒计时");
+                                currentTimeByServer = DateUtil.changeTimeToLong(winnerInfo.data.nextGame.gameStartTime);
                             }
                         }
+                        start();
                     }
                 }
             }
@@ -283,7 +292,15 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
         countDownTimer = new CountDownTimer(600 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-
+                long dfferenceTime = currentTimeByServer - System.currentTimeMillis();
+                String hms = "00:00:00";
+                if (dfferenceTime < 0) {
+                    dfferenceTime = -dfferenceTime;
+                    hms = "-" + formatter.format(dfferenceTime);
+                } else {
+                    hms = formatter.format(dfferenceTime);
+                }
+                timeTV.setText(hms);
             }
 
             @Override
