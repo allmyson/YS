@@ -83,14 +83,16 @@ public class Dhzs_5xFragment extends BaseZSFragment {
         List<String> nameList100 = new ArrayList<>();
         List<String> nameList50 = new ArrayList<>();
         List<String> nameList30 = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (i <= 30) {
-                nameList30.add(list.get(i).periodsNum);
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                if (i <= 30) {
+                    nameList30.add(list.get(i).periodsNum);
+                }
+                if (i <= 50) {
+                    nameList50.add(list.get(i).periodsNum);
+                }
+                nameList100.add(list.get(i).periodsNum);
             }
-            if (i <= 50) {
-                nameList50.add(list.get(i).periodsNum);
-            }
-            nameList100.add(list.get(i).periodsNum);
         }
 
         if (list100.size() <= 50) {

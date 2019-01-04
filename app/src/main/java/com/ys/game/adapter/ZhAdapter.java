@@ -3,6 +3,7 @@ package com.ys.game.adapter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ public class ZhAdapter extends CommonAdapter<ZhBean> {
     private List<Boolean> checkList;
     private CheckListener checkListener;
     private List<Integer> bsList;
+    private int index = -1;
 
     public ZhAdapter(Context context, List<ZhBean> mDatas, int itemLayoutId) {
         super(context, mDatas, itemLayoutId);
@@ -41,17 +43,20 @@ public class ZhAdapter extends CommonAdapter<ZhBean> {
 
     @Override
     public void refresh(List<ZhBean> mDatas) {
+        index = -1;
+        this.mDatas = mDatas;
         checkList = new ArrayList<>();
         bsList = new ArrayList<>();
         for (ZhBean zhBean : mDatas) {
             checkList.add(true);
             bsList.add(zhBean.bs);
         }
-        super.refresh(mDatas);
+        notifyDataSetChanged();
     }
 
     @Override
-    public void convert(ViewHolder helper, ZhBean item, final int position) {
+    public void convert(final ViewHolder helper, final ZhBean item, final int position) {
+        index=-1;
         helper.setText(R.id.tv_position, (position + 1) + "");
         LinearLayout topLL = helper.getView(R.id.ll_top);
         if (position == 0) {
@@ -84,6 +89,16 @@ public class ZhAdapter extends CommonAdapter<ZhBean> {
             }
         });
         final EditText bsET = helper.getView(R.id.et_qsbs);
+        bsET.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    index = position;
+//                    Toast.makeText(mContext,"index="+index,1).show();
+                }
+                return false;
+            }
+        });
         bsET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -92,18 +107,32 @@ public class ZhAdapter extends CommonAdapter<ZhBean> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                //如果该edittext有默认内容，还要在if那里进行过滤
+                if (index >= 0 && s.length() > 0 && index == position) {
+                    bsList.set(index, StringUtil.StringToInt(s.toString()));
+//                    helper.setText(R.id.et_qsbs, StringUtil.valueOf(bsList.get(position)));
+                    helper.setText(R.id.tv_totalPrice, "" + item.zhushu * item.price * bsList.get(position));
+                    if (checkListener != null) {
+                        checkListener.check(position);
+                    }
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                bsList.set(position, StringUtil.StringToInt(bsET.getText().toString().trim()));
-                notifyDataSetChanged();
-                if (checkListener != null) {
-                    checkListener.check(position);
-                }
+//                bsList.set(position, StringUtil.StringToInt(bsET.getText().toString().trim()));
+//                mDatas.get(position).bs = StringUtil.StringToInt(bsET.getText().toString().trim());
+//                notifyDataSetChanged();
+//                if (checkListener != null) {
+//                    checkListener.check(position);
+//                }
             }
         });
+        bsET.clearFocus();
+        if (index != -1 && index == position) {
+            bsET.requestFocus();
+        }
+        bsET.setSelection(bsET.getText().length());
     }
 
     public interface CheckListener {

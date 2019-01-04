@@ -163,80 +163,85 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void getTZJL() {
-        HttpUtil.getTZJL(mContext, userId, 1, YS.LENGTH, new HttpListener<String>() {
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                try {
-                    allList.clear();
-                    List<TzjlBean.DataBeanX.DataBean> tempList = new ArrayList<>();
-                    TzjlBean bean = new Gson().fromJson(response.get(), TzjlBean.class);
-                    if (bean != null && YS.SUCCESE.equals(bean.code) && bean.data != null && bean.data.data != null &&
-                            bean.data.data.size() > 0) {
-                        for (int i = 0; i < bean.data.data.size(); i++) {
-                            if (((CqsscActivity) getActivity()).getType() == StringUtil.StringToInt(bean.data.data
-                                    .get(i).game_code) && currentType == StringUtil.StringToInt(bean.data.data.get(i)
-                                    .complant_type_code)) {
-                                tempList.add(bean.data.data.get(i));
-                            }
-                        }
-                    }
-                    //分组
-                    Map<String, List<TzjlBean.DataBeanX.DataBean>> map = new HashMap<>();
-                    List<TzjlBean.DataBeanX.DataBean> listTmp;
-                    for (TzjlBean.DataBeanX.DataBean val : tempList) {
-                        listTmp = map.get(val.periods_num);
-                        if (null == listTmp) {
-                            listTmp = new ArrayList<>();
-                            map.put(val.periods_num, listTmp);
-                        }
-                        listTmp.add(val);
-                    }
-                    for (String key : map.keySet()) {
-                        List<TzjlBean.DataBeanX.DataBean> list = map.get(key);
-                        TzjlBean.DataBeanX.DataBean dataBean = new TzjlBean.DataBeanX.DataBean();
-                        dataBean.periods_num = key;
-                        if (list != null && list.size() > 0) {
-                            dataBean.complant_type_name = list.get(0).complant_type_name;
-                            dataBean.game_name = list.get(0).game_name;
-                            dataBean.lottery_type_code = list.get(0).game_code;
-                            dataBean.bets_time = list.get(0).bets_time;
-                            dataBean.complant_type_code = list.get(0).complant_type_code;
-                            double betMoney = 0;
-                            double winMoney = 0;
-                            for (TzjlBean.DataBeanX.DataBean data : list) {
-                                betMoney += StringUtil.StringToDouble(data.bets_money);
-                                winMoney += StringUtil.StringToDouble(data.win_money);
-                            }
-                            dataBean.bets_money = StringUtil.valueOf(betMoney);
-                            dataBean.win_money = StringUtil.valueOf(winMoney);
-                            if ("1002".equals(list.get(0).is_win_code)) {
-                                dataBean.is_win_code = list.get(0).is_win_code;
-                                dataBean.is_win_name = list.get(0).is_win_name;
-                            } else {
-                                if (winMoney == 0) {
-                                    dataBean.is_win_code = "1001";
-                                    dataBean.is_win_name = "未中奖";
-                                } else {
-                                    dataBean.is_win_code = "1000";
-                                    dataBean.is_win_name = "中奖";
+        HttpUtil.getTZJL(mContext, userId, "" + ((CqsscActivity) getActivity()).getType(), "" + currentType, 1, YS
+                        .LENGTH,
+                new HttpListener<String>() {
+                    @Override
+                    public void onSucceed(int what, Response<String> response) {
+                        try {
+                            allList.clear();
+                            List<TzjlBean.DataBeanX.DataBean> tempList = new ArrayList<>();
+                            TzjlBean bean = new Gson().fromJson(response.get(), TzjlBean.class);
+                            if (bean != null && YS.SUCCESE.equals(bean.code) && bean.data != null && bean.data.data
+                                    != null &&
+                                    bean.data.data.size() > 0) {
+                                for (int i = 0; i < bean.data.data.size(); i++) {
+                                    if (((CqsscActivity) getActivity()).getType() == StringUtil.StringToInt(bean.data
+                                            .data
+                                            .get(i).game_code) && currentType == StringUtil.StringToInt(bean.data
+                                            .data.get(i)
+                                            .complant_type_code)) {
+                                        tempList.add(bean.data.data.get(i));
+                                    }
                                 }
                             }
+                            //分组
+                            Map<String, List<TzjlBean.DataBeanX.DataBean>> map = new HashMap<>();
+                            List<TzjlBean.DataBeanX.DataBean> listTmp;
+                            for (TzjlBean.DataBeanX.DataBean val : tempList) {
+                                listTmp = map.get(val.periods_num);
+                                if (null == listTmp) {
+                                    listTmp = new ArrayList<>();
+                                    map.put(val.periods_num, listTmp);
+                                }
+                                listTmp.add(val);
+                            }
+                            for (String key : map.keySet()) {
+                                List<TzjlBean.DataBeanX.DataBean> list = map.get(key);
+                                TzjlBean.DataBeanX.DataBean dataBean = new TzjlBean.DataBeanX.DataBean();
+                                dataBean.periods_num = key;
+                                if (list != null && list.size() > 0) {
+                                    dataBean.complant_type_name = list.get(0).complant_type_name;
+                                    dataBean.game_name = list.get(0).game_name;
+                                    dataBean.lottery_type_code = list.get(0).game_code;
+                                    dataBean.bets_time = list.get(0).bets_time;
+                                    dataBean.complant_type_code = list.get(0).complant_type_code;
+                                    double betMoney = 0;
+                                    double winMoney = 0;
+                                    for (TzjlBean.DataBeanX.DataBean data : list) {
+                                        betMoney += StringUtil.StringToDouble(data.bets_money);
+                                        winMoney += StringUtil.StringToDouble(data.win_money);
+                                    }
+                                    dataBean.bets_money = StringUtil.valueOf(betMoney);
+                                    dataBean.win_money = StringUtil.valueOf(winMoney);
+                                    if ("1002".equals(list.get(0).is_win_code)) {
+                                        dataBean.is_win_code = list.get(0).is_win_code;
+                                        dataBean.is_win_name = list.get(0).is_win_name;
+                                    } else {
+                                        if (winMoney == 0) {
+                                            dataBean.is_win_code = "1001";
+                                            dataBean.is_win_name = "未中奖";
+                                        } else {
+                                            dataBean.is_win_code = "1000";
+                                            dataBean.is_win_name = "中奖";
+                                        }
+                                    }
+                                }
+                                allList.add(dataBean);
+                            }
+                            Collections.sort(allList);
+                            selectData();
+                            srl.setRefreshing(false);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        allList.add(dataBean);
                     }
-                    Collections.sort(allList);
-                    selectData();
-                    srl.setRefreshing(false);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
 
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                srl.setRefreshing(false);
-            }
-        });
+                    @Override
+                    public void onFailed(int what, Response<String> response) {
+                        srl.setRefreshing(false);
+                    }
+                });
     }
 
     private void selectData() {

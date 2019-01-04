@@ -52,15 +52,37 @@ public class HttpUtil {
 
 
     /**
+     * 消费记录
+     *
      * @param context
      * @param userId
      * @param start
      * @param length
      * @param httpListener
      */
-    public static void getTZJL(Context context, String userId, int start, int length, HttpListener<String>
+    public static void getXFJL(Context context, String userId, int start, int length, HttpListener<String>
             httpListener) {
         String url = YS.TZJL + "?userId=" + userId + "&start=" + start + "&length=" + length;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
+
+    /**
+     * 获取投注记录
+     * @param context
+     * @param userId
+     * @param gameTypeCode
+     * @param complantTypeCode
+     * @param start
+     * @param length
+     * @param httpListener
+     */
+    public static void getTZJL(Context context, String userId, String gameTypeCode, String complantTypeCode, int
+            start, int length,
+                               HttpListener<String>
+                                       httpListener) {
+        String url = YS.TZJL_WINNER + "?userId=" + userId + "&recordTypeCode=1001&gameTypeCode=" + gameTypeCode +
+                "&complantTypeCode=" + complantTypeCode + "&start="
+                + start + "&length=" + length;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
 
@@ -109,8 +131,7 @@ public class HttpUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String url = YS.KH + "?consumerName=" + consumerName + "&loginName=" + loginName + "&pwd=" + Md5Util
-                .getMD5String(psd) + "&backNum=" + fd + "&userId=" + userId;
+        String url = YS.KH + "?consumerName=" + consumerName + "&loginName=" + loginName + "&pwd=" + psd + "&backNum=" + fd + "&userId=" + userId;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
 

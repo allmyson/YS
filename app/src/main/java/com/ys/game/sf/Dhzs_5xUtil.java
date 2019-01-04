@@ -137,9 +137,9 @@ public class Dhzs_5xUtil {
                     total += ylList.get(i).get(j).length();
                 }
                 int x;
-                if(ylList.get(i).size()==0){
-                    x=0;
-                }else {
+                if (ylList.get(i).size() == 0) {
+                    x = 0;
+                } else {
                     x = total / ylList.get(i).size();
                 }
                 resultList.add(x);
@@ -265,6 +265,9 @@ public class Dhzs_5xUtil {
 
     public static List<List<Dhzs_5xBean>> getFinalData(List<List<Integer>> list, List<String> nameList) {
         List<List<Dhzs_5xBean>> result = new ArrayList<>();
+        if (list == null || list.size() == 0) {
+            return result;
+        }
         for (int k = 0; k < list.size(); k++) {
             List<Dhzs_5xBean> temp = new ArrayList<>();
             List<Integer> ll = list.get(k);

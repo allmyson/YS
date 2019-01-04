@@ -23,14 +23,16 @@ public abstract class BaseZSFragment extends BaseFragment {
 
     protected List<List<Integer>> getBaseList(List<ResultBean.DataBean> list) {
         List<List<Integer>> result = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) != null && !StringUtil.isBlank(list.get(i).lotteryNum)) {
-                String[] ss = list.get(i).lotteryNum.split(",");
-                List<Integer> list1 = new ArrayList<>();
-                for (String s : ss) {
-                    list1.add(StringUtil.StringToInt(s));
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i) != null && !StringUtil.isBlank(list.get(i).lotteryNum)) {
+                    String[] ss = list.get(i).lotteryNum.split(",");
+                    List<Integer> list1 = new ArrayList<>();
+                    for (String s : ss) {
+                        list1.add(StringUtil.StringToInt(s));
+                    }
+                    result.add(list1);
                 }
-                result.add(list1);
             }
         }
         return result;
