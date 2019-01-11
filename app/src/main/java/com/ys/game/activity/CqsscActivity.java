@@ -1,7 +1,9 @@
 package com.ys.game.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.ys.game.fragment.TZFragment;
 import com.ys.game.fragment.ZSFragment;
 import com.ys.game.sp.GameSP;
 import com.ys.game.ui.LhViewPager;
+import com.ys.game.util.L;
 import com.ys.game.util.YS;
 
 import java.util.ArrayList;
@@ -42,6 +45,7 @@ public class CqsscActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        regist();
         type = getIntent().getIntExtra("type", YS.TYPE_CQSSC);
         logoIV = getView(R.id.iv_logo);
         logoIV.setOnClickListener(this);
@@ -119,5 +123,33 @@ public class CqsscActivity extends BaseActivity {
         gameBean.type = type;
         gameBean.time = System.currentTimeMillis();
         GameSP.add(mContext, gameBean);
+    }
+
+    private TZSuccReceiver tzSuccReceiver;
+
+    private class TZSuccReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            L.e("收到TZFragment的投注成功广播！");
+            ((JLFragment) mAdapter.getItem(2)).refresh();
+        }
+    }
+
+    private void regist() {
+        IntentFilter intentFilter = new IntentFilter(YS.ACTION_TZ_SUCCESS);
+        tzSuccReceiver = new TZSuccReceiver();
+        registerReceiver(tzSuccReceiver, intentFilter);
+    }
+
+    private void unRegist() {
+        if (tzSuccReceiver != null) {
+            unregisterReceiver(tzSuccReceiver);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unRegist();
     }
 }

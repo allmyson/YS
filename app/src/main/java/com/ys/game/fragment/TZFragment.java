@@ -1,5 +1,6 @@
 package com.ys.game.fragment;
 
+import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
@@ -289,7 +290,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
 //                money, zhu);
         String moneyZhu = String.format("共<font color=\"#fc6a44\">%s</font>注\t\t<font color=\"#fc6a44\">%s</font>" +
                         YS.UNIT,
-                zhu, Double.valueOf(money * zhu * bei));
+                zhu, StringUtil.StringToDoubleStr(Double.valueOf(money * zhu * bei)));
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             moneyZhuTV.setText(Html.fromHtml(moneyZhu, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -298,7 +299,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     }
 
     private void setYue(double money) {
-        String yue = String.format("可用余额:<font color=\"#fc6a44\">%s</font>" + YS.UNIT, money);
+        String yue = String.format("可用余额:<font color=\"#fc6a44\">%s</font>" + YS.UNIT, StringUtil.StringToDoubleStr(money));
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             yueTV.setText(Html.fromHtml(yue, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -307,7 +308,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
     }
 
     private void setBuyMoney(double money) {
-        String buyMoney = String.format("购买需支付:<font color=\"#fc6a44\">%s</font>" + YS.UNIT, money);
+        String buyMoney = String.format("购买需支付:<font color=\"#fc6a44\">%s</font>" + YS.UNIT,StringUtil.StringToDoubleStr(money));
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             buyMoneyTV.setText(Html.fromHtml(buyMoney, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -341,6 +342,7 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
                 BaseBean baseBean = new Gson().fromJson(response.get(), BaseBean.class);
                 if (baseBean != null && YS.SUCCESE.equals(baseBean.code)) {
                     show("投注成功！");
+                    sendMsg();//刷新投注记录
                 }
             }
 
@@ -597,5 +599,10 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
                 srl.setRefreshing(false);
             }
         });
+    }
+
+    private void sendMsg(){
+        Intent intent = new Intent(YS.ACTION_TZ_SUCCESS);
+        getActivity().sendBroadcast(intent);
     }
 }

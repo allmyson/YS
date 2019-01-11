@@ -265,4 +265,5 @@ public class DialogUtil {
 //        ft.commitAllowingStateLoss();
         return newFragment;
     }
+
 }

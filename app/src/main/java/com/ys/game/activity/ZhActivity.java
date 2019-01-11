@@ -331,7 +331,7 @@ public class ZhActivity extends BaseActivity {
         String text = String.format("已选<font color=\"#fc6a44\">%s</font>期,共<font " +
                         "color=\"#fc6a44\">%s</font>" + YS.UNIT + "\t\t\t可用余额：<font color=\"#fc6a44\">%s</font>" + YS
                         .UNIT,
-                list.size(), sum, money);
+                list.size(), StringUtil.StringToDoubleStr(sum), StringUtil.StringToDoubleStr(money));
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             tipTV.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
         } else {

@@ -67,7 +67,7 @@ public class ZhAdapter extends CommonAdapter<ZhBean> {
         helper.setText(R.id.tv_qs, StringUtil.valueOf(item.qs));
         helper.setText(R.id.tv_time, "截止时间:" + DateUtil.getLongDate2(item.time));
         helper.setText(R.id.et_qsbs, StringUtil.valueOf(bsList.get(position)));
-        helper.setText(R.id.tv_totalPrice, "" + item.zhushu * item.price * bsList.get(position));
+        helper.setText(R.id.tv_totalPrice, StringUtil.StringToDoubleStr("" + item.zhushu * item.price * bsList.get(position)));
         ImageView iv = helper.getView(R.id.iv_check);
         if (checkList.get(position)) {
             iv.setVisibility(View.VISIBLE);
@@ -111,7 +111,7 @@ public class ZhAdapter extends CommonAdapter<ZhBean> {
                 if (index >= 0 && s.length() > 0 && index == position) {
                     bsList.set(index, StringUtil.StringToInt(s.toString()));
 //                    helper.setText(R.id.et_qsbs, StringUtil.valueOf(bsList.get(position)));
-                    helper.setText(R.id.tv_totalPrice, "" + item.zhushu * item.price * bsList.get(position));
+                    helper.setText(R.id.tv_totalPrice, StringUtil.StringToDoubleStr("" + item.zhushu * item.price * bsList.get(position)));
                     if (checkListener != null) {
                         checkListener.check(position);
                     }

@@ -52,4 +52,10 @@ public class JLFragment extends BaseFragment {
         list.add(TzjlFragment.newInstance(TzjlFragment.TYPE_ZH));
         return list;
     }
+
+    public void refresh(){
+//        show("JLFragment刷新");
+        ((TzjlFragment) mAdapter.getItem(0)).onRefresh();
+        ((TzjlFragment) mAdapter.getItem(1)).onRefresh();
+    }
 }

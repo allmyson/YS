@@ -124,8 +124,8 @@ public class FourFragment extends BaseFragment implements View.OnClickListener, 
             nicknameTV.setText("昵称：" + StringUtil.valueOf(loginBean.data.consumerName));
             usernameTV.setText("用户名：" + StringUtil.valueOf(loginBean.data.loginName));
             fdTV.setText("返点：" + StringUtil.valueOf(loginBean.data.backNum));
-            yueTV.setText("" + StringUtil.StringToDouble(loginBean.data.balance) + "YB");
-            canTmoneyTV.setText("" + StringUtil.StringToDouble(loginBean.data.balance) + "YB");
+            yueTV.setText("" + StringUtil.StringToDoubleStr(loginBean.data.balance) + "YB");
+            canTmoneyTV.setText("" + StringUtil.StringToDoubleStr(loginBean.data.balance) + "YB");
             Glide.with(mContext).load(loginBean.data.consumerImg).error(R.mipmap.bg_head_default).into(headIV);
             if ("1000".equals(loginBean.data.levelCode)) {
                 //普通会员
@@ -198,8 +198,8 @@ public class FourFragment extends BaseFragment implements View.OnClickListener, 
                     nicknameTV.setText("昵称：" + StringUtil.valueOf(userInfo.data.consumerName));
                     usernameTV.setText("用户名：" + StringUtil.valueOf(userInfo.data.loginName));
                     fdTV.setText("返点：" + StringUtil.valueOf(userInfo.data.backNum));
-                    yueTV.setText("" + StringUtil.StringToDouble(userInfo.data.balance) + YS.UNIT);
-                    canTmoneyTV.setText("" + StringUtil.StringToDouble(userInfo.data.balance) + YS.UNIT);
+                    yueTV.setText("" + StringUtil.StringToDoubleStr(userInfo.data.balance) + YS.UNIT);
+                    canTmoneyTV.setText("" + StringUtil.StringToDoubleStr(userInfo.data.balance) + YS.UNIT);
                     Glide.with(mContext).load(YS.getGlideUrl(mContext,userInfo.data.consumerImg)).error(R.mipmap.bg_head_default).into(headIV);
 //                    BaseHttp.getInstance().loadImag(mContext, userInfo.data.consumerImg, new HttpListener<Bitmap>() {
 //                        @Override
@@ -217,9 +217,9 @@ public class FourFragment extends BaseFragment implements View.OnClickListener, 
 //                            headIV.setImageResource(R.mipmap.bg_head_default);
 //                        }
 //                    });
-                    jrczTV.setText(StringUtil.valueOf(userInfo.data.todayCz) + YS.UNIT);
-                    jrxfTV.setText(StringUtil.valueOf(userInfo.data.todayXf) + YS.UNIT);
-                    jrylTV.setText(StringUtil.valueOf(userInfo.data.todayYl) + YS.UNIT);
+                    jrczTV.setText(StringUtil.StringToDoubleStr(userInfo.data.todayCz) + YS.UNIT);
+                    jrxfTV.setText(StringUtil.StringToDoubleStr(userInfo.data.todayXf) + YS.UNIT);
+                    jrylTV.setText(StringUtil.StringToDoubleStr(userInfo.data.todayYl) + YS.UNIT);
                     levelTV.setText("会员等级:" + StringUtil.valueOf(userInfo.data.levelName));
                 }
                 srl.setRefreshing(false);

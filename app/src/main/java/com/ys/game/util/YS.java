@@ -14,7 +14,7 @@ import com.ys.game.sp.CookieSP;
  * @date 2018/11/26 17:53
  */
 public class YS {
-
+    public static final String ACTION_TZ_SUCCESS = "action_tz_success";
     public static final String UNIT = "YB";
     public static final int LENGTH = 1000;
     public static final int TYPE_CQSSC = 1000;//重庆时时彩
@@ -29,7 +29,7 @@ public class YS {
     public static final String FAIL = "FAIL";
 
 
-//        public static final String IP = "http://148.163.169.41:8090";
+    //        public static final String IP = "http://148.163.169.41:8090";
     public static final String IP = "http://103.65.180.104:8090";
     //登录
     public static final String LOGIN = IP + "/appService/loginForApp";

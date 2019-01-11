@@ -68,7 +68,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
             "3，第二个 SN 的购买者则需比上一个购买者多花一个币，即第二个需花 11 个币购买，记录为 SN002，且将拿出这 11 个币的 10%作为前面玩家的红利平均分配给前面所有玩家，拿出 11 个币的 " +
             "1%作为代理玩家的返点奖励，以此类推，直到游戏结束 \n" +
             "4，每个玩家每次只能买一个 SN,一局中购买次数不限 \n" +
-            "5，游戏以 12 小时作为结束倒计时，每买一个 SN，倒计时间增加 10 秒，游戏时间结束，最后一个卖到 SN 作为游戏最大胜利者将获得奖池金额的 30% \n" +
+            "5，游戏以 12 小时作为结束倒计时，每买一个 SN，倒计时间增加 10 秒，当游戏时间结束时，最后一个买到sn作为游戏最大胜利者将获得奖池金额的 30% \n" +
             "6，若 SN 卖到 500 个币时，游戏结束，即当玩家花 500 币买到最后一个 SN，游戏结束，该玩家将获得奖池金额的 30% \n" +
             "7，作为激励，将诞生一个随机大奖，金额为奖池的 15%，奖励规则是游戏结束后所有已购买的 SN 号中随机抽取一个做为中奖号 \n" +
             "8，所有奖金（个人返利、最后胜利者、激励奖）将会在该期游戏结束后，系统自动结算后统一发放 ";
@@ -78,9 +78,21 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
     private TextView tipTV, timeTV;
     private long currentTimeByServer = 0;//服务器返回的游戏期数的结束时间或者下一期的开始时间
     private SimpleDateFormat formatter;
+    private LinearLayout snListLL;
 
+
+    private LinearLayout currentDataLL;
+    private RelativeLayout buyRL;
+    private RelativeLayout showTipRL;
+    private TextView contentTV;
     @Override
     protected void init() {
+        contentTV = getView(R.id.tv_content);
+        showTipRL = getView(R.id.rl_showTip);
+        currentDataLL =  getView(R.id.ll_currentData);
+        buyRL = getView(R.id.rl_buy);
+        snListLL = getView(R.id.ll_snList);
+        snListLL.setOnClickListener(this);
         formatter = new SimpleDateFormat("HH:mm:ss");//初始化Formatter的转换格式。
         tipTV = getView(R.id.tv_tip);
         timeTV = getView(R.id.tv_time);
@@ -179,8 +191,8 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                     if (winnerBean.data.listRecord != null && winnerBean.data.listRecord.size() > 0) {
                         msgList.addAll(winnerBean.data.listRecord);
                     }
-                    yueTV.setText("可用余额:" + winnerBean.data.freeMoney + YS.UNIT);
-                    buyMoneyTV.setText("购买需支付:" + winnerBean.data.snprice + YS.UNIT);
+                    yueTV.setText("可用余额:" + StringUtil.StringToDoubleStr(winnerBean.data.freeMoney) + YS.UNIT);
+                    buyMoneyTV.setText("购买需支付:" + StringUtil.StringToDoubleStr(winnerBean.data.snprice) + YS.UNIT);
                     currentQ = winnerBean.data.periodNum;
                     getWinnerInfo(winnerBean.data.periodNum);
                 }
@@ -209,6 +221,9 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                 break;
             case R.id.btn_tz:
                 tz();
+                break;
+            case R.id.ll_snList:
+                DialogUtil.showProblem(mContext, mySNList, null);
                 break;
         }
     }
@@ -258,10 +273,18 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                             //未开始
                             tipTV.setText("第" + periodNum + "期开始倒计时");
                             currentTimeByServer = DateUtil.changeTimeToLong(winnerInfo.data.lastGame.gameStartTime);
+                            currentDataLL.setVisibility(View.GONE);
+                            buyRL.setVisibility(View.GONE);
+                            showTipRL.setVisibility(View.VISIBLE);
+                            contentTV.setText("第" + periodNum + "期还未开始，若需参与请关注开始时间！");
                         } else if ("1001".equals(winnerInfo.data.lastGame.gameStatusCode)) {
                             //进行中
                             tipTV.setText("第" + periodNum + "期开奖倒计时");
                             currentTimeByServer = DateUtil.changeTimeToLong(winnerInfo.data.lastGame.expectEndTime);
+                            currentDataLL.setVisibility(View.VISIBLE);
+                            buyRL.setVisibility(View.VISIBLE);
+                            showTipRL.setVisibility(View.GONE);
+                            contentTV.setText("");
                         } else {
                             //等待开奖或者已经结束
                             if (winnerInfo.data.nextGame != null) {
@@ -272,6 +295,10 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                                 tipTV.setText("第" + nextPeriodNum + "期开始倒计时");
                                 currentTimeByServer = DateUtil.changeTimeToLong(winnerInfo.data.nextGame.gameStartTime);
                             }
+                            currentDataLL.setVisibility(View.GONE);
+                            buyRL.setVisibility(View.GONE);
+                            showTipRL.setVisibility(View.VISIBLE);
+                            contentTV.setText("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！");
                         }
                         start();
                     }

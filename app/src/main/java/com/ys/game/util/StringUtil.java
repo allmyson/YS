@@ -163,7 +163,7 @@ public class StringUtil {
     }
 
     public static int StringToInt(String data) {
-        return (int) StringToDouble(data);
+        return (int) StringToDefaultDouble(data);
     }
 
     /**
@@ -173,7 +173,7 @@ public class StringUtil {
      * @return
      */
     public static double StringToDoubleOne(String data) {
-        double result = StringToDouble(data);
+        double result = StringToDefaultDouble(data);
         BigDecimal b = new BigDecimal(result);
         double f1 = b.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
         return f1;
@@ -181,19 +181,32 @@ public class StringUtil {
 
     /**
      * 四舍五入保留两位小数
+     *
      * @param data
      * @return
      */
     public static double StringToDoubleTwo(String data) {
-        double result = StringToDouble(data);
+        double result = StringToDefaultDouble(data);
         BigDecimal b = new BigDecimal(result);
         double f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         return f1;
     }
+
     public static double StringToDouble(String data) {
+        return StringToDoubleTwo(data);
+    }
+
+    public static String StringToDoubleStr(String data) {
+        double result = StringToDefaultDouble(data);
+        return String.format("%.2f", result);
+    }
+    public static String StringToDoubleStr(double data) {
+        return String.format("%.2f", data);
+    }
+    public static double StringToDefaultDouble(String data) {
         try {
             if (data == null || "".equals(data)) {
-                return 0;
+                return 0.0;
             } else {
                 return Double.valueOf(data);
             }
