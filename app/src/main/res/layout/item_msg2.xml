@@ -8,7 +8,7 @@
               android:paddingRight="5dp"
               android:background="@drawable/rect_cornor_white1"
               android:orientation="horizontal">
-    <ImageView
+    <com.ys.game.ui.RoundImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginRight="10dp"
