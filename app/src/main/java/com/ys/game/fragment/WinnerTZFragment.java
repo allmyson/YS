@@ -3,6 +3,7 @@ package com.ys.game.fragment;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
@@ -85,11 +86,12 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
     private RelativeLayout buyRL;
     private RelativeLayout showTipRL;
     private TextView contentTV;
+
     @Override
     protected void init() {
         contentTV = getView(R.id.tv_content);
         showTipRL = getView(R.id.rl_showTip);
-        currentDataLL =  getView(R.id.ll_currentData);
+        currentDataLL = getView(R.id.ll_currentData);
         buyRL = getView(R.id.rl_buy);
         snListLL = getView(R.id.ll_snList);
         snListLL.setOnClickListener(this);
@@ -150,10 +152,10 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 View firstView = view.getChildAt(firstVisibleItem);
                 if (firstVisibleItem == 0 && (firstView == null || firstView.getTop() == 0)) {
-                /*上滑到listView的顶部时，下拉刷新组件可见*/
+                    /*上滑到listView的顶部时，下拉刷新组件可见*/
                     srl.setEnabled(true);
                 } else {
-                /*不是listView的顶部时，下拉刷新组件不可见*/
+                    /*不是listView的顶部时，下拉刷新组件不可见*/
                     srl.setEnabled(false);
                 }
             }
@@ -266,6 +268,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                     if (winnerInfo.data.lastGame != null) {
                         String periodNum1 = StringUtil.valueOf(winnerInfo.data.lastGame.periodNum);
                         String periodNum = StringUtil.valueOf(winnerInfo.data.lastGame.periodNum);
+                        String snNo = StringUtil.valueOf(winnerInfo.data.lastGame.snNum);
                         if (StringUtil.isBlank(periodNum1) && periodNum1.length() > 4) {
                             periodNum = periodNum1.substring(4);
                         }
@@ -298,7 +301,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                             currentDataLL.setVisibility(View.GONE);
                             buyRL.setVisibility(View.GONE);
                             showTipRL.setVisibility(View.VISIBLE);
-                            contentTV.setText("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！");
+                            setTip(periodNum, snNo);
                         }
                         start();
                     }
@@ -364,4 +367,13 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
         cancel();
     }
 
+
+    private void setTip(String periodNum, String snNo) {
+        String yue = String.format("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！<br><br>第" + periodNum + "期随机大奖中将号码为：<br><br><br><font color=\"#fc6a44\" size=\"80\"><big>%s</big></font>", snNo);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            contentTV.setText(Html.fromHtml(yue, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            contentTV.setText(Html.fromHtml(yue));
+        }
+    }
 }

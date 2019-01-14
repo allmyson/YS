@@ -39,7 +39,8 @@ public class SafeActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.ll_bdjyzh:
-                startActivity(new Intent(mContext, UpdateJyzhActivity.class));
+//                startActivity(new Intent(mContext, UpdateJyzhActivity.class));
+                startActivity(new Intent(mContext, BdWxzhActivity.class));
                 break;
             case R.id.ll_updatePsd:
                 startActivity(new Intent(mContext, UpdatePsdActivity.class));

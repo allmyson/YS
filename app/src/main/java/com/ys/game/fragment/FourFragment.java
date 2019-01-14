@@ -22,6 +22,8 @@ import com.ys.game.activity.TeamGLActivity;
 import com.ys.game.activity.TeamJLActivity;
 import com.ys.game.activity.TxActivity;
 import com.ys.game.activity.UpdateInfoActivity;
+import com.ys.game.activity.WxCzActivity;
+import com.ys.game.activity.WxTxActivity;
 import com.ys.game.activity.XFJLActivity;
 import com.ys.game.adapter.MyAdapter;
 import com.ys.game.base.BaseFragment;
@@ -170,10 +172,12 @@ public class FourFragment extends BaseFragment implements View.OnClickListener, 
                 startActivity(new Intent(mContext, SetActivity.class));
                 break;
             case R.id.btn_cz:
-                startActivity(new Intent(mContext, CzActivity.class));
+//                startActivity(new Intent(mContext, CzActivity.class));
+                startActivity(new Intent(mContext, WxCzActivity.class));
                 break;
             case R.id.btn_tb:
-                TxActivity.intentToTX(mContext, yue);
+//                TxActivity.intentToTX(mContext, yue);
+                WxTxActivity.intentToTX(mContext, yue);
                 break;
             case R.id.ll_updateInfo:
                 UpdateInfoActivity.intentUpdateInfo(mContext, nickName, photoUrl);
@@ -200,7 +204,7 @@ public class FourFragment extends BaseFragment implements View.OnClickListener, 
                     fdTV.setText("返点：" + StringUtil.valueOf(userInfo.data.backNum));
                     yueTV.setText("" + StringUtil.StringToDoubleStr(userInfo.data.balance) + YS.UNIT);
                     canTmoneyTV.setText("" + StringUtil.StringToDoubleStr(userInfo.data.balance) + YS.UNIT);
-                    Glide.with(mContext).load(YS.getGlideUrl(mContext,userInfo.data.consumerImg)).error(R.mipmap.bg_head_default).into(headIV);
+                    Glide.with(mContext).load(YS.getGlideUrl(mContext, userInfo.data.consumerImg)).error(R.mipmap.bg_head_default).into(headIV);
 //                    BaseHttp.getInstance().loadImag(mContext, userInfo.data.consumerImg, new HttpListener<Bitmap>() {
 //                        @Override
 //                        public void onSucceed(int what, Response<Bitmap> response) {

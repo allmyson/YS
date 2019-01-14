@@ -72,6 +72,7 @@ public class WinnerInfo {
             public String lastMoneyStatus;
             public Object lastUserId;
             public String periodNum;
+            public String snNum;
         }
     }
 }
