@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.ys.game"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ys.game">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- 调用摄像头的权限 -->
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <!-- 文件系统权限 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!-- SD卡写权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 调用系统发送短信 -->
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <!-- 用于读取手机当前的状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".base.App"
@@ -41,68 +41,49 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
 
         <activity
             android:name=".activity.WelcomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".activity.MsgDetailActivity">
-        </activity>
-        <activity android:name=".activity.SetActivity">
-        </activity>
-        <activity android:name=".activity.UpdateInfoActivity">
-        </activity>
-        <activity android:name=".activity.EwmActivity">
-        </activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.MsgDetailActivity" />
+        <activity android:name=".activity.SetActivity" />
+        <activity android:name=".activity.UpdateInfoActivity" />
+        <activity android:name=".activity.EwmActivity" />
         <activity
             android:name=".activity.CqsscActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize">
-        </activity>
-        <activity android:name=".activity.WinnerActivity">
-        </activity>
-        <activity android:name=".activity.XFJLActivity">
-        </activity>
-        <activity android:name=".activity.SafeActivity">
-        </activity>
-        <activity android:name=".activity.UpdateJyzhActivity">
-        </activity>
-        <activity android:name=".activity.UpdatePsdActivity">
-        </activity>
-        <activity android:name=".activity.MmbhActivity">
-        </activity>
-        <activity android:name=".activity.SetZjmmActivity">
-        </activity>
-        <activity android:name=".activity.UpdateZjmmActivity">
-        </activity>
-        <activity android:name=".activity.KHActivity">
-        </activity>
-        <activity android:name=".activity.LxkfActivity">
-        </activity>
-        <activity android:name=".activity.TeamGLActivity">
-        </activity>
-        <activity android:name=".activity.TeamJLActivity">
-        </activity>
-        <activity android:name=".activity.CzActivity">
-        </activity>
-        <activity android:name=".activity.TxActivity">
-        </activity>
-        <activity android:name=".activity.ZhActivity">
-        </activity>
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".activity.WinnerActivity" />
+        <activity android:name=".activity.XFJLActivity" />
+        <activity android:name=".activity.SafeActivity" />
+        <activity android:name=".activity.UpdateJyzhActivity" />
+        <activity android:name=".activity.UpdatePsdActivity" />
+        <activity android:name=".activity.MmbhActivity" />
+        <activity android:name=".activity.SetZjmmActivity" />
+        <activity android:name=".activity.UpdateZjmmActivity" />
+        <activity android:name=".activity.KHActivity" />
+        <activity android:name=".activity.LxkfActivity" />
+        <activity android:name=".activity.TeamGLActivity" />
+        <activity android:name=".activity.TeamJLActivity" />
+        <activity android:name=".activity.CzActivity" />
+        <activity android:name=".activity.TxActivity" />
+        <activity android:name=".activity.ZhActivity" />
+        <activity android:name=".activity.WxCzActivity" />
+        <activity android:name=".activity.WxTxActivity" />
+        <activity android:name=".activity.BdWxzhActivity"></activity>
     </application>
 
 </manifest>
