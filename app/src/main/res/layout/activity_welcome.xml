@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_color"
+    android:background="@mipmap/bg_login1"
     tools:context=".activity.WelcomeActivity">
     <TextView
         android:id="@+id/tv_delay"
@@ -31,5 +31,6 @@
         android:layout_height="150dp"
         android:layout_centerInParent="true"
         android:scaleType="fitXY"
+        android:visibility="gone"
         android:src="@mipmap/ic_logo"/>
 </RelativeLayout>
