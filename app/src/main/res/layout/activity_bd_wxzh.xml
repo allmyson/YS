@@ -120,7 +120,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="30dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/bg_default_head2" />
+                android:src="@mipmap/bg_default_rect" />
 
             <Button
                 android:id="@+id/btn_sure"

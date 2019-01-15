@@ -94,7 +94,7 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="fitXY"
-                android:src="@mipmap/bg_default_head2" />
+                android:src="@mipmap/bg_default_rect" />
         </LinearLayout>
 
         <TextView
