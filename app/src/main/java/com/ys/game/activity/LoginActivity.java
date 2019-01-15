@@ -58,7 +58,7 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View v) {
         if (v.getId() == R.id.btn_login) {
             if (isCanLogin()) {
-                HttpUtil.login(mContext, userET.getText().toString().trim(),psdET.getText()
+                HttpUtil.login(mContext, userET.getText().toString().trim(), psdET.getText()
                         .toString().trim(), new HttpListener<String>() {
                     @Override
                     public void onSucceed(int what, Response<String> response) {
@@ -68,7 +68,11 @@ public class LoginActivity extends BaseActivity {
                             startActivity(new Intent(mContext, MainActivity.class));
                             finish();
                         } else {
-                            show("登录失败");
+                            if (loginBean != null) {
+                                show(StringUtil.valueOf(loginBean.msg));
+                            } else {
+                                show("登录失败");
+                            }
                         }
                     }
 

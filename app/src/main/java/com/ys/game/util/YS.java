@@ -64,6 +64,17 @@ public class YS {
     //最后的胜利者信息
     public static final String WINNER_INFO = IP + "/appService/getSlzGameInfo";
 
+    //获取老板二维码
+    public static final String GET_BOSS_PAY = IP + "/appService/getBossPay";
+    //获取用户详细信息
+    public static final String GET_USERINFO_DETAIL = IP + "/appService/getUserInfoForApp";
+    //绑定用户二维码
+    public static final String BIND_WX_CODE = IP + "/appService/bindAccountForApp";
+    //修改资金密码
+    public static final String UPDATE_ZJMM = IP + "/appService/editMoneypwdForApp";
+    //修改登录密码
+    public static final String UPDATE_PSD= IP + "/appService/editPwdForApp";
+
 
     public static GlideUrl getGlideUrl(Context context, String url) {
         return new GlideUrl(url, new LazyHeaders.Builder().addHeader("Cookie", CookieSP.getCookie(context)).build());

@@ -205,7 +205,8 @@ public class BaseHttp {
         if (token != null && !"".equals(token)) {
             request.addHeader("Cookie", token);
         }
-        request(context, request, callback);
+//        request(context, request, callback);
+        request((Activity) context, 0, request, callback, false, true);
     }
 
 

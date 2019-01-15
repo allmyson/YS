@@ -68,6 +68,7 @@ public class HttpUtil {
 
     /**
      * 获取投注记录
+     *
      * @param context
      * @param userId
      * @param gameTypeCode
@@ -237,6 +238,71 @@ public class HttpUtil {
      */
     public static void getWinnerInfo(Context context, String periodsNum, HttpListener<String> httpListener) {
         String url = YS.WINNER_INFO + "?periodsNum=" + periodsNum;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
+
+    /**
+     * 获取老板二维码
+     *
+     * @param context
+     * @param httpListener
+     */
+    public static void getBossPay(Context context, HttpListener<String> httpListener) {
+        String url = YS.GET_BOSS_PAY;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
+
+    /**
+     * 获取用户详细信息
+     *
+     * @param context
+     * @param userId
+     * @param httpListener
+     */
+    public static void getDetailUserInfo(Context context, String userId, HttpListener<String> httpListener) {
+        String url = YS.GET_USERINFO_DETAIL + "?userId=" + userId;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
+
+    /**
+     * 绑定收款码
+     *
+     * @param context
+     * @param userId
+     * @param filePath
+     * @param httpListener
+     */
+    public static void bindUserCode(Context context, String userId, String filePath, HttpListener<String> httpListener) {
+        String url = YS.BIND_WX_CODE + "?userId=" + userId;
+        Map<String, File> map = null;
+        if (!StringUtil.isBlank(filePath)) {
+            map = new HashMap<>();
+            map.put("file", new File(filePath));
+        }
+        BaseHttp.getInstance().postFile(context, url, map, httpListener);
+    }
+
+    /**
+     * 修改资金密码
+     *
+     * @param context
+     * @param userId
+     * @param httpListener
+     */
+    public static void updateZJMM(Context context, String userId, String loginPwd, String Moneypwd, HttpListener<String> httpListener) {
+        String url = YS.UPDATE_ZJMM + "?userId=" + userId + "&loginPwd=" + loginPwd + "&Moneypwd=" + Moneypwd;
+        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+    }
+
+    /**
+     * 修改登录密码
+     *
+     * @param context
+     * @param userId
+     * @param httpListener
+     */
+    public static void updatePsd(Context context, String userId, String oldPsd, String newPsd, HttpListener<String> httpListener) {
+        String url = YS.UPDATE_PSD + "?userId=" + userId + "&oldPwd=" + oldPsd + "&pwd=" + newPsd;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
 }
