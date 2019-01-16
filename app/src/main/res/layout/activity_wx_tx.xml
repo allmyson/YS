@@ -99,12 +99,12 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="bottom"
+                    android:hint="请输入提现金额"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:minWidth="40dp"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:text="2048"
                     android:textColor="@color/main_color"
                     android:textSize="30sp"/>
             </LinearLayout>
