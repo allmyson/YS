@@ -11,21 +11,7 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 
 
-/**
- * Copyright (c) 2015,重庆扬讯软件技术有限公司<br>
- * All rights reserved.<br>
- * <p/>
- * 文件名称：ShowActivity.java<br>
- * 摘要：扫描二维码产生的结果<br>
- * -------------------------------------------------------<br>
- * 当前版本：1.1.1<br>
- * 作者：龙辉<br>
- * 完成日期：2015-6-11<br>
- * -------------------------------------------------------<br>
- * 取代版本：1.1.0<br>
- * 原作者：龙辉<br>
- * 完成日期：2015-6-11<br>
- */
+
 public class ShowActivity extends FragmentActivity {
     private String result;
     private SharedPreferences sp;
