@@ -369,7 +369,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
 
 
     private void setTip(String periodNum, String snNo) {
-        String yue = String.format("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！<br><br>第" + periodNum + "期随机大奖中将号码为：<br><br><br><font color=\"#fc6a44\" size=\"80\"><big>%s</big></font>", snNo);
+        String yue = String.format("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！<br><br>第" + periodNum + "期随机大奖中奖号码为：<br><br><br><font color=\"#fc6a44\" size=\"80\"><big>%s</big></font>", snNo);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             contentTV.setText(Html.fromHtml(yue, Html.FROM_HTML_MODE_LEGACY));
         } else {

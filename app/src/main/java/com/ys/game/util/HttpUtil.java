@@ -47,7 +47,7 @@ public class HttpUtil {
      */
     public static void getKJResult(Context context, int typeCode, int num, HttpListener<String> httpListener) {
         String url = YS.RESULT + "?gameTypeCode=" + typeCode + "&gameNum=" + num;
-        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+        BaseHttp.getInstance().postSimpleJson2(context, url, "", httpListener);
     }
 
 

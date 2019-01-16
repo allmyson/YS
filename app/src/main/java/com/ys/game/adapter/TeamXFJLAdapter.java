@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.ys.game.R;
 import com.ys.game.bean.TeamXfjlBean;
+import com.ys.game.util.DateUtil;
 import com.ys.game.util.StringUtil;
 import com.ys.game.util.YS;
 
@@ -24,8 +25,8 @@ public class TeamXFJLAdapter extends CommonAdapter<TeamXfjlBean.DataBeanX.DataBe
     @Override
     public void convert(ViewHolder helper, TeamXfjlBean.DataBeanX.DataBean item, int position) {
         helper.setText(R.id.tv_name, StringUtil.valueOf(item.consumer_name));
-        helper.setText(R.id.tv_gameType, StringUtil.valueOf(item.game_name));
+        helper.setText(R.id.tv_gameType, DateUtil.changeTimeToYMD(item.game_name));
         helper.setText(R.id.tv_qs, StringUtil.valueOf(item.periods_num).substring(4));
-        helper.setText(R.id.tv_money, StringUtil.valueOf(item.bets_money) + YS.UNIT);
+        helper.setText(R.id.tv_money, StringUtil.StringToDoubleStr(item.bets_money) + YS.UNIT);
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.ys.game.R;
 import com.ys.game.bean.TeamCzjlBean;
+import com.ys.game.util.DateUtil;
 import com.ys.game.util.StringUtil;
 import com.ys.game.util.YS;
 
@@ -24,8 +25,8 @@ public class TeamCZJLAdapter extends CommonAdapter<TeamCzjlBean.DataBeanX.DataBe
     @Override
     public void convert(ViewHolder helper, TeamCzjlBean.DataBeanX.DataBean item, int position) {
         helper.setText(R.id.tv_name, StringUtil.valueOf(item.consumer_name));
-        helper.setText(R.id.tv_time, StringUtil.valueOf(item.apply_time));
+        helper.setText(R.id.tv_time, DateUtil.changeTimeToYMD(item.apply_time));
         helper.setText(R.id.tv_moneyType, StringUtil.valueOf(item.apply_type_name));
-        helper.setText(R.id.tv_money, StringUtil.valueOf(item.apply_money) + YS.UNIT);
+        helper.setText(R.id.tv_money, StringUtil.StringToDoubleStr(item.apply_money) + YS.UNIT);
     }
 }

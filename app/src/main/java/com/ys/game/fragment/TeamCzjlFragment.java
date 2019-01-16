@@ -132,8 +132,8 @@ public class TeamCzjlFragment extends BaseFragment implements View.OnClickListen
         list.clear();
         if (allList.size() > 0) {
             for (int i = 0; i < allList.size(); i++) {
-                    if (DateUtil.changeTimeToLong2(allList.get(i).apply_time) <= endTime && DateUtil
-                            .changeTimeToLong2(allList.get(i).apply_time) >= startTime) {
+                    if (DateUtil.changeTimeToLong(allList.get(i).apply_time) <= endTime && DateUtil
+                            .changeTimeToLong(allList.get(i).apply_time) >= startTime) {
                         list.add(allList.get(i));
                 }
             }

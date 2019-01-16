@@ -159,6 +159,20 @@ public class BaseHttp {
 //        request(context, request, callback);
         postJson((Activity) context, url, postJson, callback);
     }
+    public void postSimpleJson2(Context context, String url, String postJson, HttpListener<String> callback) {
+        L.e("url=" + url);
+        L.e("params=" + postJson);
+        Request<String> request = NoHttp.createStringRequest(url, RequestMethod.POST);
+        request.setContentType("application/json");
+        if (!StringUtil.isBlank(postJson)) {
+            request.setDefineRequestBodyForJson(postJson);
+        }
+        String token = CookieSP.getCookie(context);
+        if (token != null && !"".equals(token)) {
+            request.addHeader("Cookie", token);
+        }
+        request(context, request, callback);
+    }
 
     public void postSimpleJson(Context context, String url, String postJson, List<String> files, HttpListener<String>
             callback) {

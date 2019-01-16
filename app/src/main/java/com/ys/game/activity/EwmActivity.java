@@ -6,11 +6,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.upsoft.qrlibrary.QRCodeUtil;
 import com.ys.game.R;
 import com.ys.game.base.BaseActivity;
 import com.ys.game.util.Constant;
 import com.ys.game.util.L;
-import com.ys.game.util.QRCodeUtil;
 
 import java.io.File;
 

@@ -77,4 +77,8 @@ public class FunctionApi {
         ImageSelectorActivity.AUTHORITY = SystemUtil.PackgeName(mContext.getActivity()) + FunctionApi.AUTHORITY;
         ImageSelectorActivity.start(mContext, max, mode, showCamera, enablePreview, enableCrop);
     }
+
+    public static String getAuthority(Context context){
+        return SystemUtil.PackgeName(context) + FunctionApi.AUTHORITY;
+    }
 }
