@@ -172,7 +172,7 @@
             android:layout_marginRight="40dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="提现申请提交后,系统管理员将在24小时内进行审核,审核结果将会通过系统消息的方式告知您,感谢您对平台的支持!"
+            android:text="每日提现不超过5次，感谢您对平台的支持！"
             android:textColor="@color/textcolor3"
             android:textSize="10sp"/>
     </LinearLayout>
