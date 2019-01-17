@@ -84,7 +84,7 @@ public class HttpUtil {
         String url = YS.TZJL_WINNER + "?userId=" + userId + "&recordTypeCode=1001&gameTypeCode=" + gameTypeCode +
                 "&complantTypeCode=" + complantTypeCode + "&start="
                 + start + "&length=" + length;
-        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+        BaseHttp.getInstance().postSimpleJson2(context, url, "", httpListener);
     }
 
     /**
@@ -132,7 +132,8 @@ public class HttpUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String url = YS.KH + "?consumerName=" + consumerName + "&loginName=" + loginName + "&pwd=" + psd + "&backNum=" + fd + "&userId=" + userId;
+//        String url = YS.KH + "?consumerName=" + consumerName + "&loginName=" + loginName + "&pwd=" + psd + "&backNum=" + fd + "&userId=" + userId;
+        String url = YS.KH + "?consumerName=" + consumerName + "&loginName=" + loginName + "&pwd=" + psd + "&userId=" + userId;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
 
@@ -157,7 +158,7 @@ public class HttpUtil {
      */
     public static void getUserInfo(Context context, String userId, HttpListener<String> httpListener) {
         String url = YS.USERINFO + "?userId=" + userId;
-        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+        BaseHttp.getInstance().postSimpleJson2(context, url, "", httpListener);
     }
 
     /**
@@ -215,7 +216,7 @@ public class HttpUtil {
      */
     public static void getWinnerData(Context context, String userId, HttpListener<String> httpListener) {
         String url = YS.WINNER_DATA + "?userId=" + userId;
-        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+        BaseHttp.getInstance().postSimpleJson2(context, url, "", httpListener);
     }
 
     /**
@@ -226,7 +227,7 @@ public class HttpUtil {
      */
     public static void getWinnerTZJL(Context context, String userId, HttpListener<String> httpListener) {
         String url = YS.TZJL_WINNER + "?userId=" + userId + "&gameTypeCode=1002&start=1&length=" + YS.LENGTH;
-        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+        BaseHttp.getInstance().postSimpleJson2(context, url, "", httpListener);
     }
 
 

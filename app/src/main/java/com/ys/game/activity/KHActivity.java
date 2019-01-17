@@ -97,10 +97,12 @@ public class KHActivity extends BaseActivity {
         } else if (StringUtil.isBlank(rePsdET.getText().toString().trim())) {
             show("密码不能为空!");
             return false;
-        } else if (StringUtil.isBlank(fdET.getText().toString().trim())) {
-            show("返点比例不能为空!");
-            return false;
-        } else if (!psdET.getText().toString().trim().equals(rePsdET.getText().toString().trim())) {
+        }
+//        else if (StringUtil.isBlank(fdET.getText().toString().trim())) {
+//            show("返点比例不能为空!");
+//            return false;
+//        }
+        else if (!psdET.getText().toString().trim().equals(rePsdET.getText().toString().trim())) {
             show("两次输入密码不一致!");
             return false;
         }
