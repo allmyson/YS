@@ -27,6 +27,7 @@ public class TeamXFJLAdapter extends CommonAdapter<TeamXfjlBean.DataBeanX.DataBe
         helper.setText(R.id.tv_name, StringUtil.valueOf(item.consumer_name));
         helper.setText(R.id.tv_gameType, DateUtil.changeTimeToYMD(item.game_name));
         helper.setText(R.id.tv_qs, StringUtil.valueOf(item.periods_num).substring(4));
-        helper.setText(R.id.tv_money, StringUtil.StringToDoubleStr(item.bets_money) + YS.UNIT);
+        helper.setText(R.id.tv_money, StringUtil.StringToDoubleStr(StringUtil.StringToDouble(item.bets_money) *
+                StringUtil.StringToDouble(item.times)) + YS.UNIT);
     }
 }

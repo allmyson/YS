@@ -56,6 +56,7 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener, 
     private long endTime;
     private String zjType = "全部";//中奖状态  1000已中奖 1001未中奖  null/"" 未开奖  all 全部
     private SwipeRefreshLayout srl;
+
     public static TzjlFragment newInstance(int type) {
         TzjlFragment fragment = new TzjlFragment();
         fragment.currentType = type;
@@ -208,7 +209,8 @@ public class TzjlFragment extends BaseFragment implements View.OnClickListener, 
                                     double betMoney = 0;
                                     double winMoney = 0;
                                     for (TzjlBean.DataBeanX.DataBean data : list) {
-                                        betMoney += StringUtil.StringToDouble(data.bets_money);
+                                        betMoney += StringUtil.StringToDouble(data.bets_money) * StringUtil
+                                                .StringToDouble(data.times);
                                         winMoney += StringUtil.StringToDouble(data.win_money);
                                     }
                                     dataBean.bets_money = StringUtil.valueOf(betMoney);

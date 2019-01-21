@@ -385,6 +385,7 @@ public class ZhActivity extends BaseActivity {
                 BaseBean baseBean = new Gson().fromJson(response.get(), BaseBean.class);
                 if (baseBean != null && YS.SUCCESE.equals(baseBean.code)) {
                     show("追号成功！");
+                    sendMsg();
                 } else {
                     show("追号失败！");
                 }
@@ -395,5 +396,12 @@ public class ZhActivity extends BaseActivity {
 
             }
         });
+    }
+
+
+    //追号成功通知刷新追号记录
+    private void sendMsg(){
+        Intent intent = new Intent(YS.ACTION_TZ_SUCCESS);
+        sendBroadcast(intent);
     }
 }
