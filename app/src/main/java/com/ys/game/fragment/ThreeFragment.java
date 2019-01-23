@@ -1,5 +1,6 @@
 package com.ys.game.fragment;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,11 +26,11 @@ import java.util.List;
  * @description -------------------------------------------------------
  * @date 2018/10/23 17:09
  */
-public class ThreeFragment extends BaseFragment {
+public class ThreeFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
     private ListView lv;
     private List<MsgBean.DataBeanX.DataBean> msgBeanList;
     private MsgAdapter2 msgAdapter2;
-
+    private SwipeRefreshLayout srl;
     public static ThreeFragment newInstance() {
         return new ThreeFragment();
     }
@@ -46,6 +47,9 @@ public class ThreeFragment extends BaseFragment {
                 MsgDetailActivity.intentToMsg(mContext,msgAdapter2.getItem(position));
             }
         });
+        srl = (SwipeRefreshLayout) mView.findViewById(R.id.srl);
+        srl.setOnRefreshListener(this);
+        srl.setColorSchemeColors(getResources().getColor(R.color.main_color));
     }
 
     @Override
@@ -69,12 +73,18 @@ public class ThreeFragment extends BaseFragment {
                     msgBeanList.addAll(msgBean.data.data);
                 }
                 msgAdapter2.refresh(msgBeanList);
+                srl.setRefreshing(false);
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-
+                srl.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        getMsg();
     }
 }

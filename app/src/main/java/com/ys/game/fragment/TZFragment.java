@@ -605,4 +605,9 @@ public class TZFragment extends BaseFragment implements View.OnClickListener, Sw
         Intent intent = new Intent(YS.ACTION_TZ_SUCCESS);
         getActivity().sendBroadcast(intent);
     }
+
+    public void refresh(){
+//        show("JLFragment刷新");
+        getUserInfo();
+    }
 }

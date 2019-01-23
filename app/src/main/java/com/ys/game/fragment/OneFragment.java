@@ -1,5 +1,6 @@
 package com.ys.game.fragment;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -33,14 +34,14 @@ import java.util.List;
  * @description -------------------------------------------------------
  * @date 2018/10/23 17:09
  */
-public class OneFragment extends BaseFragment implements View.OnClickListener {
+public class OneFragment extends BaseFragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener {
     private LinearLayout moreLL;
     private MyListView msgMLV, gameMLV;
     private MsgAdapter msgAdapter;
     private List<MsgBean.DataBeanX.DataBean> msgBeanList;
     private List<GzGameBean> gameList;
     private GameAdapter gameAdapter;
-
+    private SwipeRefreshLayout srl;
     public static OneFragment newInstance() {
         return new OneFragment();
     }
@@ -74,6 +75,10 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
                 addBean(gameAdapter.getItem(position).type);
             }
         });
+
+        srl = (SwipeRefreshLayout) mView.findViewById(R.id.srl);
+        srl.setOnRefreshListener(this);
+        srl.setColorSchemeColors(getResources().getColor(R.color.main_color));
     }
 
     private void addBean(int type) {
@@ -99,11 +104,12 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
                     msgBeanList.addAll(msgBean.data.data);
                 }
                 msgAdapter.refresh(msgBeanList);
+                srl.setRefreshing(false);
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-
+                srl.setRefreshing(false);
             }
         });
     }
@@ -130,5 +136,10 @@ public class OneFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        getMsg();
     }
 }

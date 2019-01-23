@@ -131,6 +131,7 @@ public class CqsscActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             L.e("收到TZFragment的投注成功广播！");
+            ((TZFragment) mAdapter.getItem(1)).refresh();
             ((JLFragment) mAdapter.getItem(2)).refresh();
         }
     }

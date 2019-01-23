@@ -29,7 +29,7 @@ public class HttpUtil {
     public static void selectMsg(Context context, int start, int length, HttpListener<String>
             httpListener) {
         String url = YS.MSG + "?start=" + start + "&length=" + length;
-        BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
+        BaseHttp.getInstance().postSimpleJson2(context, url, "", httpListener);
     }
 
     //投注
