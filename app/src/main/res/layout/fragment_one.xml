@@ -53,31 +53,42 @@
                     android:src="@mipmap/ic_more"/>
             </LinearLayout>
         </LinearLayout>
-        <com.ys.game.ui.MyListView
-            android:id="@+id/mlv_msg"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/rect_cornor_white1"
-            android:divider="#cfcfcf"
-            android:dividerHeight="1dp"
-            android:padding="15dp"
-        />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="最近关注游戏"
-            android:textColor="@color/textcolor1"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-        <com.ys.game.ui.MyListView
-            android:id="@+id/mlv_game"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:divider="@null"
-            android:dividerHeight="10dp"
-        />
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <com.ys.game.ui.MyListView
+                    android:id="@+id/mlv_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/rect_cornor_white1"
+                    android:divider="#cfcfcf"
+                    android:dividerHeight="1dp"
+                    android:padding="15dp"
+                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="最近关注游戏"
+                    android:textColor="@color/textcolor1"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <com.ys.game.ui.MyListView
+                    android:id="@+id/mlv_game"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:divider="@null"
+                    android:dividerHeight="10dp"
+                />
+            </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </FrameLayout>

@@ -23,18 +23,22 @@
             android:text="系统公告"
             android:textColor="@android:color/white"
             android:textSize="16sp"/>
-        <ListView
-            android:id="@+id/lv_"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:divider="@null"
-            android:dividerHeight="5dp"
-            android:paddingBottom="10dp"
-            android:scrollbars="none"
-        />
-
+            android:layout_weight="1">
+            <ListView
+                android:id="@+id/lv_"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:divider="@null"
+                android:dividerHeight="5dp"
+                android:paddingBottom="10dp"
+                android:scrollbars="none"
+            />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </FrameLayout>
