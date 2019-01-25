@@ -301,7 +301,11 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                             currentDataLL.setVisibility(View.GONE);
                             buyRL.setVisibility(View.GONE);
                             showTipRL.setVisibility(View.VISIBLE);
-                            setTip(periodNum, snNo);
+//                            setTip(periodNum, snNo);
+                            setTip(periodNum, winnerInfo.data.lastGame.lastUserName, winnerInfo.data.lastGame.snNum,
+                                    winnerInfo.data.lastGame.lastMoney,
+                                    winnerInfo.data.lastGame.incentiveUserName, winnerInfo.data.lastGame
+                                            .incentiveSnNum, winnerInfo.data.lastGame.incentive_money);
                         }
                         start();
                     }
@@ -367,9 +371,32 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
         cancel();
     }
 
-
-    private void setTip(String periodNum, String snNo) {
-        String yue = String.format("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！<br><br>第" + periodNum + "期随机大奖中奖号码为：<br><br><br><font color=\"#fc6a44\" size=\"80\"><big>%s</big></font>", snNo);
+    /**
+     * @param periodNum         期数
+     * @param lastUserName      胜利者
+     * @param snNo              中奖编号
+     * @param lastMoney         中奖金额
+     * @param incentiveUserName 随机奖获得者
+     * @param incentiveSnNum    随机奖编号
+     * @param incentiveMoney    随机奖金额
+     */
+    private void setTip(String periodNum, String lastUserName, String snNo, String lastMoney, String
+            incentiveUserName, String incentiveSnNum, String incentiveMoney) {
+//        String yue = String.format("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！<br><br>第" + periodNum +
+// "期随机大奖中奖号码为：<br><br><br><font color=\"#fc6a44\" size=\"80\"><big>%s</big></font>", snNo);
+        String yue = String.format("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！<br><br>第" + periodNum +
+                        "期胜利者是：<font color=\"#fc6a44\" size=\"80\"><big>%s</big></font>,中奖号码为：<font color=\"#fc6a44\"" +
+                        "size=\"80\"><big>%s</big></font>,中奖金额为：<font color=\"#fc6a44\" " +
+                        "size=\"80\"><big>%s</big></font><br><br>随机大奖获得者是：<font color=\"#fc6a44\" " +
+                        "size=\"80\"><big>%s</big></font>,随机大奖号码为：<font color=\"#fc6a44\" " +
+                        "size=\"80\"><big>%s</big></font>,随机大奖中奖金额为：<font " +
+                        "color=\"#fc6a44\" size=\"80\"><big>%s</big></font>",
+                StringUtil.valueOf(lastUserName),
+                StringUtil.valueOf(snNo),
+                StringUtil.StringToDoubleStr(lastMoney) + YS.UNIT,
+                StringUtil.valueOf(incentiveUserName),
+                StringUtil.valueOf(incentiveSnNum),
+                StringUtil.StringToDoubleStr(incentiveMoney) + YS.UNIT);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             contentTV.setText(Html.fromHtml(yue, Html.FROM_HTML_MODE_LEGACY));
         } else {

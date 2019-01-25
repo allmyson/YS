@@ -9,15 +9,23 @@ package com.ys.game.bean;
  */
 public class WinnerInfo {
 
+
     /**
      * code : SUCCESS
      * msg : 查询成功
-     * data : {"lastGame":{"recordId":"2896dd280dea4bfe8ed0dcfc761ff52d","expectEndTime":"2019-01-03",
-     * "gameEndTime":"2019-01-03","gameStartTime":"2019-01-02T05:00:04.000+0000","gameStatusCode":"1000",
-     * "gameStatusName":"进行中","gameTypeCode":"1002","gameTypeName":"最后的胜利者","incentive_money":null,
-     * "incentive_status":null,"incentive_user_id":null,"lastMoney":null,"lastMoneyStatus":"1000","lastUserId":null,
-     * "periodNum":"20190102001"},"nextGame":null}
-     * systemDate : 1546417398247
+     * data : {"lastGame":{"recordId":"202557621478453b90858da4e83e8979",
+     * "expectEndTime":"2019-01-24T03:42:22.000+0000","gameEndTime":"2019-01-24T03:45:00.000+0000",
+     * "gameStartTime":"2019-01-23T15:41:52.000+0000","gameStatusCode":"1003","gameStatusName":"已开奖",
+     * "gameTypeCode":"1002","gameTypeName":"最后的胜利者","incentive_money":"5.3999999999999995",
+     * "incentive_status":"1001","incentive_user_id":"","lastMoney":"10.799999999999999","lastMoneyStatus":"1001",
+     * "lastUserId":null,"periodNum":"20190124001","lastUserName":null,"incentiveUserName":null,
+     * "incentiveSnNum":null,"snNum":null},"nextGame":{"recordId":"05ddae940b9c4416bae3a3b34e8b06ea",
+     * "expectEndTime":"2019-01-24T16:00:00.000+0000","gameEndTime":"2019-01-24T16:00:00.000+0000",
+     * "gameStartTime":"2019-01-24T04:00:00.000+0000","gameStatusCode":"1001","gameStatusName":"进行中",
+     * "gameTypeCode":"1002","gameTypeName":"最后的胜利者","incentive_money":null,"incentive_status":null,
+     * "incentive_user_id":null,"lastMoney":null,"lastMoneyStatus":"1000","lastUserId":null,
+     * "periodNum":"20190124002","lastUserName":null,"incentiveUserName":null,"incentiveSnNum":null,"snNum":null}}
+     * systemDate : 1548309872075
      */
 
     public String code;
@@ -27,12 +35,18 @@ public class WinnerInfo {
 
     public static class DataBean {
         /**
-         * lastGame : {"recordId":"2896dd280dea4bfe8ed0dcfc761ff52d","expectEndTime":"2019-01-03",
-         * "gameEndTime":"2019-01-03","gameStartTime":"2019-01-02T05:00:04.000+0000","gameStatusCode":"1000",
-         * "gameStatusName":"进行中","gameTypeCode":"1002","gameTypeName":"最后的胜利者","incentive_money":null,
-         * "incentive_status":null,"incentive_user_id":null,"lastMoney":null,"lastMoneyStatus":"1000",
-         * "lastUserId":null,"periodNum":"20190102001"}
-         * nextGame : null
+         * lastGame : {"recordId":"202557621478453b90858da4e83e8979","expectEndTime":"2019-01-24T03:42:22.000+0000",
+         * "gameEndTime":"2019-01-24T03:45:00.000+0000","gameStartTime":"2019-01-23T15:41:52.000+0000",
+         * "gameStatusCode":"1003","gameStatusName":"已开奖","gameTypeCode":"1002","gameTypeName":"最后的胜利者",
+         * "incentive_money":"5.3999999999999995","incentive_status":"1001","incentive_user_id":"",
+         * "lastMoney":"10.799999999999999","lastMoneyStatus":"1001","lastUserId":null,"periodNum":"20190124001",
+         * "lastUserName":null,"incentiveUserName":null,"incentiveSnNum":null,"snNum":null}
+         * nextGame : {"recordId":"05ddae940b9c4416bae3a3b34e8b06ea","expectEndTime":"2019-01-24T16:00:00.000+0000",
+         * "gameEndTime":"2019-01-24T16:00:00.000+0000","gameStartTime":"2019-01-24T04:00:00.000+0000",
+         * "gameStatusCode":"1001","gameStatusName":"进行中","gameTypeCode":"1002","gameTypeName":"最后的胜利者",
+         * "incentive_money":null,"incentive_status":null,"incentive_user_id":null,"lastMoney":null,
+         * "lastMoneyStatus":"1000","lastUserId":null,"periodNum":"20190124002","lastUserName":null,
+         * "incentiveUserName":null,"incentiveSnNum":null,"snNum":null}
          */
 
         public LastGameBean lastGame;
@@ -40,21 +54,25 @@ public class WinnerInfo {
 
         public static class LastGameBean {
             /**
-             * recordId : 2896dd280dea4bfe8ed0dcfc761ff52d
-             * expectEndTime : 2019-01-03
-             * gameEndTime : 2019-01-03
-             * gameStartTime : 2019-01-02T05:00:04.000+0000
-             * gameStatusCode : 1000
-             * gameStatusName : 进行中
+             * recordId : 202557621478453b90858da4e83e8979
+             * expectEndTime : 2019-01-24T03:42:22.000+0000
+             * gameEndTime : 2019-01-24T03:45:00.000+0000
+             * gameStartTime : 2019-01-23T15:41:52.000+0000
+             * gameStatusCode : 1003
+             * gameStatusName : 已开奖
              * gameTypeCode : 1002
              * gameTypeName : 最后的胜利者
-             * incentive_money : null
-             * incentive_status : null
-             * incentive_user_id : null
-             * lastMoney : null
-             * lastMoneyStatus : 1000
+             * incentive_money : 5.3999999999999995
+             * incentive_status : 1001
+             * incentive_user_id :
+             * lastMoney : 10.799999999999999
+             * lastMoneyStatus : 1001
              * lastUserId : null
-             * periodNum : 20190102001
+             * periodNum : 20190124001
+             * lastUserName : null
+             * incentiveUserName : null
+             * incentiveSnNum : null
+             * snNum : null
              */
 
             public String recordId;
@@ -65,13 +83,16 @@ public class WinnerInfo {
             public String gameStatusName;
             public String gameTypeCode;
             public String gameTypeName;
-            public Object incentive_money;
-            public Object incentive_status;
-            public Object incentive_user_id;
-            public Object lastMoney;
+            public String incentive_money;
+            public String incentive_status;
+            public String incentive_user_id;
+            public String lastMoney;
             public String lastMoneyStatus;
-            public Object lastUserId;
+            public String lastUserId;
             public String periodNum;
+            public String lastUserName;
+            public String incentiveUserName;
+            public String incentiveSnNum;
             public String snNum;
         }
     }
