@@ -21,6 +21,10 @@ public class YS {
     public static final int TYPE_TXFFC = 1001;//腾讯分分彩
     public static final int TYPE_ZHDSLZ = 1002;//最后的胜利者
 
+    public static final double MAX_MONEY = 125205;//最后的胜利者奖池最大金额
+    public static final double MAX_SN_PRICE = 500;//当前SN最大价格
+    public static final double MAX_FHFL = 55.77;//个人返红分利最大
+
 
     public static final String KF_QQ = "8789234124";
     public static final String KF_WX = "123456";

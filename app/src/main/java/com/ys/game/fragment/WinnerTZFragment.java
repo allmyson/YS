@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * @author lh
@@ -96,6 +97,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
         snListLL = getView(R.id.ll_snList);
         snListLL.setOnClickListener(this);
         formatter = new SimpleDateFormat("HH:mm:ss");//初始化Formatter的转换格式。
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
         tipTV = getView(R.id.tv_tip);
         timeTV = getView(R.id.tv_time);
         tzBtn = getView(R.id.btn_tz);
@@ -181,12 +183,16 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                 mySNList.clear();
                 msgList.clear();
                 if (winnerBean != null && YS.SUCCESE.equals(winnerBean.code) && winnerBean.data != null) {
-                    totalCPB.setPercent(StringUtil.valueOf(winnerBean.data.totleMoney));
-                    totalCPB.setProgress(80, true);
+                    totalCPB.setPercent(StringUtil.StringToDoubleStr(winnerBean.data.totleMoney));
+                    int totalProgress = (int) (StringUtil.StringToDouble(winnerBean.data.totleMoney) / YS.MAX_MONEY * 100);
+                    int snProgress = (int) (StringUtil.StringToDouble(winnerBean.data.snprice)/YS.MAX_SN_PRICE*100);
+                    int fhflProgress = (int) (StringUtil.StringToDouble(winnerBean.data.earnMoney)/YS.MAX_FHFL*100);
+                    totalCPB.setProgress(totalProgress, true);
                     currentSNPrice = winnerBean.data.snprice;
-                    priceCPB.setPercent(StringUtil.valueOf(winnerBean.data.snprice));
-                    priceCPB.setProgress(50, true);
+                    priceCPB.setPercent(StringUtil.StringToDoubleStr(winnerBean.data.snprice));
+                    priceCPB.setProgress(snProgress, true);
                     fhTV.setText(StringUtil.valueOf(winnerBean.data.earnMoney));
+                    fhPB.setProgress(fhflProgress);
                     if (winnerBean.data.listSn != null && winnerBean.data.listSn.size() > 0) {
                         mySNList.addAll(winnerBean.data.listSn);
                     }
@@ -284,6 +290,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                             //进行中
                             tipTV.setText("第" + periodNum + "期开奖倒计时");
                             currentTimeByServer = DateUtil.changeTimeToLong(winnerInfo.data.lastGame.expectEndTime);
+                            L.e("currentTimeByServer="+currentTimeByServer);
                             currentDataLL.setVisibility(View.VISIBLE);
                             buyRL.setVisibility(View.VISIBLE);
                             showTipRL.setVisibility(View.GONE);
@@ -327,6 +334,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
             @Override
             public void onTick(long millisUntilFinished) {
                 long dfferenceTime = currentTimeByServer - System.currentTimeMillis();
+                L.e("dfferenceTime="+dfferenceTime);
                 String hms = "00:00:00";
                 if (dfferenceTime < 0) {
                     dfferenceTime = -dfferenceTime;
