@@ -6,8 +6,11 @@ import android.graphics.Bitmap;
 
 import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.FileBinary;
+import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.download.DownloadListener;
+import com.yanzhenjie.nohttp.download.DownloadRequest;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.StringRequest;
@@ -292,5 +295,34 @@ public class BaseHttp {
     public Request<String> getStringPostRequst(String url) {
         Request<String> request = NoHttp.createStringRequest(url, RequestMethod.POST);
         return request;
+    }
+
+    /**
+     * 下载文件
+     *
+     * @param context
+     * @param url
+     * @param savaPath
+     * @param fileName
+     * @param downloadListener
+     */
+    public void downloadFile(Context context, String url, String savaPath, String fileName, DownloadListener
+            downloadListener) {
+        downloadRequest = NoHttp.createDownloadRequest(
+                url, savaPath, fileName, true, true);
+        String token = CookieSP.getCookie(context);
+        downloadRequest.getHeaders().remove(Headers.HEAD_KEY_CONTENT_TYPE);
+        if (token != null && !"".equals(token)) {
+            downloadRequest.addHeader("Cookie", token);
+        }
+        NoHttp.getDownloadQueueInstance().add(0, downloadRequest, downloadListener);
+    }
+
+    private DownloadRequest downloadRequest;
+
+    public void cancleCurrentDownload() {
+        if (downloadRequest != null) {
+            downloadRequest.cancel();
+        }
     }
 }

@@ -13,6 +13,7 @@ import com.ys.game.adapter.MainFragmentAdapter;
 import com.ys.game.base.BaseActivity;
 import com.ys.game.bean.MainBean;
 import com.ys.game.ui.LhViewPager;
+import com.ys.game.update.UpdateManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,7 @@ public class MainActivity extends BaseActivity {
 
             }
         });
+        new UpdateManager(mContext,false).checkUpdate();
     }
 
     public void setPositionTab(int position) {

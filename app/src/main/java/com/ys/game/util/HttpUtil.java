@@ -306,4 +306,14 @@ public class HttpUtil {
         String url = YS.UPDATE_PSD + "?userId=" + userId + "&oldPwd=" + oldPsd + "&pwd=" + newPsd;
         BaseHttp.getInstance().postSimpleJson(context, url, "", httpListener);
     }
+
+    /**
+     * 获取APP最新版本数据
+     * @param context
+     * @param httpListener
+     */
+    public static void getAppVersion(Context context,HttpListener<String> httpListener){
+        String url = YS.APP_VERSION;
+        BaseHttp.getInstance().postSimpleJson(context,url,"",httpListener);
+    }
 }

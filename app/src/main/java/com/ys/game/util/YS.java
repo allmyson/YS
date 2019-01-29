@@ -78,6 +78,8 @@ public class YS {
     public static final String UPDATE_ZJMM = IP + "/appService/editMoneypwdForApp";
     //修改登录密码
     public static final String UPDATE_PSD= IP + "/appService/editPwdForApp";
+    //APP在线更新
+    public static final String APP_VERSION= IP + "/appService/getNewApk?type=1000";
 
 
     public static GlideUrl getGlideUrl(Context context, String url) {
