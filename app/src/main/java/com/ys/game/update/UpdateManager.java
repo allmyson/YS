@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.Headers;
@@ -110,7 +111,7 @@ public class UpdateManager implements View.OnClickListener {
         HttpUtil.getAppVersion(mContext, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
-                AppInfo appInfo = new Gson().fromJson(response.toString(), AppInfo.class);
+                AppInfo appInfo = new Gson().fromJson(response.get(), AppInfo.class);
                 if (appInfo != null && YS.SUCCESE.equals(appInfo.code) && appInfo.data != null) {
                     int serverVersion = StringUtil.StringToInt(appInfo.data.versionNum);
                     downLoadUrl = StringUtil.valueOf(appInfo.data.downloadUrl);
@@ -119,7 +120,7 @@ public class UpdateManager implements View.OnClickListener {
                             isForceUpdate,
                             StringUtil.valueOf(appInfo.data.versionName),
                             StringUtil.valueOf(appInfo.data.versionRemark));
-                }else {
+                } else {
                     if (showToast) {
                         ToastUtil.show(mContext, "当前已是最新版本", 1);
                     }
@@ -177,7 +178,7 @@ public class UpdateManager implements View.OnClickListener {
         contentTV.setMovementMethod(ScrollingMovementMethod.getInstance());
         String t1 = content.replace("\\n", "\n");
         String t2 = t1.replace("\\r", "\r");
-        contentTV.setText("有新版本可供升级下载！\n版本号：" + title + "\n更新内容：" + t2);
+        contentTV.setText("有新版本可供升级下载！\n版本名：" + title + "\n更新内容：" + t2);
         updateBuilder = new AlertDialog.Builder(mContext, R.style.dialog_update);
         updateBuilder.setView(view);
         updateBuilder.setCancelable(false);
@@ -220,7 +221,8 @@ public class UpdateManager implements View.OnClickListener {
     private void downloadApk() {
 //        downLoadUrl = "http://app-global.pgyer.com/bc42ed7161875418f551b321073652dd.apk?attname=app-release" +
 //                ".apk&sign=f36c7db67dbaa3031a1268f5f5284c3e&t=5bc98626";
-        BaseHttp.getInstance().downloadFile(mContext, downLoadUrl, Constant.DOWNLOAD_PATH, "", new
+//        downLoadUrl = "http://apk.taohuichang.com/apk/1534217470188/taohuichang.apk";
+        BaseHttp.getInstance().downloadFile(mContext, downLoadUrl, Constant.DOWNLOAD_PATH, "YS.apk", new
                 DownloadListener() {
                     @Override
                     public void onDownloadError(int what, Exception exception) {
@@ -258,12 +260,13 @@ public class UpdateManager implements View.OnClickListener {
 
                     @Override
                     public void onProgress(int what, int progress, long fileCount, long speed) {
+                        L.e("progress=" + progress);
                         double newSpeed = speed / 1024D;
                         DecimalFormat decimalFormat = new DecimalFormat("###0.00");
                         String sProgress = mContext.getString(R.string.download_progress);
                         downloadJD = String.format(Locale.getDefault(), sProgress, progress, decimalFormat.format
                                 (newSpeed));
-
+//                        downloadJD = "已下载：" + progress + "%,速度：" + decimalFormat.format(newSpeed);
                         // 计算进度条位置
                         UpdateManager.this.progress = progress;
                         // 更新进度
@@ -334,9 +337,24 @@ public class UpdateManager implements View.OnClickListener {
             noticeDialog.dismiss();
         } else if (i == R.id.textview_sureId) {
             noticeDialog.dismiss();
-            // 显示下载对话框
-            showDownloadDialog();
+
+            if (hasPermission(mContext, permissionName)) {
+                // 显示下载对话框
+//                showDownloadDialog();
+//               用系统浏览器下载
+                StringUtil.openBrowser(mContext, downLoadUrl);
+            } else {
+                ToastUtil.show(mContext, "无存储权限");
+            }
         }
+    }
+
+
+    public static String permissionName = "android.permission.WRITE_EXTERNAL_STORAGE";
+
+    public static boolean hasPermission(Context context, String permission) {
+        int perm = context.checkCallingOrSelfPermission(permission);
+        return perm == PackageManager.PERMISSION_GRANTED;
     }
 }
 

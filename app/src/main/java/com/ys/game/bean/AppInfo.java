@@ -2,11 +2,12 @@ package com.ys.game.bean;
 
 public class AppInfo {
 
+
     /**
      * code : SUCCESS
      * msg : 查询成功
-     * data : {"appId":"1","apkTypeCode":"1000","apkTypeName":"安卓","downloadUrl":"http://103.65.180.104:8090/downloadFile","versionName":"app-release.apk","versionNum":"1.0","versionRemark":"app-release.apk","versionTime":1548606777999}
-     * systemDate : 1548662065516
+     * data : {"appId":"d36169a04c614c079b2840f7a6a2477f","apkTypeCode":"1000","apkTypeName":"安卓系统","downloadUrl":"http://103.65.180.104:8090/downloadFile?type=1000","versionName":"1.1","versionNum":"2","versionRemark":"app-release1.1.apk","versionTime":1548769004274,"sendTime":"2019-01-29T13:36:44.000+0000"}
+     * systemDate : 1548772916447
      */
 
     public String code;
@@ -16,14 +17,15 @@ public class AppInfo {
 
     public static class DataBean {
         /**
-         * appId : 1
+         * appId : d36169a04c614c079b2840f7a6a2477f
          * apkTypeCode : 1000
-         * apkTypeName : 安卓
-         * downloadUrl : http://103.65.180.104:8090/downloadFile
-         * versionName : app-release.apk
-         * versionNum : 1.0
-         * versionRemark : app-release.apk
-         * versionTime : 1548606777999
+         * apkTypeName : 安卓系统
+         * downloadUrl : http://103.65.180.104:8090/downloadFile?type=1000
+         * versionName : 1.1
+         * versionNum : 2
+         * versionRemark : app-release1.1.apk
+         * versionTime : 1548769004274
+         * sendTime : 2019-01-29T13:36:44.000+0000
          */
 
         public String appId;
@@ -34,5 +36,6 @@ public class AppInfo {
         public String versionNum;
         public String versionRemark;
         public long versionTime;
+        public String sendTime;
     }
 }

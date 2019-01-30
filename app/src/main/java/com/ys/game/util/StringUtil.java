@@ -1,6 +1,11 @@
 package com.ys.game.util;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
@@ -76,7 +81,7 @@ public class StringUtil {
     /* 将List<V>按照V的methodName方法返回值（返回值必须为K类型）分组，合入到Map<K, List<V>>中<br>
      * 要保证入参的method必须为V的某一个有返回值的方法，并且该返回值必须为K类型
      *
-             * @param list 待分组的列表
+     * @param list 待分组的列表
      * @param map 存放分组后的map
      * @param clazz 泛型V的类型
      * @param methodName 方法名
@@ -200,9 +205,11 @@ public class StringUtil {
         double result = StringToDefaultDouble(data);
         return String.format("%.2f", result);
     }
+
     public static String StringToDoubleStr(double data) {
         return String.format("%.2f", data);
     }
+
     public static double StringToDefaultDouble(String data) {
         try {
             if (data == null || "".equals(data)) {
@@ -245,4 +252,23 @@ public class StringUtil {
         }
     }
 
+    /**
+     * 调用第三方浏览器打开
+     *
+     * @param context
+     * @param url     要浏览的资源地址
+     */
+    public static void openBrowser(Context context, String url) {
+        final Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+// 注意此处的判断intent.resolveActivity()可以返回显示该Intent的Activity对应的组件名
+// 官方解释 : Name of the component implementing an activity that can display the intent
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            final ComponentName componentName = intent.resolveActivity(context.getPackageManager()); // 打印Log   ComponentName到底是什么 L.d("componentName = " + componentName.getClassName());
+            context.startActivity(Intent.createChooser(intent, "请选择浏览器"));
+        } else {
+            Toast.makeText(context.getApplicationContext(), "请下载浏览器", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

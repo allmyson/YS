@@ -311,7 +311,7 @@ public class BaseHttp {
         downloadRequest = NoHttp.createDownloadRequest(
                 url, savaPath, fileName, true, true);
         String token = CookieSP.getCookie(context);
-        downloadRequest.getHeaders().remove(Headers.HEAD_KEY_CONTENT_TYPE);
+//        downloadRequest.getHeaders().remove(Headers.HEAD_KEY_CONTENT_TYPE);
         if (token != null && !"".equals(token)) {
             downloadRequest.addHeader("Cookie", token);
         }

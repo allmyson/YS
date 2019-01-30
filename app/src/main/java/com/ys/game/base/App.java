@@ -3,6 +3,7 @@ package com.ys.game.base;
 import android.support.multidex.MultiDexApplication;
 
 import com.yanzhenjie.nohttp.InitializationConfig;
+import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 import com.ys.game.http.CookieListener;
@@ -21,5 +22,6 @@ public class App extends MultiDexApplication {
         super.onCreate();
         Constant.buildFile();
         NoHttp.initialize(InitializationConfig.newBuilder(this).cookieStore(new DBCookieStore(this).setCookieStoreListener(new CookieListener(this))).build());
+        Logger.setDebug(true);
     }
 }
