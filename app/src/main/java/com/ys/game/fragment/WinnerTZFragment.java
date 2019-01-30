@@ -85,13 +85,35 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
 
     private LinearLayout currentDataLL;
     private RelativeLayout buyRL;
-    private RelativeLayout showTipRL;
-    private TextView contentTV;
+//    private RelativeLayout showTipRL;
+//    private TextView contentTV;
+
+
+    private LinearLayout resultLL, showTotalLL, showWinnerLL, showRandomLL;
+    private TextView totalTZTV, tzInfoTV, winnerInfoTV, randomInfoTV;
+    private TextView winnerNoTV, winnerUserTV, winnerMoneyTV;
+    private TextView randomNoTV, randomUserTV, randomMoneyTV;
+    private TextView waitResultTV;
 
     @Override
     protected void init() {
-        contentTV = getView(R.id.tv_content);
-        showTipRL = getView(R.id.rl_showTip);
+        waitResultTV = getView(R.id.tv_waitResult);
+        resultLL = getView(R.id.ll_showResult);//总的
+        showTotalLL = getView(R.id.ll_showTotal);
+        showWinnerLL = getView(R.id.ll_showWinner);
+        showRandomLL = getView(R.id.ll_showRandom);
+        totalTZTV = getView(R.id.tv_totalTZ);
+        tzInfoTV = getView(R.id.tv_tzInfo);
+        winnerInfoTV = getView(R.id.tv_winnerInfo);
+        randomInfoTV = getView(R.id.tv_randomInfo);
+        winnerNoTV = getView(R.id.tv_winnerNo);
+        winnerUserTV = getView(R.id.tv_winnerUser);
+        winnerMoneyTV = getView(R.id.tv_winnerMoney);
+        randomNoTV = getView(R.id.tv_randomNo);
+        randomUserTV = getView(R.id.tv_randomUser);
+        randomMoneyTV = getView(R.id.tv_randomMoney);
+//        contentTV = getView(R.id.tv_content);
+//        showTipRL = getView(R.id.rl_showTip);
         currentDataLL = getView(R.id.ll_currentData);
         buyRL = getView(R.id.rl_buy);
         snListLL = getView(R.id.ll_snList);
@@ -113,10 +135,6 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
         lineLL = getView(R.id.ll_line);
         totalCPB = getView(R.id.cpb_total);
         priceCPB = getView(R.id.cpb_price);
-//        totalCPB.setPercent("29348");
-//        totalCPB.setProgress(80, true);
-//        priceCPB.setPercent("125");
-//        priceCPB.setProgress(50, true);
         fhPB = getView(R.id.progesss_fh);
         fhTV = getView(R.id.tv_fh);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -185,8 +203,8 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                 if (winnerBean != null && YS.SUCCESE.equals(winnerBean.code) && winnerBean.data != null) {
                     totalCPB.setPercent(StringUtil.StringToDoubleStr(winnerBean.data.totleMoney));
                     int totalProgress = (int) (StringUtil.StringToDouble(winnerBean.data.totleMoney) / YS.MAX_MONEY * 100);
-                    int snProgress = (int) (StringUtil.StringToDouble(winnerBean.data.snprice)/YS.MAX_SN_PRICE*100);
-                    int fhflProgress = (int) (StringUtil.StringToDouble(winnerBean.data.earnMoney)/YS.MAX_FHFL*100);
+                    int snProgress = (int) (StringUtil.StringToDouble(winnerBean.data.snprice) / YS.MAX_SN_PRICE * 100);
+                    int fhflProgress = (int) (StringUtil.StringToDouble(winnerBean.data.earnMoney) / YS.MAX_FHFL * 100);
                     totalCPB.setProgress(totalProgress, true);
                     currentSNPrice = winnerBean.data.snprice;
                     priceCPB.setPercent(StringUtil.StringToDoubleStr(winnerBean.data.snprice));
@@ -272,49 +290,68 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                 WinnerInfo winnerInfo = new Gson().fromJson(response.get(), WinnerInfo.class);
                 if (winnerInfo != null && YS.SUCCESE.equals(winnerInfo.code) && winnerInfo.data != null) {
                     if (winnerInfo.data.lastGame != null) {
-                        String periodNum1 = StringUtil.valueOf(winnerInfo.data.lastGame.periodNum);
-                        String periodNum = StringUtil.valueOf(winnerInfo.data.lastGame.periodNum);
-                        String snNo = StringUtil.valueOf(winnerInfo.data.lastGame.snNum);
-                        if (StringUtil.isBlank(periodNum1) && periodNum1.length() > 4) {
-                            periodNum = periodNum1.substring(4);
-                        }
                         if ("1000".equals(winnerInfo.data.lastGame.gameStatusCode)) {
                             //未开始
-                            tipTV.setText("第" + periodNum + "期开始倒计时");
                             currentTimeByServer = DateUtil.changeTimeToLong(winnerInfo.data.lastGame.gameStartTime);
                             currentDataLL.setVisibility(View.GONE);
                             buyRL.setVisibility(View.GONE);
-                            showTipRL.setVisibility(View.VISIBLE);
-                            contentTV.setText("第" + periodNum + "期还未开始，若需参与请关注开始时间！");
+                            if (winnerInfo.data.beforeGame != null) {
+                                resultLL.setVisibility(View.VISIBLE);
+                                totalTZTV.setText(StringUtil.StringToDoubleStr(winnerInfo.data.beforeGame.totleMoney));
+                                tzInfoTV.setText("第" + StringUtil.valueOf(winnerInfo.data.beforeGame.periodNum) + "期总投注金额");
+                                winnerInfoTV.setText("第" + StringUtil.valueOf(winnerInfo.data.beforeGame.periodNum) + "期胜利者中奖信息");
+                                randomInfoTV.setText("第" + StringUtil.valueOf(winnerInfo.data.beforeGame.periodNum) + "期随即奖中奖信息");
+                                winnerNoTV.setText(StringUtil.valueOf(winnerInfo.data.beforeGame.snNum));
+                                winnerUserTV.setText(StringUtil.valueOf(winnerInfo.data.beforeGame.lastUserName));
+                                winnerMoneyTV.setText(StringUtil.StringToDoubleStr(winnerInfo.data.beforeGame.lastMoney));
+                                randomNoTV.setText(StringUtil.valueOf(winnerInfo.data.beforeGame.incentiveSnNum));
+                                randomUserTV.setText(StringUtil.valueOf(winnerInfo.data.beforeGame.incentiveUserName));
+                                randomMoneyTV.setText(StringUtil.valueOf(winnerInfo.data.beforeGame.incentive_money));
+                                if (!"1003".equals(winnerInfo.data.beforeGame.gameStatusCode)) {
+                                    cancel();
+                                    //上期游戏未开奖
+                                    tipTV.setText("第" + StringUtil.valueOf(winnerInfo.data.beforeGame.periodNum) + "期游戏结束");
+                                    timeTV.setText("随机抽奖中...");
+                                    waitResultTV.setVisibility(View.VISIBLE);
+                                    showWinnerLL.setVisibility(View.GONE);
+                                    showRandomLL.setVisibility(View.GONE);
+                                } else {
+                                    //上期游戏已经开奖
+                                    tipTV.setText("第" + StringUtil.valueOf(winnerInfo.data.lastGame.periodNum) + "期开始倒计时");
+                                    waitResultTV.setVisibility(View.GONE);
+                                    showWinnerLL.setVisibility(View.VISIBLE);
+                                    showRandomLL.setVisibility(View.VISIBLE);
+                                    start();
+                                }
+                            } else {
+                                //说明本期是当天第一期游戏
+                                tipTV.setText("第" + StringUtil.valueOf(winnerInfo.data.lastGame.periodNum) + "期开始倒计时");
+                                resultLL.setVisibility(View.GONE);
+                                start();
+                            }
                         } else if ("1001".equals(winnerInfo.data.lastGame.gameStatusCode)) {
                             //进行中
-                            tipTV.setText("第" + periodNum + "期开奖倒计时");
+                            tipTV.setText("第" + StringUtil.valueOf(winnerInfo.data.lastGame.periodNum) + "期开奖倒计时");
+                            waitResultTV.setVisibility(View.GONE);
                             currentTimeByServer = DateUtil.changeTimeToLong(winnerInfo.data.lastGame.expectEndTime);
-                            L.e("currentTimeByServer="+currentTimeByServer);
+                            L.e("currentTimeByServer=" + currentTimeByServer);
                             currentDataLL.setVisibility(View.VISIBLE);
                             buyRL.setVisibility(View.VISIBLE);
-                            showTipRL.setVisibility(View.GONE);
-                            contentTV.setText("");
+                            resultLL.setVisibility(View.GONE);
+                            start();
                         } else {
+                            //如果后端逻辑控制正确一般不会进入这个条件
                             //等待开奖或者已经结束
                             if (winnerInfo.data.nextGame != null) {
-                                String nextPeriodNum = winnerInfo.data.nextGame.periodNum;
-                                if (StringUtil.isBlank(nextPeriodNum) && nextPeriodNum.length() > 4) {
-                                    nextPeriodNum = nextPeriodNum.substring(4);
-                                }
-                                tipTV.setText("第" + nextPeriodNum + "期开始倒计时");
+                                tipTV.setText("第" + StringUtil.valueOf(winnerInfo.data.nextGame.periodNum) + "期开始倒计时");
                                 currentTimeByServer = DateUtil.changeTimeToLong(winnerInfo.data.nextGame.gameStartTime);
                             }
                             currentDataLL.setVisibility(View.GONE);
                             buyRL.setVisibility(View.GONE);
-                            showTipRL.setVisibility(View.VISIBLE);
-//                            setTip(periodNum, snNo);
-                            setTip(periodNum, winnerInfo.data.lastGame.lastUserName, winnerInfo.data.lastGame.snNum,
-                                    winnerInfo.data.lastGame.lastMoney,
-                                    winnerInfo.data.lastGame.incentiveUserName, winnerInfo.data.lastGame
-                                            .incentiveSnNum, winnerInfo.data.lastGame.incentive_money);
+                            start();
                         }
-                        start();
+                    }else{
+                        show("服务器异常，错误信息：winnerInfo.data.lastGame == null");
                     }
                 }
             }
@@ -334,7 +371,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
             @Override
             public void onTick(long millisUntilFinished) {
                 long dfferenceTime = currentTimeByServer - System.currentTimeMillis();
-                L.e("dfferenceTime="+dfferenceTime);
+                L.e("dfferenceTime=" + dfferenceTime);
                 String hms = "00:00:00";
                 if (dfferenceTime < 0) {
                     dfferenceTime = -dfferenceTime;
@@ -379,36 +416,36 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
         cancel();
     }
 
-    /**
-     * @param periodNum         期数
-     * @param lastUserName      胜利者
-     * @param snNo              中奖编号
-     * @param lastMoney         中奖金额
-     * @param incentiveUserName 随机奖获得者
-     * @param incentiveSnNum    随机奖编号
-     * @param incentiveMoney    随机奖金额
-     */
-    private void setTip(String periodNum, String lastUserName, String snNo, String lastMoney, String
-            incentiveUserName, String incentiveSnNum, String incentiveMoney) {
+//    /**
+//     * @param periodNum         期数
+//     * @param lastUserName      胜利者
+//     * @param snNo              中奖编号
+//     * @param lastMoney         中奖金额
+//     * @param incentiveUserName 随机奖获得者
+//     * @param incentiveSnNum    随机奖编号
+//     * @param incentiveMoney    随机奖金额
+//     */
+//    private void setTip(String periodNum, String lastUserName, String snNo, String lastMoney, String
+//            incentiveUserName, String incentiveSnNum, String incentiveMoney) {
+////        String yue = String.format("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！<br><br>第" + periodNum +
+//// "期随机大奖中奖号码为：<br><br><br><font color=\"#fc6a44\" size=\"80\"><big>%s</big></font>", snNo);
 //        String yue = String.format("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！<br><br>第" + periodNum +
-// "期随机大奖中奖号码为：<br><br><br><font color=\"#fc6a44\" size=\"80\"><big>%s</big></font>", snNo);
-        String yue = String.format("第" + periodNum + "期游戏已经结束，系统清算中，若需参与请关注下期开始时间！<br><br>第" + periodNum +
-                        "期胜利者是：<font color=\"#fc6a44\" size=\"80\"><big>%s</big></font>,中奖号码为：<font color=\"#fc6a44\"" +
-                        "size=\"80\"><big>%s</big></font>,中奖金额为：<font color=\"#fc6a44\" " +
-                        "size=\"80\"><big>%s</big></font><br><br>随机大奖获得者是：<font color=\"#fc6a44\" " +
-                        "size=\"80\"><big>%s</big></font>,随机大奖号码为：<font color=\"#fc6a44\" " +
-                        "size=\"80\"><big>%s</big></font>,随机大奖中奖金额为：<font " +
-                        "color=\"#fc6a44\" size=\"80\"><big>%s</big></font>",
-                StringUtil.valueOf(lastUserName),
-                StringUtil.valueOf(snNo),
-                StringUtil.StringToDoubleStr(lastMoney) + YS.UNIT,
-                StringUtil.valueOf(incentiveUserName),
-                StringUtil.valueOf(incentiveSnNum),
-                StringUtil.StringToDoubleStr(incentiveMoney) + YS.UNIT);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            contentTV.setText(Html.fromHtml(yue, Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            contentTV.setText(Html.fromHtml(yue));
-        }
-    }
+//                        "期胜利者是：<font color=\"#fc6a44\" size=\"80\"><big>%s</big></font>,中奖号码为：<font color=\"#fc6a44\"" +
+//                        "size=\"80\"><big>%s</big></font>,中奖金额为：<font color=\"#fc6a44\" " +
+//                        "size=\"80\"><big>%s</big></font><br><br>随机大奖获得者是：<font color=\"#fc6a44\" " +
+//                        "size=\"80\"><big>%s</big></font>,随机大奖号码为：<font color=\"#fc6a44\" " +
+//                        "size=\"80\"><big>%s</big></font>,随机大奖中奖金额为：<font " +
+//                        "color=\"#fc6a44\" size=\"80\"><big>%s</big></font>",
+//                StringUtil.valueOf(lastUserName),
+//                StringUtil.valueOf(snNo),
+//                StringUtil.StringToDoubleStr(lastMoney) + YS.UNIT,
+//                StringUtil.valueOf(incentiveUserName),
+//                StringUtil.valueOf(incentiveSnNum),
+//                StringUtil.StringToDoubleStr(incentiveMoney) + YS.UNIT);
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+//            contentTV.setText(Html.fromHtml(yue, Html.FROM_HTML_MODE_LEGACY));
+//        } else {
+//            contentTV.setText(Html.fromHtml(yue));
+//        }
+//    }
 }

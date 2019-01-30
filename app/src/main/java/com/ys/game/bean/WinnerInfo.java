@@ -49,6 +49,7 @@ public class WinnerInfo {
          * "incentiveUserName":null,"incentiveSnNum":null,"snNum":null}
          */
 
+        public LastGameBean beforeGame;
         public LastGameBean lastGame;
         public LastGameBean nextGame;
 
@@ -94,6 +95,7 @@ public class WinnerInfo {
             public String incentiveUserName;
             public String incentiveSnNum;
             public String snNum;
+            public String totleMoney;
         }
     }
 }
