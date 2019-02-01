@@ -38,7 +38,11 @@ import java.util.UUID;
 public class StringUtil {
 
     public static String valueOf(Object obj) {
-        return obj == null ? "" : String.valueOf(obj);
+        String result = obj == null ? "" : String.valueOf(obj);
+        if ("null".equalsIgnoreCase(result)) {
+            result = "";
+        }
+        return result;
     }
 
     public static String valueOf2(Object address) {

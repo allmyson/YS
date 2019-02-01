@@ -297,7 +297,8 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                             buyRL.setVisibility(View.GONE);
                             if (winnerInfo.data.beforeGame != null) {
                                 resultLL.setVisibility(View.VISIBLE);
-                                totalTZTV.setText(StringUtil.StringToDoubleStr(winnerInfo.data.beforeGame.totleMoney));
+//                                totalTZTV.setText(StringUtil.StringToDoubleStr(winnerInfo.data.beforeGame.totleMoney));
+                                totalTZTV.setText(StringUtil.StringToDoubleStr(StringUtil.StringToDouble(winnerInfo.data.beforeGame.lastMoney) / 0.3));
                                 tzInfoTV.setText("第" + StringUtil.valueOf(winnerInfo.data.beforeGame.periodNum) + "期总投注金额");
                                 winnerInfoTV.setText("第" + StringUtil.valueOf(winnerInfo.data.beforeGame.periodNum) + "期胜利者中奖信息");
                                 randomInfoTV.setText("第" + StringUtil.valueOf(winnerInfo.data.beforeGame.periodNum) + "期随即奖中奖信息");
@@ -350,7 +351,7 @@ public class WinnerTZFragment extends BaseFragment implements SwipeRefreshLayout
                             buyRL.setVisibility(View.GONE);
                             start();
                         }
-                    }else{
+                    } else {
                         show("服务器异常，错误信息：winnerInfo.data.lastGame == null");
                     }
                 }
